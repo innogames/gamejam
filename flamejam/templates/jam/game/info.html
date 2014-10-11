@@ -22,15 +22,16 @@
 <div class="row-fluid">
     <div class="span4">
         <h2>Details</h2>
-        <table class="details">
-            <tr><th>Team</th><td>
-                {{ game.team.name }} <a href="{{ game.team.url() }}">show »</a>
-                </td></tr>
+        <dl>
+            <dt>Team</dt>
+            <dd>{{ game.team.name }} <a href="{{ game.team.url() }}">show »</a></dd>
 
-            <tr><th>Jam</th><td>{{ game.jam.getLink() }}</td></tr>
+            <dt>Jam</dt>
+            <dd>{{ game.jam.getLink() }}</dd>
 
-            <tr><th>Submitted</th><td>{{ game.created | humantime }}</td></tr>
-        </table>
+            <dt>Submitted</dt>
+            <dd>{{ game.created | humantime }}</dd>
+        </dl>
     </div>
     <div class="span4">
         <h2>Description</h2>

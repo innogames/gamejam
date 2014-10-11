@@ -24,45 +24,49 @@
 
 <div class="row-fluid">
     <div class="span4">
-        <h2>Team Details</h2>
-        <table class="details full">
-            <tr><th>Participants</th><td>
+        <legend>Team Details</legend>
+        <dl>
+            <dt>Participants</dt>
+            <dd>
                 {{ team.members | length }} member{{ "" if team.members | length == 1 else "s" }}
                 <a href="{{ url_for('map', mode = 'team', id = team.id) }}">Map »</a>
-            </td></tr>
+            </dd>
 
-            <tr><th>Founded by</th><td>
+            <dt>Founded by</dt>
+            <dd>
                 {{ team.members[0].getLink() }}
-            </td></tr>
+            </dd>
 
             {% if team.livestreams %}
-            <tr><th>Livestream</th><td>
+            <dt>Livestream</dt>
+            <dd>
                 {% for line in team.livestreams.splitlines() %}
                 <a href="{{ line }}">{{ line if line|length < 32 else (line[:32] + "...") }}</a><br />
                 {% endfor %}
-            </td></tr>
+            </dd>
             {% endif %}
 
             {% if team.irc %}
-            <tr><th>IRC Channel</th><td>
+            <dt>IRC Channel</dt>
+            <dd>
                 {{ team.irc }}
-            </td></tr>
+            </dd>
             {% endif %}
-        </table>
+        </dl>
     </div>
     <div class="span4">
-        <h2>Description</h2>
+        <legend>Description</legend>
         {{ (team.description or "*no description available*") | markdown }}
     </div>
     <div class="span4">
         {% if team.game %}
-            <h2>This team's Game</h2>
+            <legend>This team's Game</legend>
             <p style="text-align: center; font-size: 1.3em;"><a href="{{ team.game.url() }}">
                 {{ team.game.title }}
             </a></p>
         {% endif %}
 
-        <h2>Users in this team</h2>
+        <legend>Users in this team</legend>
         <table class="details">
             {% for member in team.members %}
             <tr>
