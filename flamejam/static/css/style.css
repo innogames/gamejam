@@ -21,12 +21,6 @@ body {
     font-size: 9pt;
 }
 
-a {
-    color: #BC312C;
-    color: #0145AB;
-    text-decoration: none;
-}
-
 a:hover {
     color: #AAA;
     text-decoration: underline;
@@ -196,9 +190,9 @@ img {
     border: 1px solid transparent;
 }
 .menu li.current {
-    background: #FFF;
-    border: 1px solid #DDD;
+    border: 1px solid transparent;
     border-bottom: none;
+    font-weight: bold;
 }
 
 .center-status .mini-countdown {

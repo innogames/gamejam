@@ -5,34 +5,32 @@
 {% block content %}
 <h1>
     {{ jam.title }}
-
     <small>{{ ("Theme: \"" + jam.theme + "\"") if jam.showTheme else "Theme not announced" }}</small>
-
-    {% if jam.getStatus().code >= 1 %}
-        {% set r = current_user.getParticipation(jam) if current_user.is_authenticated() else None %}
-        <div class="pull-right">
-            {% if r %}
-                <span style="font-size: 8pt; vertical-align: middle; margin-right: 10px;">
-                    {% if r.team and r.team.members|length > 1 %}
-                        You already have a team, not marked as "Looking for a team"
-                    {% else %}
-                        You are {% if not r.show_in_finder %}<b>not</b>{% endif %} marked as "Looking for a team"
-                        &ndash;
-                        <a href="{{ url_for('jam_toggle_show_in_finder', jam_slug = jam.slug) }}" class="link">Toggle</a>
-                    {% endif %}
-                </span>
-                <a class="btn btn-danger" href="{{ url_for('jam_cancel_participation', jam_slug = jam.slug) }}">Cancel participation</a>
-            {% else %}
-            <a class="btn btn-success" href="{{ url_for('jam_participate', jam_slug = jam.slug) }}">Participate</a>
-            {% endif %}
-        </div>
-    {% endif %}
 </h1>
+{% if jam.getStatus().code >= 1 %}
+    {% set r = current_user.getParticipation(jam) if current_user.is_authenticated() else None %}
+    <div class="row-fluid">
+        {% if r %}
+            <span style="font-size: 8pt; vertical-align: middle; margin-right: 10px;">
+                {% if r.team and r.team.members|length > 1 %}
+                    You already have a team, not marked as "Looking for a team"
+                {% else %}
+                    You are {% if not r.show_in_finder %}<b>not</b>{% endif %} marked as "Looking for a team"
+                    &ndash;
+                    <a href="{{ url_for('jam_toggle_show_in_finder', jam_slug = jam.slug) }}" class="link">Toggle</a>
+                {% endif %}
+            </span>
+            <a class="btn btn-danger" href="{{ url_for('jam_cancel_participation', jam_slug = jam.slug) }}">Cancel participation</a>
+        {% else %}
+        <a class="btn btn-success" href="{{ url_for('jam_participate', jam_slug = jam.slug) }}">Participate</a>
+        {% endif %}
+    </div>
+{% endif %}
 
 <div class="row-fluid">
     <div class="span4">
-        <h2>Jam Details</h2>
-        <table class="details full">
+        <legend>Jam Details</legend>
+        <table class="table table-bordered">
             <tr><th>Announced</th><td>{{ jam.announced | humantime }}</a></td></tr>
             <tr><th>Time of jam</th><td>{{ jam.start_time | humantime }}</td></tr>
             <tr><th>Duration</th><td>{{ jam.duration }} hours</td></tr>
@@ -104,7 +102,8 @@
 
     </div>
     <div class="span8">
-        <h2>Description</h2>
+        <legend>Description</legend>
+
         {{ (jam.description or "*This jam has no description.*") | markdown }}
 
         {% if jam.restrictions %}
