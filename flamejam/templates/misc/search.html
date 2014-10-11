@@ -3,12 +3,14 @@
 {% block title %}Search{% endblock %}
 
 {% block content %}
-<h1>Search</h1>
 
-{% if q == "%" %}
-    <p>Your search for the answer to life the universe and everything returned 42 results.</p>
-{% else %}
-    <p>Your search for <b>{{ q }}</b> had {% if jams or games or users %}the following{% else %}no{% endif %} results.</p>
+{% if q is string %}
+    <h1>Search</h1>
+    {% if q == "%" %}
+        <p>Your search for the answer to life the universe and everything returned 42 results.</p>
+    {% else %}
+        <p>Your search for <b>{{ q }}</b> had {% if jams or games or users %}the following{% else %}no{% endif %} results.</p>
+    {% endif %}
 {% endif %}
 
 <div class="row-fluid">
