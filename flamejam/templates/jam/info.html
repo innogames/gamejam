@@ -32,41 +32,48 @@
 <div class="row-fluid">
     <div class="span4">
         <legend>Jam Details</legend>
-        <table class="table table-bordered">
-            <tr><th>Announced</th><td>{{ jam.announced | humantime }}</a></td></tr>
-            <tr><th>Time of jam</th><td>{{ jam.start_time | humantime }}</td></tr>
-            <tr><th>Duration</th><td>{{ jam.duration }} hours</td></tr>
-            <tr><th>Max team size</th><td>{{ jam.team_limit or "Unlimited" }}</td></tr>
+        <dl>
+            <dt>Announced</dt>
+            <dd>{{ jam.announced | humantime }}</a></dd>
+
+            <dt>Time of jam</dt>
+            <dd>{{ jam.start_time | humantime }}</dd>
+
+            <dt>Duration</dt>
+            <dd>{{ jam.duration }} hours</dd>
+
+            <dt>Max team size</dt>
+            <dd>{{ jam.team_limit or "Unlimited" }}</dd>
+
             {% if status.code == 2 %}
-            <tr><th>Time left</th><td>
-                <span class="mini-countdown" time="{{ jam.end_time }}">
-                    <span class="time">{{ (jam.end_time - current_datetime) | countdowndelta }}</span>
-                </span>
+                <dt>Time left</dt>
+                <dd>
+                    <span class="mini-countdown" time="{{ jam.end_time }}">
+                        <span class="time">{{ (jam.end_time - current_datetime) | countdowndelta }}</span>
+                    </span>
 
-                <a href="{{ url_for('countdown', jam_slug = jam.slug) }}" class="pull-right">
-                    Countdown
-                </a>
-            </td></tr>
+                    <a href="{{ url_for('countdown', jam_slug = jam.slug) }}" class="pull-right">
+                        Countdown
+                    </a>
+                </dd>
             {% endif %}
+
             {% if status.code == 3 or status.code == 4 %}
-            <tr><th>Rating deadline</th><td>{{ jam.rating_end | humantime(short = False) }}</td></tr>
+                <dt>Rating deadline</dt>
+                <dd>{{ jam.rating_end | humantime(short = False) }}</dd>
             {% endif %}
 
-            <tr>
-                <th>Participants</th>
-                <td>{{ jam.participations | length }} users
+            <dt>Participants</dt>
+            <dd>{{ jam.participations | length }} users
                     <a class="pull-right" href="{{ url_for('map', mode = 'jam', id = jam.id) }}">Show map</a>
-                </td>
-            </tr>
-            <tr>
-                <th>Teams</th>
-                <td>{{ jam.teams | length }} teams</td>
-            </tr>
-            <tr>
-                <th>Games</th>
-                <td>{{ jam.games | length }} games</td>
-            </tr>
-        </table>
+            </dd>
+
+            <dt>Teams</dt>
+            <dd>{{ jam.teams | length }} teams</dd>
+
+            <dt>Games</dt>
+            <dd>{{ jam.games | length }} games</dd>
+        </dl>
 
         {% if jam.getStatus().code <= 3 %}
         {% set teams = jam.livestreamTeams %}

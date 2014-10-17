@@ -3,70 +3,79 @@
 {% block title %}Links{% endblock %}
 
 {% block content %}
-<h1>Links</h1>
+<div class="row-fluid">
 
-<a name="resources"></a><h2>Resources</h2>
+    <h1>Links</h1>
+    <div class="span5">
+        <a name="resources"></a><legend>Resources</legend>
 
-<div class="info">
-    <p>
-        Here are some game development resources for you. Always make sure to check
-        the licence!
-        <ul class="normal">
-            <li>
-                <a target="_blank" href="https://docs.google.com/document/d/1qQf5zjvJHEB40xYhTiFo9GzNYUBt8iAw8vzPu2Oy354">Google docs link</a>
-             - a google docs document which is provided by the GlobalGameJam community with a big lis of resources.
+        <div class="info">
+            <p>
+                Here are some game development resources for you. Always make sure to check
+                the licence!
+                <ul class="normal">
+                    <li>
+                        <a target="_blank" href="https://docs.google.com/document/d/1qQf5zjvJHEB40xYhTiFo9GzNYUBt8iAw8vzPu2Oy354">Google docs link</a>
+                     - a google docs document which is provided by the GlobalGameJam community with a big lis of resources.
+                     </li>
 
-            <li>
-                <a target="_blank" href="http://opengameart.org">OpenGameArt.org</a>
-                - open collection of artwork for games. You can find sprites,
-                models and sounds here.
-            </li>
+                    <li>
+                        <a target="_blank" href="http://opengameart.org">OpenGameArt.org</a>
+                        - open collection of artwork for games. You can find sprites,
+                        models and sounds here.
+                    </li>
 
-            <li>
-                <a target="_blank" href="http://cgtextures.com">CgTextures.com</a>
-                - huge collection of freely available high quality textures.
-                Download limit for free accounts.
-            </li>
+                    <li>
+                        <a target="_blank" href="http://cgtextures.com">CgTextures.com</a>
+                        - huge collection of freely available high quality textures.
+                        Download limit for free accounts.
+                    </li>
 
-            <li>
-                <a target="_blank" href="http://www.superflashbros.net/as3sfxr/">as3sfxr</a> and
-                <a target="_blanK" href="http://www.bfxr.net/">bfxr</a>
-                - two sound effect synthesizers for retro style games.
-            </li>
+                    <li>
+                        <a target="_blank" href="http://www.superflashbros.net/as3sfxr/">as3sfxr</a> and
+                        <a target="_blanK" href="http://www.bfxr.net/">bfxr</a>
+                        - two sound effect synthesizers for retro style games.
+                    </li>
 
-            <li>
-                <a target="_blank" href="http://videogamena.me/">The Video Game Name Generator</a>
-                - in case you're stuck for ideas.
-            </li>
+                    <li>
+                        <a target="_blank" href="http://videogamena.me/">The Video Game Name Generator</a>
+                        - in case you're stuck for ideas.
+                    </li>
 
-            <li>
-                <a target="_blank" href="http://www.ludumdare.com/compo/tools/">ludumdare tools list</a>
-                - a list of tools for game development.
-            </li>
-        </ul>
-        If you have something to add, please tell us by send a
-        quick <a href="{{ url_for('contact') }}">email</a>.
-    </p>
-</div>
+                    <li>
+                        <a target="_blank" href="http://www.ludumdare.com/compo/tools/">ludumdare tools list</a>
+                        - a list of tools for game development.
+                    </li>
 
-<h2>Other game jams</h2>
+                    <li><iframe src="https://embed.spotify.com/?uri=spotify:user:thypho0n:playlist:25Kvhf1XFNyPAV5z4MFyAT" width="300" height="80" frameborder="0" allowtransparency="true"></iframe> - Cool (chiptune) music</li>
+                </ul>
+                If you have something to add, please tell us by send a
+                quick <a href="{{ url_for('contact') }}">email</a>.
+            </p>
+        </div>
+    </div>
 
-<div class="info">
-    <p>
-        <ul>
-            <li><a target="_blank" href="http://globalgamejam.org">GlobalGameJam.org</a>
-            - once each year the whole world is jamming.</li>
+    <div class="span5">
+        <legend>Other game jams</legend>
 
-            <li><a target="_blank" href="http://www.ludumdare.com/compo/">LudumDare.com</a>
-            - probably one of the bigger gamedev communities, separated
-            into a competition and a jam.</li>
+        <div class="info">
+            <p>
+                <ul>
+                    <li><a target="_blank" href="http://globalgamejam.org">GlobalGameJam.org</a>
+                    - once each year the whole world is jamming.</li>
 
-            <li><a target="_blank" href="http://www.pyweek.org/">PyWeek.org</a> -
-            one-week python game jam,  usually twice per annum.</li>
+                    <li><a target="_blank" href="http://www.ludumdare.com/compo/">LudumDare.com</a>
+                    - probably one of the bigger gamedev communities, separated
+                    into a competition and a jam.</li>
 
-            <li><a target="_blank" href="http://bacongamejam.org/">BaconGameJam.org</a> - mmmhhh bacon</li>
-        </ul>
-    </p>
+                    <li><a target="_blank" href="http://www.pyweek.org/">PyWeek.org</a> -
+                    one-week python game jam,  usually twice per annum.</li>
+
+                    <li><a target="_blank" href="http://bacongamejam.org/">BaconGameJam.org</a> - mmmhhh bacon</li>
+                </ul>
+            </p>
+        </div>
+    </div>
 </div>
 
 {% endblock %}

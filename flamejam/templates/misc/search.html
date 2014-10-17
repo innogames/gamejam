@@ -15,7 +15,7 @@
 
 <div class="row-fluid">
     <div class="span4">
-        <h2>{{ jams | length }} Jam{{ "" if jams | length == 1 else "s" }}</h2>
+        <legend>{{ jams | length }} Jam{{ "" if jams | length == 1 else "s" }}</legend>
         {% if jams %}
         <ul>
             {% for jam in jams %}
@@ -30,8 +30,7 @@
 
     </div>
     <div class="span4">
-
-        <h2>{{ games | length }} Game{{ "s" if games | length >= 1 else "" }}</h2>
+        <legend>{{ games | length }} Game{{ "s" if games | length >= 1 else "" }}</legend>
         {% if games %}
             <ul>
                 {% for game in games %}
@@ -46,8 +45,7 @@
 
     </div>
     <div class="span4">
-
-        <h2>{{ users | length }} User{{ "" if users | length == 1 else "s" }}</h2>
+        <legend>{{ users | length }} User{{ "" if users | length == 1 else "s" }}</legend>
         {% if users %}
         <ul class="users">
             {% for user in users %}

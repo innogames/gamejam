@@ -5,7 +5,7 @@
 
 <div class="row-fluid">
     <div class="span5">
-        <h2>Login</h2>
+        <legend>Login</legend>
         <form action="{{ url_for('login') }}" method="post" class="block">
             {{ login_form.hidden_tag() }}
             {{ form_errors(login_form) }}
@@ -30,10 +30,9 @@
     </div>
 
     <div class="span7">
-        <h2>Register</h2>
+        <legend>Register</legend>
         <form action="{{ url_for('login') }}" method="post" class="block">
             {{ register_form.hidden_tag() }}
-            <p>You are <i>strongly advised</i> to use your reddit username!</p>
             <p>{{ form_errors(register_form) }}</p>
             <div class="field">
                 {{ register_form.username.label }}
@@ -60,7 +59,7 @@
                 {{ register_form.captcha }}
             </div>
             <p class="form-buttons">
-                <input type="reset" class="btn" value="Reset">
+                <input type="reset" class="btn btn-danger" value="Reset">
                 <input type="submit" class="btn btn-primary" value="Register">
             </p>
             </div>
