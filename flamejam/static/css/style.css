@@ -804,3 +804,24 @@ a.user:hover {
 tr.deleted .score{
     text-decoration: line-through;
 }
+
+.bs-docs-social {
+text-align: center;
+border-top: 1px solid #fff;
+}
+
+/* Quick links on Home */
+.bs-docs-social-buttons {
+margin-left: 0;
+margin-bottom: 0;
+padding-left: 0;
+list-style: none;
+}
+
+.bs-docs-social-buttons li {
+display: inline-block;
+padding: 5px 8px;
+line-height: 1;
+  *display: inline;
+  *zoom: 1;
+}
