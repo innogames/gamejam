@@ -16,7 +16,7 @@
 
 <div class="row-fluid">
     <div class="span4">
-        <h2>Personal data</h2>
+        <legend>Personal data</legend>
 
         <div class="field">
             {{ form.location.label }}
@@ -44,7 +44,7 @@
             </div>
         </div>
 
-        <h2>{{ form.about.label }}</h2>
+        <legend>{{ form.about.label }}</legend>
         {{ form.about(class="comment", rows="10") }}
         <div class="form-info">
             Please write a short description about you and your gamedev history.
@@ -54,7 +54,7 @@
     <div class="span8">
         <div class="row-fluid">
             <div class="span6">
-                <h2>Notification settings</h2>
+                <legend>Notification settings</legend>
                 <div>
                     <label class="checkbox">{{ form.notify_new_jam() }}         {{ form.notify_new_jam.label.text }}</label>
                     <label class="checkbox">{{ form.notify_jam_start() }}       {{ form.notify_jam_start.label.text }}</label>
@@ -79,7 +79,7 @@
             </div>
 
             <div class="span6">
-                <h2>Change password</h2>
+                <legend>Change password</legend>
                 <p>
                     Leave these fields empty to keep the old password.
                 </p>
@@ -96,7 +96,7 @@
                     {{ form.new_password2.label }} {{ form.new_password2() }}
                 </div>
 
-                <h2>Change eMail address</h2>
+                <legend>Change eMail address</legend>
                 <p>
                     If you edit your address here, you have to verify your account
                     again. You will be logged out after submitting this form.
@@ -109,7 +109,7 @@
             </div>
         </div>
 
-        <h2>GameDev Abilities</h2>
+        <legend>GameDev Abilities</legend>
         <div class="field">
             <div style="display: inline-block;">
                 <label class="checkbox inline">{{ form.ability_programmer() }} {{ form.ability_programmer.label.text }}</label>
@@ -128,7 +128,7 @@
 </div>
 
 <p style="text-align: center">
-    <input type="reset" value="Reset" class="btn" />
+    <input type="reset" value="Reset" class="btn btn-danger" />
     <input type="submit" value="Save settings" class="btn btn-primary" />
 </p>
 
