@@ -16,7 +16,7 @@ class User(db.Model):
     email = db.Column(db.String(191), unique=True)
     new_email = db.Column(db.String(191), unique=True)
     is_admin = db.Column(db.Boolean, default=False)
-    is_verified = db.Column(db.Boolean)
+    is_verified = db.Column(db.Boolean, default=True)
     is_deleted = db.Column(db.Boolean, default = False)
     registered = db.Column(db.DateTime)
     ratings = db.relationship('Rating', backref='user', lazy = "dynamic")
@@ -49,7 +49,7 @@ class User(db.Model):
     notify_team_invitation = db.Column(db.Boolean, default = True)
     notify_newsletter = db.Column(db.Boolean, default = True)
 
-    def __init__(self, username, password, email, is_admin = False, is_verified = False):
+    def __init__(self, username, password, email, is_admin = False, is_verified = True):
         self.username = username
         self.password = hash_password(password)
         self.email = email

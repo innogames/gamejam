@@ -90,11 +90,11 @@ class UserRegistration(Form):
     email = EmailField("Email", validators=[
             Not(EmailExists(), message = "That email address is already in use."),
             Email(message = "The email address you entered is invalid.")])
-    captcha = RecaptchaField()
+    #captcha = RecaptchaField()
 
 class ResetPassword(Form):
     username = TextField("Username", validators=[UsernameValidator()])
-    captcha = RecaptchaField()
+    #captcha = RecaptchaField()
 
 class NewPassword(Form):
     password = PasswordField("Password", validators=[Length(min=8, message = "Please enter a password of at least 8 characters.")])
@@ -105,7 +105,7 @@ class VerifyForm(Form):
 
 class ContactUserForm(Form):
     message = TextAreaField("Message", validators=[Required()])
-    captcha = RecaptchaField("Captcha")
+    #captcha = RecaptchaField("Captcha")
 
 class JamDetailsForm(Form):
     title = TextField("Title", validators=[Required(), Length(max=128)])

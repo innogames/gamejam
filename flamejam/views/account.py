@@ -40,13 +40,13 @@ def login():
 
         new_user = User(username, password, email)
 
-        body = render_template("emails/account/verification.txt", recipient = new_user, email_changed = False)
-        mail.send_message(subject="Welcome to " + app.config["LONG_NAME"] + ", " + username, recipients=[new_user.email], body=body)
+        #body = render_template("emails/account/verification.txt", recipient = new_user, email_changed = False)
+        #mail.send_message(subject="Welcome to " + app.config["LONG_NAME"] + ", " + username, recipients=[new_user.email], body=body)
 
         db.session.add(new_user)
         db.session.commit()
 
-        flash("Your account has been created, confirm your email to verify.", "success")
+        flash("Your account has been created.", "success")
         return redirect(url_for('verify_status', username = username))
     return render_template('account/login.html', login_form = login_form, register_form = register_form)
 
