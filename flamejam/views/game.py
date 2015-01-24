@@ -8,6 +8,11 @@ from flamejam.forms import WriteComment, GameEditForm, GameAddScreenshotForm, \
 from flask import render_template, url_for, redirect, flash, request, abort
 from flask.ext.login import login_required, current_user
 
+@app.route("/games/")
+def games():
+
+    return render_template("game/list.html")
+
 @app.route("/jams/<jam_slug>/create-game/", methods = ("GET", "POST"))
 @login_required
 def create_game(jam_slug):

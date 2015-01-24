@@ -6,3 +6,4 @@ from index import *
 from jams import *
 from misc import *
 from team import *
+from news import *

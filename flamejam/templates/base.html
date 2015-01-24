@@ -1,113 +1,156 @@
-<!DOCTYPE html>
-<html>
+<!doctype html>
+<html class="no-js" lang="en">
     <head>
-        <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+        <meta charset="utf-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
         <title>{% block title %}{% endblock %} « InnoGames Game Jam</title>
 
-        <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='css/style.css') }}">
-        <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='css/jquery.lightbox-0.5.css') }}">
-        <script type="text/javascript" src="{{ url_for('static', filename='js/jquery.js') }}"></script>
-        <script type="text/javascript" src="{{ url_for('static', filename='js/jquery.lightbox-0.5.js') }}"></script>
-        <script type="text/javascript" src="{{ url_for('static', filename='js/bootstrap.js') }}"></script>
-        <script type="text/javascript" src="{{ url_for('static', filename='js/main.js') }}"></script>
+        <link rel="stylesheet" href="{{ url_for('static', filename='css/foundation.min.css') }}" />
+        <link rel="stylesheet" href="{{ url_for('static', filename='css/layout.css') }}" />
+        <link rel="stylesheet" href="{{ url_for('static', filename='css/navi.css') }}" />
+        <link rel="stylesheet" href="{{ url_for('static', filename='css/texte.css') }}" />
+        <link rel="stylesheet" href="{{ url_for('static', filename='css/contentelemente.css') }}" />
+
+        <script src="{{ url_for('static', filename='js/vendor/modernizr.js') }}"></script>
         <script type="text/javascript" src="{{ url_for('static', filename='js/countdown.js') }}"></script>
 
         <link rel="icon" href="{{ url_for('static', filename='images/favicon.ico') }}" type="image/x-icon">
 
-        <script type="text/javascript" lang="javascript">
-            $(document).ready(function() {
-                $('ul.screenshots li a.screenshot, a.rating-details-screenshot').lightBox({
-                    imageLoading: "{{ url_for('static', filename = 'gfx/lightbox-ico-loading.gif') }}",
-                    imageBtnClose: "{{ url_for('static', filename = 'gfx/lightbox-btn-close.gif') }}",
-                    imageBtnPrev: "{{ url_for('static', filename = 'gfx/lightbox-btn-prev.gif') }}",
-                    imageBtnNext: "{{ url_for('static', filename = 'gfx/lightbox-btn-next.gif') }}",
-                    imageBlank: "{{ url_for('static', filename = 'gfx/lightbox-blank.gif') }}",
-                    txtImage: "Screenshot",
-                    fixedNavigation: true
-                });
-            });
-        </script>
         {% block head %}{% endblock %}
     </head>
     <body>
-    <div class="navbar-header">
-        <a class="brand" href="#"></a>
-    </div>
-    <div class="navbar affix-top">
-        <div class="navbar-inner">
-            <div class="container">
-                <button type="button" class="btn btn-navbar" data-toggle="collapse" data-target=".nav-collapse">
-                    <span class="icon-bar"></span>
-                    <span class="icon-bar"></span>
-                    <span class="icon-bar"></span>
-                </button>
-                <a class="brand" href="/">InnoGames Game Jam</a>
-                <div class="nav-collapse collapse">
-                    <ul class="nav">
-                        <li>
-                            <a role="button" href="{{ url_for('jams') }}">Jams</a>
-                        </li>
-                        <li>
-                            <a role="button" href="{{ url_for('rules') }}">Rules</a>
-                        </li>
-                        <li>
-                            <a role="button" href="{{ url_for('faq') }}">Help</a>
-                        </li>
-                        <li>
-                            <a role="button" href="{{ url_for('contact') }}">Contact</a>
-                        </li>
-                        <li>
-                            <a role="button" href="{{ url_for('statistics') }}">Stats</a>
-                        </li>
-                        <li>
-                            <a role="button" href="{{ url_for('map') }}">Map</a>
-                        </li>
-                        <li>
+
+    <!-- Header Start -->
+        <section id="header">
+            <div class="row">
+                <div class="large-6 columns">
+      <!-- Logo -->
+                    <a href="#"><img src="{{ url_for('static', filename='img/logo.png') }}" alt="InnoGames - GAME JAM"></a><br>
+                        {% if current_jam %}
+                            {% if current_jam.getStatus().code <= 1 %}
+                                <p style="font-size: 20px; color: #fff;">{{ current_jam.start_time | humantime }} | January 23 - 25, 2015</p>
+                            {% endif %}
+                        {% endif %}
+                </div>
+
+                <div class="large-6 columns right">
+      <!-- Lang Menu -->
+                        <p class="lang_menu"><a href="#" class="active">en</a></p>
+      <!-- Login -->
+                    {% if current_user.is_anonymous() %}
+                        <a href="{{ url_for('login') }}" class="button login">Login / Signup</a>
+                    {% else %}
+                        {% if current_user.invitiation %}
+                            <a href="{{ url_for('invitations') }}" class="button login">{{ current_user.invitation | length }} <i class="icon-envelope"></i></a>
+                        {% endif %}
+                        <a href="{{ url_for('profile') }}" class="button login" id="account">
+                            <img class="avatar" src="{{ current_user.getAvatar(16) }}" width="16" height="16" />
+                            {{ current_user.username }}
+                        </a>
+                        <a class="button login" href="{{ url_for('logout') }}"><i class="icon-off icon-white"></i></a>
+                    {% endif %}
+      <!-- Follow us on -->
+                    <p class="socialmedia_headline">Follow us on</p>
+                </div>
+            </div>
+        </section>
+    <!-- Header Stop -->
+
+<!-- Navi Start -->
+    <nav>
+        <div class="row">
+            <div class="large-12 columns">
+                <ul class="main_menu">
+                    {% if request.endpoint == "index" %}
+                        <li class="active"><a href="{{ url_for('index') }}">Home</a></li>
+                    {% else %}
+                        <li><a href="{{ url_for('index') }}">Home</a></li>
+                    {% endif %}
+
+                    {% if request.endpoint == "news" %}
+                        <li class="active"><a href="{{ url_for('news') }}">News</a></li>
+                    {% else %}
+                        <li><a href="{{ url_for('news') }}">News</a></li>
+                    {% endif %}
+
+                    {% if request.endpoint == "rules" %}
+                        <li class="active"><a href="{{ url_for('rules') }}">Rules</a></li>
+                    {% else %}
+                        <li><a href="{{ url_for('rules') }}">Rules</a></li>
+                    {% endif %}
+
+                    {% if request.endpoint == "faq" %}
+                        <li class="active"><a href="{{ url_for('faq') }}">FAQ</a></li>
+                    {% else %}
+                        <li><a href="{{ url_for('faq') }}">FAQ</a></li>
+                    {% endif %}
+
+                    {% if request.endpoint == "jams" %}
+                        <li class="active"><a href="{{ url_for('jams') }}">Game Jams</a></li>
+                    {% else %}
+                        <li><a href="{{ url_for('jams') }}">Game Jams</a></li>
+                    {% endif %}
+
+                    {% if request.endpoint == "games" %}
+                        <li class="active"><a href="{{ url_for('games') }}">Games</a></li>
+                    {% else %}
+                        <li><a href="{{ url_for('games') }}">Games</a></li>
+                    {% endif %}
+
+                    {% if request.endpoint == "contact" %}
+                    <li class="active"><a href="{{ url_for('contact') }}">Contact</a></li>
+                    {% else %}
+                        <li><a href="{{ url_for('contact') }}">Contact</a></li>
+                    {% endif %}
+
+<!--                    <li><a href="{{ url_for('statistics') }}">Stats</a></li>-->
+<!--                    <li><a href="{{ url_for('map') }}">Map</a></li>-->
+<!--
+Search Form
                             <form action="{{ url_for('search') }}">
                                 <input class="text search" type="text" placeholder="Search..." name="q" />
                             </form>
-                        </li>
-                    </ul>
-                    <ul class="btn-group">
-                        <li>
-                            <div class="btn-group">
-                            {% if current_user.is_anonymous() %}
-                                <a href="{{ url_for('login') }}" class="btn btn-primary">Login / Signup</a>
-                            {% else %}
-                                {% if current_user.invitiation %}
-                                    <a href="{{ url_for('invitations') }}" class="btn btn-small btn-primary">{{ current_user.invitation | length }} <i class="icon-envelope"></i></a>
-                                {% endif %}
-                                <a href="{{ url_for('profile') }}" class="btn btn-primary" id="account">
-                                    <img class="avatar" src="{{ current_user.getAvatar(16) }}" width="16" height="16" />
-                                    {{ current_user.username }}
-                                </a>
-                                <a class="btn btn-primary" href="{{ url_for('logout') }}"><i class="icon-off icon-white"></i></a>
-                            {% endif %}
-                            </div>
-                        </li>
-                    </ul>
-                </div>
+-->
+                </ul>
+                <ul class="socialmedia">
+                    <li class="facebook"><a href="https://www.facebook.com/InnoGames" target="_blank">facebook</a></li>
+                    <li class="youtube"><a href="https://www.youtube.com/user/InnoGames" target="_blank">YouTube</a></li>
+                    <li class="googleplus"><a href="https://plus.google.com/+innogames/posts" target="_blank">Google+</a></li>
+                    <li class="twitter"><a href="https://twitter.com/innogames" target="_blank">Twitter</a></li>
+                </ul>
             </div>
         </div>
-    </div>
-        <div id="navigation">
-            <div class="padding">
-            <div class="right">
-                <div class="bs-docs-social">
-                    <ul class="inline unstyled" style="background-color:transparent;border-radius:0px;border:0px;display: inline-flex;">
-                        <li class="inline">
-                            <a href="https://twitter.com/InnoGames" class="twitter-follow-button" data-link-color="#0069D6" data-show-count="true">Follow @InnoGames</a>
-                        </li>
-                        <li class="">
-                            <a href="https://twitter.com/share" class="twitter-share-button" data-url="gamejam.innogames.com" data-count="horizontal" data-via="InnoGames #iggj7" data-text=" " data-related="mdo:#iggj7">Tweet #iggj6</a>
-                        </li>
-                    </ul>
-                </div>
-            </div>
-                <div class="left">
+    </nav>
+<!-- Navi Stop -->
+
+<!-- Content Start -->
+    <section id="content">
+
+        {% block breadcrumb %}{% endblock %}
+
+        <div class="content">
+                {% for category, message in get_flashed_messages(with_categories = True) %}
+                    <div class="alert alert-{{ category if category and category != 'message' else 'info' }}">
+                        <button type="button" class="close" data-dismiss="alert">&times;</button>
+                        {{ message }}
+                    </div>
+                {% endfor %}
+
+                {% block  center %}
+                {% endblock %}
+
+                {% block content %}
+                     Wooops... no content found :(
+                {% endblock %}
+        </div>
+    </section>
+<!-- Content Stop -->
+
+<!--
                     {% block menu %}
                         {% if current_jam %}
                             {% if current_jam.getStatus().code <= 1 %}
+                                {{ current_jam.start_time | humantime }}
                                 Next jam is
                                 <b>{{ current_jam.getLink() }}</b>
                                 {{ current_jam.start_time | humantime }}
@@ -121,29 +164,13 @@
                             {% endif %}
                         {% endif %}
                     {% endblock %}
-                </div>
-                <div class="center">
-                    {% block  center %}
-                    {% endblock %}
-                </div>
-            </div>
-        </div>
-        <div id="content">
-            <div class="padding">
-
-            {% for category, message in get_flashed_messages(with_categories = True) %}
-                <div class="alert alert-{{ category if category and category != 'message' else 'info' }}">
-                    <button type="button" class="close" data-dismiss="alert">&times;</button>
-                    {{ message }}
-                </div>
-            {% endfor %}
-
-            {% block content %}
-                 NO CONTENT!
-            {% endblock %}
-            </div>
-        </div>
+-->
         {% include "footer.html" %}
-        <script type="text/javascript" src="http://platform.twitter.com/widgets.js"></script>
+
+        <script src="{{ url_for('static', filename='js/vendor/jquery.js') }}"></script>
+        <script src="{{ url_for('static', filename='js/foundation.min.js') }}"></script>
+        <script>
+          $(document).foundation();
+        </script>
     </body>
 </html>

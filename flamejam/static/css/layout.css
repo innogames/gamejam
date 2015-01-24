@@ -1,0 +1,110 @@
+/*
+ *	Global Classes
+ */
+
+.right {
+	text-align: right;}
+	
+	
+/*
+ *	fixed row witdh
+ */
+.row {
+    margin: 0 auto;
+    max-width: 1024px;
+    width: 1024px; }
+	
+a.button {
+	padding: 10px 30px 9px 30px;
+	margin-bottom: 4px;
+	background-color: #61a400;
+	color: #fff;
+	font-size: 14px;
+	text-transform: uppercase;}	
+a:hover.button, a.button:hover,
+a:focus.button, a.button:focus  {
+	background-color: #3c6500;
+	color: #fff !important;
+	text-decoration: none !important;}	
+	
+	
+/*****************************************************/	
+#header {
+	background: #2d7623 url(../img/header_background.jpg) no-repeat center center;
+	height: 200px;
+	background-color: #2d7623;}
+
+a.button.login {
+	width: 230px;
+	height: 75px;
+	color: #111;
+	font-size: 18px;
+	line-height: 45px;
+	background-color: #fffc00;
+	border-bottom: 10px solid #164c09;
+	margin-bottom: 38px;
+
+	transition: all 0.2s ease-in;
+	-moz-transition: all 0.2s ease-in;
+	-webkit-transition: all 0.2s ease-in;
+	-o-transition: all 0.2s ease-in;	
+}
+
+a.button.login:hover{
+	background-color: #7ed500;
+	color: #000 !important;}
+	
+.socialmedia_headline {
+	color: #fff;
+	font-size: 14px;
+	text-transform: uppercase;
+}	
+	
+	
+/*****************************************************/
+nav {
+	background: #1a5f10 url(../img/nav_background.gif) no-repeat center center;
+	height: 80px;}	
+
+
+	
+#page_title,
+#page_title a, #page_title a:hover, #page_title:focus {
+	font-size: 74px;
+	line-height: 74px;
+	color: #fff;
+	font-weight: 900;
+	font-family: 'Ruda', sans-serif;
+	text-transform: uppercase;}
+
+/*****************************************************/
+#content {
+	background-color: #fff;
+	background-image: url(../img/deko.png), url(../img/content_background.gif);
+	background-position: top center, top center;
+	background-repeat: no-repeat, repeat;
+	padding-bottom: 50px;}
+
+
+	
+/*****************************************************/
+#best-of-games {
+	background-color: #2f5d29;
+	background-image: url(../img/best-of-games_background.jpg);
+	background-position: top center;
+	background-repeat: no-repeat;
+	padding-bottom: 50px;}
+
+
+
+/*****************************************************/
+#footer {
+	background-color: #154f0d;
+	padding: 40px 0 60px 0;
+	text-align: center;}
+	
+#footer, #footer a {
+	color: #fff;}
+#footer  .copyright{
+	padding-top: 20px;
+	font-size: 12px;}

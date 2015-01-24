@@ -1,0 +1,85 @@
+﻿@import url(http://fonts.googleapis.com/css?family=Open+Sans:400,300,300italic,400italic,600,600italic,700,700italic);
+@import url(http://fonts.googleapis.com/css?family=Ruda:900);
+
+body {
+	font-family: 'Open Sans', sans-serif;}
+
+.green-dark {
+	color: #1a5f10;}
+.centered {
+	text-align: center;}
+	
+p {
+	padding: 0;
+	margin: 0;}
+	
+p.gamejam_subline {
+	font-size: 20px;
+	color: #1e7f11;
+	margin-bottom: 2em;}	
+	
+a {
+	color: #fffc00;}
+	
+.content p a,
+.content p a:hover {
+	color: #61a400;}
+	
+h1 {
+	text-transform: uppercase;
+	font-family: 'Open Sans', sans-serif;}
+h1.gamejam_overview	{
+	line-height: 120%;
+	margin: 0;
+	padding: 0;
+	font-size: 28px;
+	text-transform: uppercase;
+	font-weight: normal;}
+h1.gamejam_single	{
+	line-height: 120%;
+	margin: 2em 0 0 0;
+	padding: 0;
+	font-size: 28px;
+	text-transform: uppercase;
+	font-weight: normal;}	
+	
+
+h2 {
+	text-transform: uppercase;
+	font-family: 'Open Sans', sans-serif;
+	font-weight: bold;
+	font-size: 32px;
+	margin: 50px 0 40px 0;}
+#best-of-games h2 {
+	font-size: 45px;
+	color: #fff;
+	text-align: center;}
+#last-gamjams h2 {
+	font-size: 45px;
+	color: #1a5f10;
+	text-align: center;}
+	
+	
+h3 {
+	text-transform: uppercase;
+	font-family: 'Open Sans', sans-serif;
+	font-weight: bold;
+	font-size: 20px;
+	margin: 10px 0;}
+	
+h3:first-child {
+	margin-top: 0;}	
+	
+.content ul {
+    list-style: none;
+    padding:0;
+    margin:20px 0;}
+
+.content li { 
+    padding: 0 0 1em 1em; 
+    text-indent: -.7em;}
+
+.content li:before {
+    content: "• ";
+    color: #61a400;
+	font-weight: bold;}

@@ -17,6 +17,8 @@ else:
     app.config.from_pyfile('../doc/flamejam.cfg.default')
     app.config.from_pyfile('../flamejam.cfg', silent=True)
 
+app.jinja_env.add_extension('jinja2.ext.loopcontrols')
+
 mail = Mail(app)
 db = SQLAlchemy(app)
 markdown_object = Markdown(app, safe_mode="escape")

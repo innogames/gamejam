@@ -6,7 +6,8 @@ setup:
 			flask flask-mail flask-sqlalchemy flask-wtf \
 			flask-login flask-markdown python-dateutil \
 			scrypt requests alembic flask-principal mysql-python \
-			flask-cache python-memcached psycopg2
+			flask-cache python-memcached psycopg2 python-wordpress-xmlrpc \
+			BeautifulSoup
 
 run:
 	. env/bin/activate && python2 runserver.py
