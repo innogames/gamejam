@@ -2,88 +2,70 @@
 
 {% block title %}FAQ{% endblock %}
 
-{% block content %}
-<h1>FAQ</h1>
-
-<div class="row-fluid">
-    <div class="span4">
-        <legend>What is a gamejam?</legend>
-        <p>
-            A game jam is an event during which all participants create
-            games according to a provided theme within a short amount of
-            time (usually between two days to a week). Check out the
-            <a href="{{ url_for('rules') }}#procedure">rules page</a> for
-            details on the procedure.
-        </p>
-
-        <legend>Who can participate?</legend>
-        <p>
-            <b>Everyone.</b> It is as simple as that.
-        </p>
-
-        <legend>What type of games are created?</legend>
-        <p>
-            Difficult to say. We want to achieve a wide range of different
-            game types. Games are also rated for their <i>innovative factor</i>,
-            and some games submitted have unique gameplay mechanisms. Of course
-            there are always some games of the main video game genres, but
-            that depends on the theme and the creativity of the authors.
-        </p>
-        <p>
-            Have the courage to try something completely new. It's worth it!
-        </p>
-    </div>
-
-    <div class="span4">
-        <legend>How do I make a game?</legend>
-        <p>
-            Never did it before? No problem! The game jams are a learning
-            effort, so newbies are also welcome. But to make sure you will
-            have something playable within this short amount of time you
-            should prepare for the event. Tips for greenhorns:
-        </p>
-
-        <p>
-            <b>For programmers:</b>
-            <ul class="normal">
-                <li>First learn programming, then game development. Many people
-                think this is the same, but actually there is a huge difference.
-                It's good to know how to program, but making a game is much
-                more. You also need art, maths, a story, a lot of creativity
-                and a good time management.</li>
-                <li>Find an easy programming language, framework or engine. You
-                probably do not want to start of coding C on OpenGL level.
-                Find something that suits you. You are even allowed to use
-                game creation software where you only have to drag 'n' drop
-                your components together.</li>
-            </ul>
-        </p>
-
-        <p>
-            <b>For everyone:</b>
-            <ul class="normal">
-                <li>Team up! While working with other people who are more
-                experienced than you you learn a lot faster than alone. There are
-                lots of skilled game developers here, just ask.</li>
-                <li>Join as an artist. Every game needs some art, and every
-                programmer loves artists. You will contribute an important
-                part to a game project, even if you don't write a single line
-                of code.</li>
-            </ul>
-        </p>
-    </div>
-
-    <div class="span4">
-        <legend>Where can I find resources?</legend>
-        <p>
-            We compiled <a href="{{ url_for('links') }}#resources">this nice list</a> for you. But always make sure to check
-            the licence!
-        </p>
-
-        <legend>I need an artist / programmer</legend>
-        <p>
-            You can find other participants onsite or on this website. We will do a idea pitch after the theme announcement and try to connect everyone with a existing or a new team. Feel free to ask us anywhere and anytime if you need support.
-        </p>
+{% block breadcrumb %}
+<div class="row">
+    <div class="large-12 columns">
+        <ul class="breadcrumb_menu">
+            <li><a href="{{ url_for('index') }}">Home</a></li>
+            <li class="active">Faq</li>
+        </ul>
     </div>
 </div>
+{% endblock %}
+
+{% block content %}
+
+    <div class="row top-banner">
+        <div class="large-8 columns">
+            <div class="green">
+                <h1>FAQ</h1>
+                <p>Here you can find the most frequently asked questions and their answers about our game jam.</p>
+            </div>
+        </div>
+
+        <!-- Next Game Jam Banner -->
+        <!--
+        <div class="large-4 columns">
+            <a href="#">
+                <img src="DummyContent/dummy-top-banner.png" alt="Dummy Top Banner Image" class="opacityfade">
+            </a>
+        </div>
+        -->
+
+    </div>
+
+    <div class="row">
+        <div class="large-12 columns">
+            <h2>What is a game jam?</h2>
+            <p>A game jam is an event during which all participants create games according to a provided theme within a short amount of time (usually between two days to a week). Check out the rules page for details on the procedure. </p>
+
+            <h2>Who can participate?</h2>
+            <p>Everyone. It is as simple as that. </p>
+
+            <h2>What type of games are created?</h2>
+            <p>Difficult to say. We want to achieve a wide range of different game types. Games are also rated for their innovative factor, and some games submitted have unique gameplay mechanisms. Of course there are always some games of the main video game genres, but that depends on the theme and the creativity of the authors.<br>
+                &nbsp;<br>
+                Have the courage to try something completely new. It's worth it!</p>
+
+            <h2>How do I make a game?</h2>
+            <p>Never did it before? No problem! The game jams are a learning effort, so newbies are also welcome. But to make sure you will have something playable within this short amount of time you should prepare for the event. Tips for greenhorns:<br>
+                &nbsp;<br>
+                For programmers:</p>
+            <ul>
+                <li>First learn programming, then game development. Many people think this is the same, but actually there is a huge difference. It's good to know how to program, but making a game is much more. You also need art, maths, a story, a lot of creativity and a good time management.</li>
+                <li>Find an easy programming language, framework or engine. You probably do not want to start of coding C on OpenGL level. </li>
+                <li>Find something that suits you. You are even allowed to use game creation software where you only have to drag 'n' drop your components together.</li>
+            </ul>
+            <p>For everyone:</p>
+            <ul>
+                <li>Team up! While working with other people who are more experienced than you you learn a lot faster than alone. There are lots of skilled game developers here, just ask.</li>
+                <li>Join as an artist. Every game needs some art, and every programmer loves artists. You will contribute an important part to a game project, even if you don't write a single line of code.</li>
+            </ul>
+            <h2>Where can I find resources?</h2>
+            <p>We compiled this nice list for you. But always make sure to check the licence!</p>
+            <h2>I need an artist / programmer</h2>
+            <p>You can find other participants onsite or on this website. We will do a idea pitch after the theme announcement and try to connect everyone with a existing or a new team. Feel free to ask us anywhere and anytime if you need support.</p>
+        </div>
+    </div>
+
 {% endblock %}

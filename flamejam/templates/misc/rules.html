@@ -2,113 +2,167 @@
 
 {% block title %}Rules{% endblock %}
 
-{% block content %}
-<h1>Jam Rules</h1>
-
-<div class="row-fluid">
-    <div class="span4">
-        <legend>General</legend>
-        <p>
-            These rules are laid down to allow a fun, entertaining and fair event
-            for everyone. They are subject for iteration and improvement. We appreciate your feedback!
-        </p>
-
-        <p>
-            The admins may remove games if they do not conform to these
-            regulations.
-        </p>
-
-        <legend>Procedure</legend>
-        <p>
-            Every game jam can be divided into the following states:
-        </p>
-
-        <dl>
-            <dt>Announcement</dt><dd> The theme is announced</dd>
-            <dt>Idea pitch</dt><dd> After some minutes the stage is yours. You can pitch your idea and search for team members.</dd>
-            <dt>Programming</dt><dd> Start to work with your team and get things done.</dd>
-            <dt>Packaging</dt><dd> About 1 hour before the deadline you should start package your game, upload screens etc. to the page and be ready to present the game to the audience</dd>
-            <dt>Voting</dt><dd> While everyone presents the games you can vote for the games and the committee will announce the winners of the jam.</dd>
-            <dt>Finished</dt><dd>We hope you had an awesome weekend and we wish you to come home safely. See you next time!</dd>
+{% block breadcrumb %}
+<div class="row">
+    <div class="large-12 columns">
+        <ul class="breadcrumb_menu">
+            <li><a href="{{ url_for('index') }}">Home</a></li>
+            <li class="active">Rules</li>
         </ul>
-
-        <legend>Theme</legend>
-        <p>
-            The theme will be randomly chosen from suggestions from the
-            previous jams, from you and from the committee. It will be announced
-            at the beginning of the contest. Everyone may suggest a theme.
-        </p>
-        <p>
-            Participants who have registered with the option to receive
-            email notifications will also receive the theme by email.
-        </p>
-        <p>
-            All games must have something to do with the theme. We won't
-            be fussy about that, though, so it's ok if the theme is not the
-            main thing of your project, but it has to be visible.
-            Browse the <a href="{{ url_for('jams') }}">list of jams</a> to see what
-            has been chosen as theme previously.
-        </p>
-
     </div>
-    <div class="span4">
-        <legend>Artwork</legend>
-        <p>
-            Freely available, external artwork may be used as long as a source
-            is provided in the posted game. The artwork authors should be
-            credited. This applies to sounds and graphics likewise.
-        </p>
+</div>
+{% endblock %}
 
-        <legend>Cross-platform</legend>
-        <p>
-            Making a cross-platform game is strongly encouraged. However, you
-            are not required to make your game cross-platform in order to
-            participate. Be aware that the community does not consist only of
-            Windows users. A user may downvote your game if it can't run on the
-            user's platform.
-        </p>
 
-        <legend>Libraries/Engines</legend>
-        <p>
-            Any freely available external libraries may be used for your game.
-            The library doesn't need to be <a title="Wikipedia: Free and open source software"
-            href="http://en.wikipedia.org/wiki/Free_and_open_source_software" target="_blank">
-            FOSS</a>. Proprietary engines like
-            <a href="http://www.udk.com/" target="_blank">UDK</a> and <a href="http://unity3d.com/" target="_blank">Unity</a>
-            are alright.
-        </p>
+{% block content %}
 
-        <legend>Snippets/personal Code</legend>
-        <p>
-            If you want to reuse pre-existing code of yours, it must have been
-            available in source form for the public to see a fair amount of time
-            prior to the start of the contest. The same goes for random snippets
-            of code.
-        </p>
+    <div class="row top-banner">
+        <div class="large-8 columns">
+            <div class="green">
+                <h1>Jam Rules</h1>
+                <p>These rules are laid down to allow a fun, entertaining and fair event for everyone. They are subject for iteration and improvement. We appreciate your feedback!<br>
+                    &nbsp;<br>
+                    The admins may remove games if they do not conform to these regulations.</p>
+            </div>
+        </div>
 
+        {% if current_jam %}
+            <div class="large-4 columns">
+                <a href="{{ current_jam.url() }}">
+                    <div class="next_gamejam_box opacityfade">
+                        <p>
+                            <span class="next">next</span><br>
+                            <span class="gamejam">Game Jam</span><br>
+                            <span class="more">more info</span><br>
+                            <span class="here">here</span>
+                        </p>
+                    </div>
+                </a>
+            </div>
+        {% endif %}
+        
     </div>
-    <div class="span4">
-        <legend>Source control</legend>
-        <p>
-            Use of a publicly accessible source control system is encouraged
-            but not required. <a href="https://github.com" target="_blank">Github</a>
-            is recommended. To make this clear, you are not required to share
-            your source but again, you are encouraged to do so.
-        </p>
 
-        <legend>Team size</legend>
-        <p>
-            You can work in teams. The team size is unlimited. Your team can include coders, artists, game
-            designers, composers, anyone.
-        </p>
-
-        <legend>Time limit</legend>
-        <p>
-            The time limit is stated in the jam details. It starts with the announcement of the theme.
-            Any work after the deadline is packaging only. Nothing else allowed. Please
-            ensure that you already started packaging your game before the deadline because we start
-            directly after the deadline with the game presentations.
-        </p>
+    <!-- Rule Start -->
+    <div class="row rule">
+        <div class="large-3 columns">
+            <img src="{{ url_for('static', filename='DummyContent/dummy-rules-icon-procedure.png') }}" alt="Procedure">
+        </div>
+        <div class="large-9 columns">
+            <h2>Procedure</h2>
+            <p>Every game jam can be divided into the following states:</p>
+            <ul>
+                <li>Announcement<br>The theme is announced</li>
+                <li>Idea pitch<br>After some minutes the stage is yours. You can pitch your idea and search for team members.</li>
+                <li>Programming<br>Start to work with your team and get things done.</li>
+                <li>Packaging<br>About 1 hour before the deadline you should start package your game, upload screens etc. to the page and be ready to present the game to the audience</li>
+                <li>Voting<br>While everyone presents the games you can vote for the games and the committee will announce the winners of the jam.</li>
+                <li>Finished<br>We hope you had an awesome weekend and we wish you to come home safely. See you next time!</li>
+            </ul>
+        </div>
     </div>
+    <!-- Rule Stop-->
+
+    <!-- Rule Start -->
+    <div class="row rule">
+        <div class="large-3 columns">
+            <img src="{{ url_for('static', filename='DummyContent/dummy-rules-icon-artwork.png') }}" alt="Procedure">
+        </div>
+        <div class="large-9 columns">
+            <h2>Artwork</h2>
+            <p>Freely available, external artwork may be used as long as a source is provided in the posted game.<br>
+                The artwork authors should be credited. This applies to sounds and graphics likewise.</p>
+        </div>
+    </div>
+    <!-- Rule Stop-->
+
+    <!-- Rule Start -->
+    <div class="row rule">
+        <div class="large-3 columns">
+            <img src="{{ url_for('static', filename='DummyContent/dummy-rules-icon-crossplatform.png') }}" alt="Procedure">
+        </div>
+        <div class="large-9 columns">
+            <h2>Cross-platform</h2>
+            <p>Making a cross-platform game is strongly encouraged. However, you are not required to make your game cross-platform in order to participate. Be aware that the community does not consist only of Windows users. A user may downvote your game if it can't run on the user's platform. </p>
+        </div>
+    </div>
+    <!-- Rule Stop-->
+
+    <!-- Rule Start -->
+    <div class="row rule">
+        <div class="large-3 columns">
+            <img src="{{ url_for('static', filename='DummyContent/dummy-rules-icon-theme.png') }}" alt="Procedure">
+        </div>
+        <div class="large-9 columns">
+            <h2>Theme</h2>
+            <p>The theme will be randomly chosen from suggestions from the previous jams, from you and from the committee. It will be announced at the beginning of the contest. Everyone may suggest a theme.<br>
+                &nbsp;<br>
+                Participants who have registered with the option to receive email notifications will also receive the theme by email.<br>
+                &nbsp;<br>
+                All games must have something to do with the theme. We won't be fussy about that, though, so it's ok if the theme is not the main thing of your project, but it has to be visible. Browse the list of jams to see what has been chosen as theme previously.</p>
+        </div>
+    </div>
+    <!-- Rule Stop-->
+
+    <!-- Rule Start -->
+    <div class="row rule">
+        <div class="large-3 columns">
+            <img src="{{ url_for('static', filename='DummyContent/dummy-rules-icon-engines.png') }}" alt="Procedure">
+        </div>
+        <div class="large-9 columns">
+            <h2>Libraries/Engines</h2>
+            <p>Any freely available external libraries may be used for your game. The library doesn't need to be FOSS. Proprietary engines like UDK and Unity are alright.</p>
+        </div>
+    </div>
+    <!-- Rule Stop-->
+
+    <!-- Rule Start -->
+    <div class="row rule">
+        <div class="large-3 columns">
+            <img src="{{ url_for('static', filename='DummyContent/dummy-rules-icon-procedure.png') }}" alt="Procedure">
+        </div>
+        <div class="large-9 columns">
+            <h2>Snippets/personal Code</h2>
+            <p>If you want to reuse pre-existing code of yours, it must have been available in source form for the public to see a fair amount of time prior to the start of the contest. The same goes for random snippets of code.</p>
+        </div>
+    </div>
+    <!-- Rule Stop-->
+
+    <!-- Rule Start -->
+    <div class="row rule">
+        <div class="large-3 columns">
+            <img src="{{ url_for('static', filename='DummyContent/dummy-rules-icon-sourcecontrol.png') }}" alt="Procedure">
+        </div>
+        <div class="large-9 columns">
+            <h2>Source control</h2>
+            <p>Use of a publicly accessible source control system is encouraged but not required. Github is recommended. To make this clear, you are not required to share your source but again, you are  encouraged to do so.</p>
+        </div>
+    </div>
+    <!-- Rule Stop-->
+
+    <!-- Rule Start -->
+    <div class="row rule">
+        <div class="large-3 columns">
+            <img src="{{ url_for('static', filename='DummyContent/dummy-rules-icon-teamsize.png') }}" alt="Procedure">
+        </div>
+        <div class="large-9 columns">
+            <h2>Team size</h2>
+            <p>You can work in teams. The team size is unlimited. Your team can include coders, artists, game designers, composers, anyone.</p>
+        </div>
+    </div>
+    <!-- Rule Stop-->
+
+    <!-- Rule Start -->
+    <div class="row rule">
+        <div class="large-3 columns">
+            <img src="{{ url_for('static', filename='DummyContent/dummy-rules-icon-timeline.png') }}" alt="Procedure">
+        </div>
+        <div class="large-9 columns">
+            <h2>Time limit</h2>
+            <p>The time limit is stated in the jam details. It starts with the announcement of the theme. Any work after the deadline is packaging only. Nothing else allowed. Please ensure that you already started packaging your game before the deadline because we start directly after the deadline with the game presentations.</p>
+        </div>
+    </div>
+    <!-- Rule Stop-->
+
 </div>
 {% endblock %}
