@@ -9,3 +9,5 @@ recaptcha.cfg
 build/
 dist/
 *.egg-info/
+srv
+usr
