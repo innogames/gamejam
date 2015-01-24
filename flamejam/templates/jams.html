@@ -1,40 +1,56 @@
-<ul class="jamlist">
-{% for jam in all_jams if jam.start_time > current_datetime %}
-<li>
-    <a href="{{ jam.url() }}">{{ jam.title }}</a>
-    <small>starts in {{ current_datetime | humandelta(jam.start_time) }}</small>
-</li>
-{% endfor %}
+{% extends "base.html" %}
 
-{% for jam in all_jams if jam.start_time < current_datetime < jam.end_time %}
-<li>
-    <a href="{{ jam.url() }}">{{ jam.title }}</a>
-    <small>ends in {{ current_datetime | humandelta(jam.end_time) }}</small>
-</li>
-{% endfor %}
+{% block title %}Game Jams{% endblock %}
 
-{% for jam in all_jams if jam.end_time < current_datetime < jam.packaging_deadline %}
-<li>
-    <a href="{{ jam.url() }}">{{ jam.title }}</a>
-    <small>packaging ends in {{ current_datetime | humandelta(jam.packaging_deadline) }}</small>
-</li>
-{% endfor %}
+{% block breadcrumb %}
+    <div class="row">
+        <div class="large-12 columns">
+            <ul class="breadcrumb_menu">
+                <li><a href="{{ url_for('index') }}">Home</a></li>
+                <li class="active">Game Jams</li>
+            </ul>
+        </div>
+    </div>
+{% endblock %}
 
-{% for jam in all_jams if jam.packaging_deadline < current_datetime < jam.rating_end%}
-<li>
-    <a href="{{ jam.url() }}">{{ jam.title }}</a>
-    <small>rating for another {{ current_datetime | humandelta(jam.rating_end) }}</small>
-</li>
-{% endfor %}
+{% block content %}
 
-{% for jam in all_jams if jam.rating_end < current_datetime %}
-<li>
-    <a href="{{ jam.url() }}">{{ jam.title }}</a>
-    <small>finished {{ current_datetime | humandelta(jam.end_time) }} ago</small>
-</li>
-{% endfor %}
-</ul>
+    <div class="row">
+        <div class="large-10 columns news-list">
 
-{% if not all_jams %}
-<p><i>There were no jams yet.</i></p>
-{% endif %}
+            {% for jam in jams %}
+                <div class="gamejam-list-item">
+                    <a href="{{ jam.url() }}">
+                        <div class="row">
+                            {% if jam.thumbnail %}
+                                <div class="large-4 columns">
+                                    <img class="news-related-rubrik-image opacityfade" src="{{ jam.thumbnail }}">
+                                </div>
+                            {% endif %}
+                            <div class="large-8 columns">
+                                <h3>{{ jam.title }}</h3>
+                                <p class="date">From {{ jam.start_time }}</p>
+                                <p>{{ jam.description }}</p>
+                            </div>
+                        </div>
+                    </a>
+                </div>
+            {% endfor %}
+
+            <!--
+            <div class="row">
+                <div class="large-4 columns">
+                    <a href="#" class="button prev_next">< Prev</a>
+                </div>
+                <div class="large-4 columns">
+                    <p class="pagination_pagenumbers"><a href="#">1</a> <a href="#"><strong>2</strong></a> <a href="#">3</a></p>
+                </div>
+                <div class="large-4 columns right">
+                    <a href="#" class="button prev_next">Next ></a>
+                </div>
+            </div>
+            -->
+        </div>
+    </div>
+
+{% endblock %}

@@ -48,7 +48,6 @@
                 <div class="large-4 columns">
                     <h3>Video</h3>
                     <iframe width="311" height="175" src="//www.youtube.com/embed/GDx6WXpvl1o" frameborder="0" allowfullscreen></iframe>
-
                 </div>
 
                 <!-- Next Game Jam Banner -->
@@ -58,7 +57,6 @@
                     </a>
                 </div>-->
             </div>
-
 
         <!-- 2 Cols -->
             <div class="row">
@@ -139,7 +137,7 @@
         <div class="row four-column-teaser">
             {% for game in games %}
             <div class="large-3 columns">
-                <a href="{{ url_for('show_games', games_id = game.id) }}"><img style="min-width: 200px; min-height: 180px;" src="{{ game.url }}" class="opacityfade">
+                <a href="{{ url_for('show_games', games_id = game.game_id) }}"><img style="min-width: 200px; min-height: 180px;" src="{{ game.url }}" class="opacityfade">
                     <h3>{{ game.title }}</h3>
                 </a>
             </div>
@@ -155,21 +153,16 @@
 
     </div>
     <!-- Best of Games Stop -->
-
-
-
-
-    <!-- Last GameJams Start -->
+    <!--
     <div id="last-gamjams">
 
-        <!-- Headline -->
         <div class="row">
             <div class="large-12 columns">
                 <h2>Last Game Jams</h2>
             </div>
         </div>
 
-        <!-- 3 Column Teaser -->
+        
         <div class="row">
             <div class="large-12 columns three-column-teaser nogap">
                 <div class="large-4 columns">
@@ -192,6 +185,7 @@
                 </div>
             </div>
         </div>
+        -->
 
     </div>
     <!-- Last GameJams Stop -->
@@ -199,41 +193,5 @@
     </section>
 <!-- Content Stop -->
 
-
-<div class="row-fluid">
-    <div class="span4">
-        <h1>Welcome Jammers!</h1>
-        <p>
-            Feel free to <a href="{{ url_for('login') }}">register and participate</a>
-        </p>
-        <p>
-            More questions? Read the <a href="{{ url_for('faq') }}">FAQ</a>.
-        </p>
-    </div>
-
-    <div class="span4" style="text-align: center;">
-        <h1>How to participate?</h1>
-
-        <ol class="steps">
-            <li><a href="{{ url_for('login') }}"><span>1</span> Create account</a></li>
-            <li><a href="{{ url_for('faq') }}"><span>2</span> Register for jam</a></li>
-            <li><a href="{{ url_for('faq') }}"><span>3</span> Find a  team <small>(optional)</small></a></li>
-            <li><a href="{{ url_for('faq') }}"><span>4</span> Wait for jam start</a></li>
-            <li><a href="{{ url_for('faq') }}"><span>5</span> Start coding</a></li>
-        </ol>
-    </div>
-
-    <div class="span4">
-        <h1>Current and past jams</h1>
-        {% include "jams.html" %}
-
-        <h1>Notify me about jams!</h1>
-        <p>
-            We have no mailing list, but you can <a href="{{ url_for('login') }}">sign up</a> as a member
-            and you will automatically receive email notifications about
-            new jams, and more details and notifications if you register for a jam.
-        </p>
-    </div>
-</div>
 {% endblock %}
 

@@ -3,10 +3,11 @@ from flamejam.models import Jam, JamStatusCode, GamePackage
 from flamejam.forms import ParticipateForm, CancelParticipationForm, TeamFinderFilter
 from flask import render_template, url_for, redirect, flash, request
 from flask.ext.login import login_required, current_user
+from sqlalchemy import desc
 
 @app.route('/jams/')
 def jams():
-    return render_template("misc/search.html", jams = Jam.query.all())
+    return render_template("jams.html", jams = Jam.query.order_by(desc(Jam.start_time)).all())
 
 @app.route('/jams/<jam_slug>/', methods=("GET", "POST"))
 def jam_info(jam_slug):
