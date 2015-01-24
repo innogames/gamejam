@@ -2,12 +2,85 @@
 
 {% block title %}News{% endblock %}
 
+{% block breadcrumb %}
+    <div class="row">
+        <div class="large-12 columns">
+            <ul class="breadcrumb_menu">
+                <li><a href="{{ url_for('index') }}">Home</a></li>
+                <li><a href="{{ url_for('news') }}">News</a></li>
+                <li class="active">{{ news.title }}</li>
+            </ul>
+        </div>
+    </div>
+{% endblock %}
+
 {% block content %}
 
-<div class="row-fluid">
-    <div class="span4">
-        <h1>News</h1>
+<div class="row">
+    <!-- Left Column Start -->
+    <div class="large-8 columns news">
+        {% if news.thumbnail %}
+            {% for key, value in news.thumbnail.iteritems() if key == "thumbnail" %}
+                <img class="news-related-rubrik-image opacityfade" src="{{ value }}">
+            {% endfor %}
+        {% endif %}
+
+        <h2>{{ news.title }}</h2>
+        <p class="date">From {{news.date.strftime('%d.%m.%Y')}}, {{ news.user }}</p>
+        <p>{{ news.content|safe }}</p>
+        <p class="tags">Tags
+            {% for term in news.terms if term.taxonomy == "post_tag" %}
+                <a href="{{ url_for('news_tag', tag = term.name) }}">{{term.name}}</a>,
+            {% endfor %}
+        </p>
+
+        <!--
+            <div class="row">
+                <div class="large-6 columns">
+                    <a href="#" class="button prev_next">< Prev</a>
+                </div>
+                <div class="large-6 columns right">
+                    <a href="#" class="button prev_next">Next ></a>
+                </div>
+            </div>
+        -->
     </div>
+    <!-- Left Column Stop -->
+
+    <!-- Rigth Column Start -->
+    <div class="large-4 columns">
+        <h3>Categories</h3>
+        {% for category in categories %}
+            <a href="{{ url_for('news_category', category = category.name) }}" class="button">{{category.name}}</a>
+        {% endfor %}
+
+        <h3>Related News</h3>
+
+        {% for news in related %}
+            <!-- Related News Item -->
+            <div class="related-news-list-item">
+                <a href="{{ url_for('news_show', news_id = news.id) }}">
+                    {% for term in news.terms if term.taxonomy == "category" %}
+                        <div class="news-related-rubrik">{{term.name}}</div>
+                        {% break %}
+                    {% endfor %}
+
+                    {% if news.thumbnail %}
+                        {% for key, value in news.thumbnail.iteritems() if key == "thumbnail" %}
+                            <img class="news-related-rubrik-image opacityfade" src="{{ value }}">
+                        {% endfor %}
+                    {% else %}
+                        <img class="news-related-rubrik-image opacityfade" src="{{ url_for('static', filename='DummyContent/dummy-news-related2.jpg') }}">
+                    {% endif %}
+                    <h3>{{ news.title }}</h3>
+                </a>
+            </div>
+        {% endfor %}
+
+
+    </div>
+    <!-- Rigth Column Stop -->
+
 </div>
 
 {% endblock %}

@@ -1,7 +1,7 @@
 from flamejam import app, db
 from flask import render_template, url_for, redirect, flash, request
 from wordpress_xmlrpc import Client
-from wordpress_xmlrpc.methods import posts
+from wordpress_xmlrpc.methods import posts, taxonomies
 from flask.ext.login import login_required, current_user
 from BeautifulSoup import BeautifulSoup
 
@@ -9,12 +9,54 @@ from BeautifulSoup import BeautifulSoup
 def news_show(news_id):
     wpClient = Client('http://dev.gamejam.innogames.de/xmlrpc.php', 'gamejamRPC', 'g4m3j4mRPCus3r!')
     wpPost = wpClient.call(posts.GetPost(news_id))
+    for term in wpPost.terms:
+        if term.taxonomy == 'category':
+            wpCategory = term.name
+    wpCats = wpClient.call(taxonomies.GetTerms('category'))
+    allPosts = wpClient.call(posts.GetPosts())
+    wpRelatedPosts = []
+    for post in allPosts:
+        for term in post.terms:
+            if term.taxonomy == 'category':
+                if term.name == wpCategory and post.id != news_id:
+                    wpRelatedPosts.append(post)
 
-    return render_template('news/show.html', news = wpPost)
+    return render_template('news/show.html', news = wpPost, categories= wpCats, related = wpRelatedPosts)
+
+@app.route('/news/tags/<tag>/')
+def news_tag(tag):
+    wpClient = Client('http://dev.gamejam.innogames.de/xmlrpc.php', 'gamejamRPC', 'g4m3j4mRPCus3r!')
+    wpCats = wpClient.call(taxonomies.GetTerms('category'))
+
+    allPosts = wpClient.call(posts.GetPosts())
+    wpRelatedPosts = []
+    for post in allPosts:
+        for term in post.terms:
+            if term.taxonomy == 'post_tag':
+                if term.name == tag:
+                    wpRelatedPosts.append(post)
+
+    return render_template('news/list.html', news = wpRelatedPosts, categories= wpCats)
+
+@app.route('/news/category/<category>/')
+def news_category(category):
+    wpClient = Client('http://dev.gamejam.innogames.de/xmlrpc.php', 'gamejamRPC', 'g4m3j4mRPCus3r!')
+    wpCats = wpClient.call(taxonomies.GetTerms('category'))
+
+    allPosts = wpClient.call(posts.GetPosts())
+    wpRelatedPosts = []
+    for post in allPosts:
+        for term in post.terms:
+            if term.taxonomy == 'category':
+                if term.name == category:
+                    wpRelatedPosts.append(post)
+
+    return render_template('news/list.html', news = wpRelatedPosts, categories= wpCats)
 
 @app.route('/news/')
 def news():
     wpClient = Client('http://dev.gamejam.innogames.de/xmlrpc.php', 'gamejamRPC', 'g4m3j4mRPCus3r!')
-    wpPost = wpClient.call(posts.GetPosts())
+    wpPost = wpClient.call(posts.GetPosts({'post_status': 'publish'}))
+    wpCats = wpClient.call(taxonomies.GetTerms('category'))
 
-    return render_template('news/show.html', news = wpPost)
+    return render_template('news/list.html', news = wpPost, categories= wpCats)
