@@ -1,6 +1,6 @@
-/*****************************************************/	
+/*****************************************************/
 .lang_menu {
-	height: 57px;
+	height: 40px;
 	display: block;}
 
 .lang_menu,
@@ -18,35 +18,35 @@
 	padding: 0;
 	margin: 0;
 	list-style: none;}
-	
+
 .main_menu li {
 	float: left;}
-	
+
 .main_menu li a {
 	line-height: 80px;
 	display: block;
 	padding: 0 25px;
 	color: #fff;
 	text-transform: uppercase;
-	
+
 	transition: all 0.2s ease-in;
 	-moz-transition: all 0.2s ease-in;
 	-webkit-transition: all 0.2s ease-in;
 	-o-transition: all 0.2s ease-in;}
-	
+
 .main_menu li.active a,
 .main_menu li a:hover {
 	background-color: #61a400;
 }
 
-	
-/*****************************************************/	
+
+/*****************************************************/
 .socialmedia {
 	float: right;
 	padding: 18px 0 0 0;
 	margin: 0;
 	list-style: none;}
-	
+
 .socialmedia  li {
 	float: left;
 	margin-left: 8px;
@@ -58,15 +58,15 @@
 	width: 44px;
 	display: block;
 	opacity: 1;
-	
+
 	transition: opacity .3s ease-in-out;
 	-moz-transition: opacity .3s ease-in-out;
 	-webkit-transition: opacity .3s ease-in-out;
 	-o-transition: all 0.3s ease-in;}
-	
-.socialmedia  li a:hover{	
+
+.socialmedia  li a:hover{
 	opacity: 0.5;}
-	
+
 .socialmedia  li.facebook a{
 	background-image: url(../img/facebook.gif);}
 
@@ -77,30 +77,30 @@
 	background-image: url(../img/googleplus.gif);}
 
 .socialmedia  li.twitter a{
-	background-image: url(../img/twitter.gif);}	
+	background-image: url(../img/twitter.gif);}
 
-	
-	
-/*****************************************************/	
+
+
+/*****************************************************/
 .breadcrumb_menu {
 	list-style: none;
 	padding: 0;
 	margin: 0;}
-	
+
 .breadcrumb_menu  li{
 	float: left;
 	line-height: 80px;}
-	
+
 .breadcrumb_menu  li.active {
 	font-weight: bold;
 }
 
-.breadcrumb_menu  li,	
+.breadcrumb_menu  li,
 .breadcrumb_menu  li a {
 	color: #1e7f11;}
-	
+
 .breadcrumb_menu  li a:after {
 	content:" >";
 	padding: 0 5px;}
 .breadcrumb_menu  li.active a:after {
-	content:"";}	
+	content:"";}

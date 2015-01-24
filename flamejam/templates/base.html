@@ -25,7 +25,7 @@
             <div class="row">
                 <div class="large-6 columns">
       <!-- Logo -->
-                    <a href="#"><img src="{{ url_for('static', filename='img/logo.png') }}" alt="InnoGames - GAME JAM"></a><br>
+                    <a href="{{ url_for('index') }}"><img src="{{ url_for('static', filename='img/logo.png') }}" alt="InnoGames - GAME JAM"></a><br>
                         {% if current_jam %}
                             {% if current_jam.getStatus().code <= 1 %}
                                 <p style="font-size: 20px; color: #fff;">{{ current_jam.start_time | humantime }} | January 23 - 25, 2015</p>
@@ -39,15 +39,17 @@
       <!-- Login -->
                     {% if current_user.is_anonymous() %}
                         <a href="{{ url_for('login') }}" class="button login">Login / Signup</a>
+                    <p class="logout_headline">&nbsp;</p>
                     {% else %}
                         {% if current_user.invitiation %}
                             <a href="{{ url_for('invitations') }}" class="button login">{{ current_user.invitation | length }} <i class="icon-envelope"></i></a>
                         {% endif %}
                         <a href="{{ url_for('profile') }}" class="button login" id="account">
                             <img class="avatar" src="{{ current_user.getAvatar(16) }}" width="16" height="16" />
-                            {{ current_user.username }}
+                            {{ current_user.username }} <br />
                         </a>
-                        <a class="button login" href="{{ url_for('logout') }}"><i class="icon-off icon-white"></i></a>
+
+                        <p class="logout_headline"><a href="{{ url_for('logout') }}">Logout</a></p>
                     {% endif %}
       <!-- Follow us on -->
                     <p class="socialmedia_headline">Follow us on</p>
@@ -128,14 +130,17 @@ Search Form
 
         {% block breadcrumb %}{% endblock %}
 
-        <div class="content">
-                {% for category, message in get_flashed_messages(with_categories = True) %}
-                    <div class="alert alert-{{ category if category and category != 'message' else 'info' }}">
-                        <button type="button" class="close" data-dismiss="alert">&times;</button>
+        {% for message in get_flashed_messages() %}
+            <div class="row" style="margin-top:5px;">
+                <div class="large-12 columns">
+                    <div data-alert class="alert-box success radius">
                         {{ message }}
                     </div>
-                {% endfor %}
-
+                </div>
+            </div>
+        {% endfor %}
+        
+        <div class="content">
                 {% block  center %}
                 {% endblock %}
 
