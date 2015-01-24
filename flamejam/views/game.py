@@ -13,6 +13,11 @@ def games():
 
     return render_template("game/list.html")
 
+@app.route("/games/<games_id>")
+def show_games(games_id):
+
+    return render_template("game/show.html")
+
 @app.route("/jams/<jam_slug>/create-game/", methods = ("GET", "POST"))
 @login_required
 def create_game(jam_slug):
