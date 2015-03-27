@@ -1,91 +1,106 @@
 {% extends "base.html" %}
 
+{% block breadcrumb %}
+<!-- Breadcrumb Start -->
+<div class="row">
+    <div class="large-12 columns">
+        <ul class="breadcrumb_menu">
+            <li><a href="/">Home</a></li>
+            <li class="active"><a href="">Profile</a></li>
+        </ul>
+    </div>
+</div>
+<!-- Breadcrumb Stop -->
+{% endblock %}
+
 {% block title %}{{ user.username }}{% endblock %}
 
 {% block content %}
+<div class="content">
+    <div class="row">
+        <h1>
+            <img class="icon big" style="margin-right: 10px;" width="48" height="48" src="{{ user.getAvatar(48) }}" />
+            {{ user.username }}
+            {% if user.real_name %}<small>{{ user.real_name }}</small>{% endif %}
 
-<h1>
-    <img class="icon big" style="margin-right: 10px;" width="48" height="48" src="{{ user.getAvatar(48) }}" />
-    {{ user.username }}
-    {% if user.real_name %}<small>{{ user.real_name }}</small>{% endif %}
-
-    <div class="pull-right">
-        {% if current_user.is_authenticated() and current_user == user %}
-            <a href="{{ url_for('settings') }}" class="btn btn-primary">Profile settings</a>
-        {% elif current_user.is_authenticated() %}
-            {% if user.pm_mode == "form" %}
-                <a href="{{ url_for('contact_user', username = user.username) }}" class="btn">Send mail</a>
-            {% elif user.pm_mode == "email" %}
-                <a href="mailto:{{ user.email }}" class="btn">Send mail</a>
-            {% endif %}
-        {% endif %}
-    </div>
-</h1>
-
-
-<div class="row-fluid">
-    <div class="span6">
-        <legend>Personal data</legend>
-        <dl>
-            <dt>Member since</dt>
-            <dd>{{ user.registered | humantime }}</dd>
-            {% if user.location %}
-                 <dt>Location</dt>
-                 <dd><a href="{{ url_for('map', mode = 'user', id = user.id) }}" class="pull-right">Show map</a>{{ user.getLocation() }}&nbsp;</dd>
-            {% endif %}
-
-            {% if user.real_name %}
-                <dt>Real Name</dt>
-                <dd>{{ user.real_name }}</dd>
-            {% endif %}
-
-            {% if user.pm_mode != "disabled" %}
-                <dt>eMail</dt>
-                <dd>
-                {% if user.pm_mode == "email" %}
-                        <a href="mailto:{{ user.email }}">{{ user.email }}</a>
-                {% else %}
-                            {% if user == current_user %}
-                                [hidden]
-                            {% else %}
-                                [<a href="{{ url_for('contact_user', username = user.username) }}">hidden</a>]
-                            {% endif %}
+            <div class="pull-right">
+                {% if current_user.is_authenticated() and current_user == user %}
+                    <a href="{{ url_for('settings') }}" class="btn btn-primary">Profile settings</a>
+                {% elif current_user.is_authenticated() %}
+                    {% if user.pm_mode == "form" %}
+                        <a href="{{ url_for('contact_user', username = user.username) }}" class="btn">Send mail</a>
+                    {% elif user.pm_mode == "email" %}
+                        <a href="mailto:{{ user.email }}" class="btn">Send mail</a>
+                    {% endif %}
                 {% endif %}
-            {% endif %}
-            </dd>
+            </div>
+        </h1>
 
-            {% if user.website %}
-                <dt>Website</dt>
-                <dd>{{ user.website }}</dd>
-            {% endif %}
 
-            {% if user.abilities or user.abilities_extra %}
-                <dt>GameDev Abilities</dt>
-                <dd>
-                    <div>{{ ", ".join(user.abilities) }}</div>
-                    <div>{{ user.abilities_extra }}</div>
-                </dd>
-            {% endif %}
-        </dl>
+        <div class="row-fluid">
+            <div class="span6">
+                <legend>Personal data</legend>
+                <dl>
+                    <dt>Member since</dt>
+                    <dd>{{ user.registered | humantime }}</dd>
+                    {% if user.location %}
+                         <dt>Location</dt>
+                         <dd><a href="{{ url_for('map', mode = 'user', id = user.id) }}" class="pull-right">Show map</a>{{ user.getLocation() }}&nbsp;</dd>
+                    {% endif %}
 
-        <legend>About</legend>
-        {{ (user.about or "*This user has not written a description about themselves.*" ) | markdown }}
-    </div>
-    <div class="span6">
-        <legend>Games created</legend>
-        {% if not user.games %}
-            <p><i>This user has not made any games yet.</i></p>
-        {% else %}
-            <ul>
-                {% for game in user.games %}
-                    <li>
-                        <b>{{ game.jam.getLink() }}</b><br />
-                        <a href="{{ game.url() }}"><span>{{ game.title }}</span></a>
-                    </li>
-                {% endfor %}
-            </ul>
-        {% endif %}
+                    {% if user.real_name %}
+                        <dt>Real Name</dt>
+                        <dd>{{ user.real_name }}</dd>
+                    {% endif %}
+
+                    {% if user.pm_mode != "disabled" %}
+                        <dt>eMail</dt>
+                        <dd>
+                        {% if user.pm_mode == "email" %}
+                                <a href="mailto:{{ user.email }}">{{ user.email }}</a>
+                        {% else %}
+                                    {% if user == current_user %}
+                                        [hidden]
+                                    {% else %}
+                                        [<a href="{{ url_for('contact_user', username = user.username) }}">hidden</a>]
+                                    {% endif %}
+                        {% endif %}
+                    {% endif %}
+                    </dd>
+
+                    {% if user.website %}
+                        <dt>Website</dt>
+                        <dd>{{ user.website }}</dd>
+                    {% endif %}
+
+                    {% if user.abilities or user.abilities_extra %}
+                        <dt>GameDev Abilities</dt>
+                        <dd>
+                            <div>{{ ", ".join(user.abilities) }}</div>
+                            <div>{{ user.abilities_extra }}</div>
+                        </dd>
+                    {% endif %}
+                </dl>
+
+                <legend>About</legend>
+                {{ (user.about or "*This user has not written a description about themselves.*" ) | markdown }}
+            </div>
+            <div class="span6">
+                <legend>Games created</legend>
+                {% if not user.games %}
+                    <p><i>This user has not made any games yet.</i></p>
+                {% else %}
+                    <ul>
+                        {% for game in user.games %}
+                            <li>
+                                <b>{{ game.jam.getLink() }}</b><br />
+                                <a href="{{ game.url() }}"><span>{{ game.title }}</span></a>
+                            </li>
+                        {% endfor %}
+                    </ul>
+                {% endif %}
+            </div>
+        </div>
     </div>
 </div>
-
 {% endblock %}
