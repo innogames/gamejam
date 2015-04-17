@@ -1,138 +1,127 @@
 {% extends "base.html" %}
 {% from "_formhelpers.html" import form_errors %}
 
+{% block breadcrumb %}
+<!-- Breadcrumb Start -->
+<div class="row">
+	<div class="large-12 columns">
+		<ul class="breadcrumb_menu">
+			<li><a href="">Home</a></li>
+			<li><a href="">User</a></li>
+			<li class="active"><a href="">Settings</a></li>
+		</ul>
+	</div>
+</div>
+<!-- Breadcrumb Stop -->
+{% endblock %}
+
 {% block content %}
+<div class="content">
+	<!-- 2 Col -->
+	<div class="row">
+		<form action="{{ url_for('settings') }}" method="post" class="block" autocomplete="off">
+			{{ form.hidden_tag() }}
+			{{ form_errors(form) }}
 
-<form action="{{ url_for('settings') }}" method="post" class="block" autocomplete="off">
-{{ form.hidden_tag() }}
-{{ form_errors(form) }}
+			<h1>Profile settings</h1>
+			<a class="button small" href="{{ current_user.url() }}">&laquo; Back to Profile</a>
 
-<h1>
-    Profile settings
-    <div class="pull-right">
-        <a class="btn" href="{{ current_user.url() }}">&laquo; Back to Profile</a>
-    </div>
-</h1>
+			<h3>Personal data</h3>
 
-<div class="row-fluid">
-    <div class="span4">
-        <legend>Personal data</legend>
+			{{ form.location.label }}
+			{{ form.location() }}
+			<div class="small">Please enter your address (street, city, country). The country and city will be shown on
+				your profile, the entered address will be used to display your location on the map, but it is not displayed literally.
+			</div>
 
-        <div class="field">
-            {{ form.location.label }}
-            {{ form.location() }}
-            <div class="form-info">Please enter your address (street, city, country). The country and city will be shown on your profile, the entered address will be used to display your location on the map, but it is not displayed literally.</div>
-            <div class="form-info">Current city: {{ current_user.getLocation() }}</div>
-        </div>
+			{{ form.real_name.label }}
+			{{ form.real_name() }}
 
-        <div class="field">
-            {{ form.real_name.label }}
-            {{ form.real_name() }}
-        </div>
+			{{ form.website.label }}
+			{{ form.website() }}
 
-        <div class="field">
-            {{ form.website.label }}
-            {{ form.website() }}
-        </div>
+			{{ form.avatar.label }}
+			{{ form.avatar(placeholder = "gravatar for " + current_user.email) }}
+			<div class="small">
+				If none supplied, <a href="http://gravatar.com/" target="_blank">gravatar</a>
+				will be used (providing an optional generic avatar if not available).
+			</div>
 
-        <div class="field">
-            {{ form.avatar.label }}
-            {{ form.avatar(placeholder = "gravatar for " + current_user.email) }}
-            <div class="form-info">
-                If none supplied, <a href="http://gravatar.com/" target="_blank">gravatar</a>
-                will be used (providing an optional generic avatar if not available).
-            </div>
-        </div>
+			{{ form.about.label }}
+			{{ form.about(class="comment", rows="8", style="min-width:100%") }}
+			<div class="small">
+				Please write a short description about you and your gamedev history.
+			</div>
 
-        <legend>{{ form.about.label }}</legend>
-        {{ form.about(class="comment", rows="10") }}
-        <div class="form-info">
-            Please write a short description about you and your gamedev history.
-        </div>
-    </div>
+			<h3>Notification settings</h3>
 
-    <div class="span8">
-        <div class="row-fluid">
-            <div class="span6">
-                <legend>Notification settings</legend>
-                <div>
-                    <label class="checkbox">{{ form.notify_new_jam() }}         {{ form.notify_new_jam.label.text }}</label>
-                    <label class="checkbox">{{ form.notify_jam_start() }}       {{ form.notify_jam_start.label.text }}</label>
-                    <label class="checkbox">{{ form.notify_jam_finish() }}      {{ form.notify_jam_finish.label.text }}</label>
-                    <label class="checkbox">{{ form.notify_game_comment() }}    {{ form.notify_game_comment.label.text }}</label>
-                    <label class="checkbox">{{ form.notify_team_invitation() }} {{ form.notify_team_invitation.label.text }} <b>(important)</b></label>
-                    <label class="checkbox">{{ form.notify_newsletter() }}      {{ form.notify_newsletter.label.text }}</label>
-                </div>
-                <div class="field"></div>
-                <div class="field">
-                    {{ form.pm_mode.label }}
-                    {{ form.pm_mode() }}
+			<div class="large-10">
+				{{ form.notify_new_jam(style="max-width:20px;max-height:14px;") }} {{form.notify_new_jam.label.text }}<br/>
+				{{ form.notify_jam_start(style="max-width:20px;max-height:14px;") }} {{ form.notify_jam_start.label.text }}<br/>
+				{{ form.notify_jam_finish(style="max-width:20px;max-height:14px;") }} {{ form.notify_jam_finish.label.text }}<br/>
+				{{ form.notify_game_comment(style="max-width:20px;max-height:14px;") }} {{ form.notify_game_comment.label.text }}<br/>
+				{{ form.notify_team_invitation(style="max-width:20px;max-height:14px;") }} {{ form.notify_team_invitation.label.text }}<br/>
+				{{ form.notify_newsletter(style="max-width:20px;max-height:14px;") }} {{ form.notify_newsletter.label.text }}
+			</div>
 
-                </div>
-                <div class="form-info">
-                    SHOW ADDRESS - your address is shown publicly /
-                    EMAIL FORM - users cannot see your email address, but
-                    you receive their message directly / DISABLED -
-                    users cannot contact you
-                </div>
+			<h3>{{ form.pm_mode.label }}</h3>
+			{{ form.pm_mode() }}
+			<div class="small">
+				SHOW ADDRESS - your address is shown publicly /
+				EMAIL FORM - users cannot see your email address, but
+				you receive their message directly / DISABLED -
+				users cannot contact you
+			</div>
 
-            </div>
+			<h3>Change password</h3>
+			<span class="label success round">
+				Leave these fields empty to keep the old password.
+			</span>
+			<br/>
+			{{ form.old_password.label }} {{ form.old_password() }}
 
-            <div class="span6">
-                <legend>Change password</legend>
-                <p>
-                    Leave these fields empty to keep the old password.
-                </p>
+			{{ form.new_password.label }} {{ form.new_password() }}
 
-                <div class="field">
-                    {{ form.old_password.label }} {{ form.old_password() }}
-                </div>
+			{{ form.new_password2.label }} {{ form.new_password2() }}
 
-                <div class="field">
-                    {{ form.new_password.label }} {{ form.new_password() }}
-                </div>
+			<h3>Change email address</h3>
 
-                <div class="field">
-                    {{ form.new_password2.label }} {{ form.new_password2() }}
-                </div>
+			<p>
+				If you edit your address here, you have to verify your account
+				again. You will be logged out after submitting this form.
+			</p>
 
-                <legend>Change eMail address</legend>
-                <p>
-                    If you edit your address here, you have to verify your account
-                    again. You will be logged out after submitting this form.
-                </p>
+			{{ form.email.label }} {{ form.email() }}
 
-                <div class="field">
-                    {{ form.email.label }} {{ form.email() }}
-                </div>
+			<h3>GameDev Abilities</h3>
 
-            </div>
-        </div>
-
-        <legend>GameDev Abilities</legend>
-        <div class="field">
-            <div style="display: inline-block;">
-                <label class="checkbox inline">{{ form.ability_programmer() }} {{ form.ability_programmer.label.text }}</label>
-                <label class="checkbox inline">{{ form.ability_gamedesigner() }} {{ form.ability_gamedesigner.label.text }}</label>
-                <label class="checkbox inline">{{ form.ability_2dartist() }} {{ form.ability_2dartist.label.text }}</label>
-                <label class="checkbox inline">{{ form.ability_3dartist() }} {{ form.ability_3dartist.label.text }}</label>
-                <label class="checkbox inline">{{ form.ability_composer() }} {{ form.ability_composer.label.text }}</label>
-                <label class="checkbox inline">{{ form.ability_sounddesigner() }} {{ form.ability_sounddesigner.label.text }}</label>
-            </div>
-        </div>
-        <div class="field">
-            {{ form.abilities_extra.label }} {{ form.abilities_extra(style="width: 400px") }}
-            <div class="form-info">e.g. "Java, Löve, Pixel-Graphics, Rigging, Ambient music"</div>
-        </div>
-    </div>
+			<div class="large-10">
+				{{ form.ability_programmer(style="max-width:20px;max-height:14px;") }} {{ form.ability_programmer.label.text }}
+				<br/>
+				{{ form.ability_gamedesigner(style="max-width:20px;max-height:14px;") }} {{ form.ability_gamedesigner.label.text }}
+				<br/>
+				{{ form.ability_2dartist(style="max-width:20px;max-height:14px;") }} {{ form.ability_2dartist.label.text }}
+				<br/>
+				{{ form.ability_3dartist(style="max-width:20px;max-height:14px;") }} {{ form.ability_3dartist.label.text }}
+				<br/>
+				{{ form.ability_composer(style="max-width:20px;max-height:14px;") }} {{ form.ability_composer.label.text }}
+				<br/>
+				{{ form.ability_sounddesigner(style="max-width:20px;max-height:14px;") }} {{ form.ability_sounddesigner.label.text }}
+			</div>
+			<div class="field">
+				{{ form.abilities_extra.label }} {{ form.abilities_extra(style="width: 400px") }}
+				<div class="form-info">e.g. "Java, Löve, Pixel-Graphics, Rigging, Ambient music"</div>
+			</div>
+	</div>
 </div>
 
 <p style="text-align: center">
-    <input type="reset" value="Reset" class="btn btn-danger" />
-    <input type="submit" value="Save settings" class="btn btn-primary" />
+	<input type="reset" value="Reset" class="btn btn-danger"/>
+	<input type="submit" value="Save settings" class="btn btn-primary"/>
 </p>
 
 </form>
-
+</div>
+</div>
 {% endblock %}
 
