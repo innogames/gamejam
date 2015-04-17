@@ -2,43 +2,43 @@
 
 {% set status = jam.getStatus() %}
 {% block center %}
-    {% set s = ["Announced", "Registrations", "In Progress", "Packaging", "Rating", "Finished"][status.code] %}
-    <div class="center-status" title="{{ status }}">
-        {% if status.code == 2 %}
-            <a href="{{ url_for('countdown', jam_slug = jam.slug) }}">
-                <div class="mini-countdown" time="{{ jam.end_time }}">
-                    <div class="time">{{ (jam.end_time - current_datetime) | countdowndelta }}</div>
-                </div>
-            </a>
-        {% else %}
-            Status: {{ s }}
-        {% endif %}
-    </div>
+{% set s = ["Announced", "Registrations", "In Progress", "Packaging", "Rating", "Finished"][status.code] %}
+<div class="center-status" title="{{ status }}">
+	{% if status.code == 2 %}
+	<a href="{{ url_for('countdown', jam_slug = jam.slug) }}">
+		<div class="mini-countdown" time="{{ jam.end_time }}">
+			<div class="time">{{ (jam.end_time - current_datetime) | countdowndelta }}</div>
+		</div>
+	</a>
+	{% endif %}
+</div>
 {% endblock %}
 
 {% block menu %}
 <b>{{ jam.title }}</b>
 
 {% macro jamMenu(endpoint, label, is_url = False, force_current = False) %}
-    {% if is_url %}
-        <li{% if endpoint == request.url or force_current %} class="current"{% endif %}><a href="{{ endpoint }}">{{ label }}</a></li>
-    {% else %}
-        <li{% if endpoint == request.endpoint or force_current %} class="current"{% endif %}><a href="{{ url_for(endpoint, jam_slug = jam.slug) }}">{{ label }}</a></li>
-    {% endif %}
+{% if is_url %}
+<li{% if endpoint == request.url or force_current %} class="current"{% endif %}>
+<a href="{{ endpoint }}">{{ label }}</a></li>
+{% else %}
+<li{% if endpoint == request.endpoint or force_current %} class="current"{% endif %}>
+<a href="{{ url_for(endpoint, jam_slug = jam.slug) }}">{{ label }}</a></li>
+{% endif %}
 {% endmacro %}
 
 {% set p = current_user.getParticipation(jam) if current_user.is_authenticated() else None %}
 
 <ul class="menu">
-    {{ jamMenu("jam_info", "Overview") }}
-    {{ jamMenu("jam_games", "Games") }}
-    {{ jamMenu("jam_participants", "Participants") }}
-    {% if p %}
-    {{ jamMenu(p.team.url(), "Your Team", True, p.team == team) }}
-    {% set hasGame = p.team and p.team.game %}
-    {% if hasGame or jam.getStatus().code < 5 %}
-    {{ jamMenu(p.team.game.url() if hasGame else url_for("create_game", jam_slug = jam.slug), "Your Game" if hasGame else "Create Game", True, p.team.game == game or request.endpoint == "create_game") }}
-    {% endif %}
-    {% endif %}
+	{{ jamMenu("jam_info", "Overview") }}
+	{{ jamMenu("jam_games", "Games") }}
+	{{ jamMenu("jam_participants", "Participants") }}
+	{% if p %}
+	{{ jamMenu(p.team.url(), "Your Team", True, p.team == team) }}
+	{% set hasGame = p.team and p.team.game %}
+	{% if hasGame or jam.getStatus().code < 5 %}
+	{{ jamMenu(p.team.game.url() if hasGame else url_for("create_game", jam_slug = jam.slug), "Your Game" if hasGame else "Create Game", True, p.team.game == game or request.endpoint == "create_game") }}
+	{% endif %}
+	{% endif %}
 </ul>
 {% endblock %}
