@@ -7,8 +7,8 @@
 <div class="row">
 	<div class="large-12 columns">
 		<ul class="breadcrumb_menu">
-			<li><a href="">Home</a></li>
-			<li><a href="">Jams</a></li>
+			<li><a href="{{ url_for('index') }}">Home</a></li>
+			<li><a href="{{ url_for('jams') }}">Game Jams</a></li>
 			<li class="active"><a href="">{{ jam.title }}</a></li>
 		</ul>
 	</div>

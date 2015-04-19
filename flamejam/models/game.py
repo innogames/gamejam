@@ -7,6 +7,7 @@ from flamejam.models.rating import Rating, RATING_CATEGORIES
 from flask import url_for
 from datetime import datetime
 
+
 class Game(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     title = db.Column(db.String(128))
@@ -15,15 +16,15 @@ class Game(db.Model):
     description = db.Column(db.Text)
     technology = db.Column(db.Text)
     help = db.Column(db.Text)
-    is_deleted = db.Column(db.Boolean, default = False)
-    has_cheated = db.Column(db.Boolean, default = False)
+    is_deleted = db.Column(db.Boolean, default=False)
+    has_cheated = db.Column(db.Boolean, default=False)
 
     jam_id = db.Column(db.Integer, db.ForeignKey('jam.id'))
     team_id = db.Column(db.Integer, db.ForeignKey('team.id'))
-    ratings = db.relationship('Rating', backref = 'game', lazy = "subquery")
-    comments = db.relationship('Comment', backref='game', lazy = "subquery")
-    packages = db.relationship('GamePackage', backref='game', lazy = "subquery")
-    screenshots = db.relationship('GameScreenshot', backref='game', lazy = "subquery")
+    ratings = db.relationship('Rating', backref='game', lazy="subquery")
+    comments = db.relationship('Comment', backref='game', lazy="subquery")
+    packages = db.relationship('GamePackage', backref='game', lazy="subquery")
+    screenshots = db.relationship('GameScreenshot', backref='game', lazy="subquery")
 
     # score_CATEGORY_enabled = db.Column(db.Boolean, default = True)
 
@@ -50,11 +51,15 @@ class Game(db.Model):
         db.session.delete(self)
 
     def url(self, **values):
-        return url_for("show_game", jam_slug = self.jam.slug, game_id = self.id, **values)
+        return url_for("show_game", jam_slug=self.jam.slug, game_id=self.id, **values)
 
     @property
     def screenshotsOrdered(self):
         return sorted(self.screenshots, lambda s1, s2: int(s1.index - s2.index))
+
+    @property
+    def firstScreenshot(self):
+        return self.screenshots.first()
 
     @property
     def score(self):
@@ -87,4 +92,4 @@ class Game(db.Model):
 
 # Adds fields "dynamically" (which score categories are enabled?)
 for c in RATING_CATEGORIES:
-    setattr(Game, "score_" + c + "_enabled", db.Column(db.Boolean, default = True))
+    setattr(Game, "score_" + c + "_enabled", db.Column(db.Boolean, default=True))

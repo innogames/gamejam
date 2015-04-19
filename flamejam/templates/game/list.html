@@ -3,14 +3,14 @@
 {% block title %}Games{% endblock %}
 
 {% block breadcrumb %}
-    <div class="row">
-        <div class="large-12 columns">
-            <ul class="breadcrumb_menu">
-                <li><a href="{{ url_for('index') }}">Home</a></li>
-                <li class="active">Games</li>
-            </ul>
-        </div>
-    </div>
+<div class="row">
+	<div class="large-12 columns">
+		<ul class="breadcrumb_menu">
+			<li><a href="{{ url_for('index') }}">Home</a></li>
+			<li class="active">Games</li>
+		</ul>
+	</div>
+</div>
 {% endblock %}
 
 {% block content %}
@@ -18,130 +18,101 @@
 <!-- Banner Start-->
 <div class="row top-banner">
 
-    <!-- green Box -->
-    <div class="large-8 columns">
-        <div class="green">
-            <h1>Games of the jams</h1>
-            <p>Here you can find all games which create at the further GameJams.</p>
-        </div>
-    </div>
+	<!-- green Box -->
+	<div class="large-8 columns">
+		<div class="green">
+			<h1>Games of the jams</h1>
 
-    <!-- Next Game Jam Banner -->
-    <div class="large-4 columns">
-        <h3>Select a Game Jam to see all games related to a specific event!</h3>
-        <div id="gamejams_pulldown">
-            <form action="#" method="post">
-                <select  onChange="this.form.submit()">
-                    <option value="7">GAME JAM#7</option>
-                    <option value="6">GAME JAM#6</option>
-                    <option value="5">GAME JAM#5</option>
-                    <option value="4">GAME JAM#4</option>
-                    <option value="3">GAME JAM#3</option>
-                    <option value="2">GAME JAM#2</option>
-                    <option value="1">GAME JAM#1</option>
-                </select>
-            </form>
-        </div>
-    </div>
+			<p>Here you can find all games which were created at the Game Jams.</p>
+		</div>
+	</div>
+
+	<!-- Next Game Jam Banner -->
+	{% if jams %}
+	<div class="large-4 columns">
+		<h3>Select a Game Jam to see all games related to a specific event!</h3>
+
+		<div id="gamejams_pulldown">
+			<select id="gameJamSelect">
+				{% for jam in jams %}
+				<option value="{{ jam.url() }}">{{jam.title}}</option>
+				{% endfor %}
+			</select>
+		</div>
+	</div>
+	{% endif %}
 
 </div>
 <!-- Banner Stop -->
 
 <!-- Plain Text Start -->
 <div class="row">
-    <div class="large-12 columns game-list">
+	<div class="large-12 columns game-list">
 
-        <ul class="block-grid large-block-grid-3">
-            <!-- Game Item -->
-            <li>
-                <div class="game-list-item">
-                    <a href="game-overview.html">
-                        <img class="opacityfade" src="DummyContent/dummy-index-bestofgame1.jpg" alt="Lorem Ipsum" width="100%">
-                        <h3>Lorem Ipsum</h3>
-                        <p class="date">@Game Jam #7</p>
-                        <p><strong>Team</strong> Team Fucking Awesome <br><strong>Rating</strong> 9.33</p>
-                    </a>
-                </div>
-            </li>
+		<ul class="block-grid large-block-grid-3">
+			<!-- Game Item -->
+			{% for game in games.items %}
+			<li>
+				<div class="game-list-item">
+					<a href="{{ url_for('show_games', game_slug = game.slug) }}">
+						{% if not game.screenshots|count %}
+						<!-- default image for no game screenshot?! -->
+						<img class="opacityfade" src="{{ url_for('static', filename='images/no-game-screenshot.jpg') }}"
+								alt="no screenshot uploaded :(" width="100%">
+						{% else %}
+						{% set screenshot = game.screenshots|first %}
+						<img class="opacityfade" src="{{screenshot.url}}" alt="{{screenshot.caption}}" width="100%">
+						{% endif %}
 
-            <!-- Game Item -->
-            <li>
-                <div class="game-list-item">
-                    <a href="game-overview.html">
-                        <img class="opacityfade" src="DummyContent/dummy-index-bestofgame2.jpg" alt="Lorem Ipsum" width="100%">
-                        <h3>Boris Treegardener: FREEFALL</h3>
-                        <p class="date">@Game Jam #7</p>
-                        <p><strong>Team</strong> ³Henergy<br><strong>Rating</strong> 8.50</p>
-                    </a>
-                </div>
-            </li>
+						<h3>{{game.title}}</h3>
 
-            <!-- Game Item -->
-            <li>
-                <div class="game-list-item">
-                    <a href="game-overview.html">
-                        <img class="opacityfade" src="DummyContent/dummy-index-bestofgame3.jpg" alt="Lorem Ipsum" width="100%">
-                        <h3>Boris Treegardener: FREEFALL</h3>
-                        <p class="date">@Game Jam #7</p>
-                        <p><strong>Team</strong> ³Henergy<br><strong>Rating</strong> 8.50</p>
-                    </a>
-                </div>
-            </li>
+						<p class="date">@{{game.jam.title}}</p>
 
-            <!-- Game Item -->
-            <li>
-                <div class="game-list-item">
-                    <a href="game-overview.html">
-                        <img class="opacityfade" src="DummyContent/dummy-index-bestofgame3.jpg" alt="Lorem Ipsum" width="100%">
-                        <h3>Boris Treegardener: FREEFALL</h3>
-                        <p class="date">@Game Jam #7</p>
-                        <p><strong>Team</strong> ³Henergy<br><strong>Rating</strong> 8.50</p>
-                    </a>
-                </div>
-            </li>
-
-            <!-- Game Item -->
-            <li>
-                <div class="game-list-item">
-                    <a href="game-overview.html">
-                        <img class="opacityfade" src="DummyContent/dummy-index-bestofgame3.jpg" alt="Lorem Ipsum" width="100%">
-                        <h3>Boris Treegardener: FREEFALL</h3>
-                        <p class="date">@Game Jam #7</p>
-                        <p><strong>Team</strong> ³Henergy<br><strong>Rating</strong> 8.50</p>
-                    </a>
-                </div>
-            </li>
-
-            <!-- Game Item -->
-            <li>
-                <div class="game-list-item">
-                    <a href="game-overview.html">
-                        <img class="opacityfade" src="DummyContent/dummy-index-bestofgame3.jpg" alt="Lorem Ipsum" width="100%">
-                        <h3>Boris Treegardener: FREEFALL</h3>
-                        <p class="date">@Game Jam #7</p>
-                        <p><strong>Team</strong> ³Henergy<br><strong>Rating</strong> 8.50</p>
-                    </a>
-                </div>
-            </li>
-
-        </ul>
+						<p><strong>Team</strong> {{game.team.name}}<br><strong>Rating</strong> {{game.score}}</p>
+					</a>
+				</div>
+			</li>
+			{% endfor %}
+		</ul>
 
 
-        <!-- Games Pagination Start -->
-        <div class="row">
-            <div class="large-4 columns">
-                <a href="#" class="button prev_next">< Prev</a>
-            </div>
-            <div class="large-4 columns">
-                <p class="pagination_pagenumbers"><a href="#">1</a> <a href="#"><strong>2</strong></a> <a href="#">3</a></p>
-            </div>
-            <div class="large-4 columns right">
-                <a href="#" class="button prev_next">Next ></a>
-            </div>
-        </div>
-        <!-- Games Pagination Stop -->
+		<!-- Games Pagination Start -->
+		<div class="row">
+			<div class="large-4 columns">
+				<a href="{{ url_for('games', page=games.page-1) }}" class="button prev_next">Prev</a>
+			</div>
 
-    </div>
+			<div class="large-4 columns">
+				<p class="pagination_pagenumbers">
+					{%- for page in games.iter_pages() %}
+					{% if page %}
+					{% if page != games.page %}
+					<a href="{{ url_for('games', page=page) }}">{{ page }}</a>
+					{% else %}
+					<strong>{{ page }}</strong>
+					{% endif %}
+					{% else %}
+					<span class=ellipsis>…</span>
+					{% endif %}
+					{%- endfor %}
+				</p>
+			</div>
+			<div class="large-4 columns right">
+				{% if not games.pages == games.page %}
+				<a href="{{ url_for('games', page=games.page+1) }}" class="button prev_next">Next ></a>
+				{% else %}
+				<a href="{{ url_for('games', page=games.page) }}" class="button prev_next">Next ></a>
+				{% endif %}
+			</div>
+		</div>
+		<!-- Games Pagination Stop -->
+
+	</div>
 </div>
-
+<script type="text/javascript">
+	var sel = document.getElementById('gameJamSelect');
+	sel.onchange = function(e) {
+		window.location = e.target.options[e.target.selectedIndex].value;
+	}
+</script>
 {% endblock %}

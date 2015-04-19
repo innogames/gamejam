@@ -1,154 +1,157 @@
 <!doctype html>
 <html class="no-js" lang="en">
-    <head>
-        <meta charset="utf-8" />
-        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-        <title>{% block title %}{% endblock %} « InnoGames Game Jam</title>
+<head>
+	<meta charset="utf-8"/>
+	<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+	<title>{% block title %}{% endblock %} « InnoGames Game Jam</title>
 
-        <link rel="stylesheet" href="{{ url_for('static', filename='css/foundation.min.css') }}" />
-        <link rel="stylesheet" href="{{ url_for('static', filename='css/layout.css') }}" />
-        <link rel="stylesheet" href="{{ url_for('static', filename='css/navi.css') }}" />
-        <link rel="stylesheet" href="{{ url_for('static', filename='css/texte.css') }}" />
-        <link rel="stylesheet" href="{{ url_for('static', filename='css/contentelemente.css') }}" />
+	<link rel="stylesheet" href="{{ url_for('static', filename='css/foundation.min.css') }}"/>
+	<link rel="stylesheet" href="{{ url_for('static', filename='css/layout.css') }}"/>
+	<link rel="stylesheet" href="{{ url_for('static', filename='css/navi.css') }}"/>
+	<link rel="stylesheet" href="{{ url_for('static', filename='css/texte.css') }}"/>
+	<link rel="stylesheet" href="{{ url_for('static', filename='css/contentelemente.css') }}"/>
 
-        <script src="{{ url_for('static', filename='js/vendor/modernizr.js') }}"></script>
-        <script type="text/javascript" src="{{ url_for('static', filename='js/countdown.js') }}"></script>
+	<script src="{{ url_for('static', filename='js/vendor/modernizr.js') }}"></script>
+	<script type="text/javascript" src="{{ url_for('static', filename='js/countdown.js') }}"></script>
 
-        <link rel="icon" href="{{ url_for('static', filename='images/favicon.ico') }}" type="image/x-icon">
+	<link rel="icon" href="{{ url_for('static', filename='images/favicon.ico') }}" type="image/x-icon">
 
-        {% block head %}{% endblock %}
-    </head>
-    <body>
+	{% block head %}{% endblock %}
+</head>
+<body>
 
-    <!-- Header Start -->
-        <section id="header">
-            <div class="row">
-                <div class="large-6 columns">
-      <!-- Logo -->
-                    <a href="{{ url_for('index') }}"><img src="{{ url_for('static', filename='img/logo.png') }}" alt="InnoGames - GAME JAM"></a><br>
-                        {% if current_jam %}
-                            {% if current_jam.getStatus().code <= 1 %}
-                                <p style="font-size: 20px; color: #fff;">{{ current_jam.start_time | humantime }} | January 23 - 25, 2015</p>
-                            {% endif %}
-                        {% endif %}
-                </div>
+<!-- Header Start -->
+<section id="header">
+	<div class="row">
+		<div class="large-6 columns">
+			<!-- Logo -->
+			<a href="{{ url_for('index') }}"><img src="{{ url_for('static', filename='img/logo.png') }}" alt="InnoGames - GAME JAM"></a><br>
+			{% if current_jam %}
+			{% if current_jam.getStatus().code <= 1 %}
+			<p style="font-size: 20px; color: #fff;">{{ current_jam.start_time | humantime }} | January 23 - 25, 2015</p>
+			{% endif %}
+			{% endif %}
+		</div>
 
-                <div class="large-6 columns right">
-      <!-- Lang Menu -->
-                        <p class="lang_menu"><a href="#" class="active">en</a></p>
-      <!-- Login -->
-                    {% if current_user.is_anonymous() %}
-                        <a href="{{ url_for('login') }}" class="button login">Login / Signup</a>
-                    <p class="logout_headline">&nbsp;</p>
-                    {% else %}
-                        {% if current_user.invitiation %}
-                            <a href="{{ url_for('invitations') }}" class="button login">{{ current_user.invitation | length }} <i class="icon-envelope"></i></a>
-                        {% endif %}
-                        <a href="{{ url_for('profile') }}" class="button login" id="account">
-                            <img class="avatar" src="{{ current_user.getAvatar(16) }}" width="16" height="16" />
-                            {{ current_user.username }} <br />
-                        </a>
+		<div class="large-6 columns right">
+			<!-- Lang Menu -->
+			<p class="lang_menu"><a href="#" class="active">en</a></p>
+			<!-- Login -->
+			{% if current_user.is_anonymous() %}
+			<a href="{{ url_for('login') }}" class="button login">Login / Signup</a>
 
-                        <p class="logout_headline"><a href="{{ url_for('logout') }}">Logout</a></p>
-                    {% endif %}
-      <!-- Follow us on -->
-                    <p class="socialmedia_headline">Follow us on</p>
-                </div>
-            </div>
-        </section>
-    <!-- Header Stop -->
+			<p class="logout_headline">&nbsp;</p>
+			{% else %}
+			{% if current_user.invitiation %}
+			<a href="{{ url_for('invitations') }}" class="button login">{{ current_user.invitation | length }}
+				<i class="icon-envelope"></i></a>
+			{% endif %}
+			<a href="{{ url_for('profile') }}" class="button login" id="account">
+				<img class="avatar" src="{{ current_user.getAvatar(16) }}" width="16" height="16"/>
+				{{ current_user.username }} <br/>
+			</a>
+
+			<p class="logout_headline"><a href="{{ url_for('logout') }}">Logout</a></p>
+			{% endif %}
+			<!-- Follow us on -->
+			<p class="socialmedia_headline">Follow us on</p>
+		</div>
+	</div>
+</section>
+<!-- Header Stop -->
 
 <!-- Navi Start -->
-    <nav>
-        <div class="row">
-            <div class="large-12 columns">
-                <ul class="main_menu">
-                    {% if request.endpoint == "index" %}
-                        <li class="active"><a href="{{ url_for('index') }}">Home</a></li>
-                    {% else %}
-                        <li><a href="{{ url_for('index') }}">Home</a></li>
-                    {% endif %}
+<nav>
+	<div class="row">
+		<div class="large-12 columns">
+			<ul class="main_menu">
+				{% if request.endpoint == "index" %}
+				<li class="active"><a href="{{ url_for('index') }}">Home</a></li>
+				{% else %}
+				<li><a href="{{ url_for('index') }}">Home</a></li>
+				{% endif %}
 
-                    {% if request.endpoint == "news" %}
-                        <li class="active"><a href="{{ url_for('news') }}">News</a></li>
-                    {% else %}
-                        <li><a href="{{ url_for('news') }}">News</a></li>
-                    {% endif %}
+				{% if request.endpoint == "news" %}
+				<li class="active"><a href="{{ url_for('news') }}">News</a></li>
+				{% else %}
+				<li><a href="{{ url_for('news') }}">News</a></li>
+				{% endif %}
 
-                    {% if request.endpoint == "rules" %}
-                        <li class="active"><a href="{{ url_for('rules') }}">Rules</a></li>
-                    {% else %}
-                        <li><a href="{{ url_for('rules') }}">Rules</a></li>
-                    {% endif %}
+				{% if request.endpoint == "rules" %}
+				<li class="active"><a href="{{ url_for('rules') }}">Rules</a></li>
+				{% else %}
+				<li><a href="{{ url_for('rules') }}">Rules</a></li>
+				{% endif %}
 
-                    {% if request.endpoint == "faq" %}
-                        <li class="active"><a href="{{ url_for('faq') }}">FAQ</a></li>
-                    {% else %}
-                        <li><a href="{{ url_for('faq') }}">FAQ</a></li>
-                    {% endif %}
+				{% if request.endpoint == "faq" %}
+				<li class="active"><a href="{{ url_for('faq') }}">FAQ</a></li>
+				{% else %}
+				<li><a href="{{ url_for('faq') }}">FAQ</a></li>
+				{% endif %}
 
-                    {% if request.endpoint == "jams" %}
-                        <li class="active"><a href="{{ url_for('jams') }}">Game Jams</a></li>
-                    {% else %}
-                        <li><a href="{{ url_for('jams') }}">Game Jams</a></li>
-                    {% endif %}
+				{% if request.endpoint == "jams" %}
+				<li class="active"><a href="{{ url_for('jams') }}">Game Jams</a></li>
+				{% else %}
+				<li><a href="{{ url_for('jams') }}">Game Jams</a></li>
+				{% endif %}
 
-                    {% if request.endpoint == "games" %}
-                        <li class="active"><a href="{{ url_for('games') }}">Games</a></li>
-                    {% else %}
-                        <li><a href="{{ url_for('games') }}">Games</a></li>
-                    {% endif %}
+				{% if request.endpoint == "games" %}
+				<li class="active"><a href="{{ url_for('games', page=1) }}">Games</a></li>
+				{% else %}
+				<li><a href="{{ url_for('games', page=1) }}">Games</a></li>
+				{% endif %}
 
-                    {% if request.endpoint == "contact" %}
-                    <li class="active"><a href="{{ url_for('contact') }}">Contact</a></li>
-                    {% else %}
-                        <li><a href="{{ url_for('contact') }}">Contact</a></li>
-                    {% endif %}
+				{% if request.endpoint == "contact" %}
+				<li class="active"><a href="{{ url_for('contact') }}">Contact</a></li>
+				{% else %}
+				<li><a href="{{ url_for('contact') }}">Contact</a></li>
+				{% endif %}
 
-<!--                    <li><a href="{{ url_for('statistics') }}">Stats</a></li>-->
-<!--                    <li><a href="{{ url_for('map') }}">Map</a></li>-->
-<!--
-Search Form
-                            <form action="{{ url_for('search') }}">
-                                <input class="text search" type="text" placeholder="Search..." name="q" />
-                            </form>
--->
-                </ul>
-                <ul class="socialmedia">
-                    <li class="facebook"><a href="https://www.facebook.com/InnoGames" target="_blank">facebook</a></li>
-                    <li class="youtube"><a href="https://www.youtube.com/user/InnoGames" target="_blank">YouTube</a></li>
-                    <li class="googleplus"><a href="https://plus.google.com/+innogames/posts" target="_blank">Google+</a></li>
-                    <li class="twitter"><a href="https://twitter.com/innogames" target="_blank">Twitter</a></li>
-                </ul>
-            </div>
-        </div>
-    </nav>
+				<!--                    <li><a href="{{ url_for('statistics') }}">Stats</a></li>-->
+				<!--                    <li><a href="{{ url_for('map') }}">Map</a></li>-->
+				<!--
+				Search Form
+											<form action="{{ url_for('search') }}">
+												<input class="text search" type="text" placeholder="Search..." name="q" />
+											</form>
+				-->
+			</ul>
+			<ul class="socialmedia">
+				<li class="facebook"><a href="https://www.facebook.com/InnoGames" target="_blank">facebook</a></li>
+				<li class="youtube"><a href="https://www.youtube.com/user/InnoGames" target="_blank">YouTube</a></li>
+				<li class="googleplus"><a href="https://plus.google.com/+innogames/posts" target="_blank">Google+</a>
+				</li>
+				<li class="twitter"><a href="https://twitter.com/innogames" target="_blank">Twitter</a></li>
+			</ul>
+		</div>
+	</div>
+</nav>
 <!-- Navi Stop -->
 
 <!-- Content Start -->
-    <section id="content">
+<section id="content">
 
-        {% block breadcrumb %}{% endblock %}
+	{% block breadcrumb %}{% endblock %}
 
-        {% for message in get_flashed_messages() %}
-            <div class="row" style="margin-top:5px;">
-                <div class="large-12 columns">
-                    <div data-alert class="alert-box success radius">
-                        {{ message }}
-                    </div>
-                </div>
-            </div>
-        {% endfor %}
-        
-        <div class="content">
-                {% block  center %}
-                {% endblock %}
+	{% for message in get_flashed_messages() %}
+	<div class="row" style="margin-top:5px;">
+		<div class="large-12 columns">
+			<div data-alert class="alert-box success radius">
+				{{ message }}
+			</div>
+		</div>
+	</div>
+	{% endfor %}
 
-                {% block content %}
-                     Wooops... no content found :(
-                {% endblock %}
-        </div>
-    </section>
+	<div class="content">
+		{% block center %}
+		{% endblock %}
+
+		{% block content %}
+		Wooops... no content found :(
+		{% endblock %}
+	</div>
+</section>
 <!-- Content Stop -->
 
 <!--
@@ -170,12 +173,12 @@ Search Form
                         {% endif %}
                     {% endblock %}
 -->
-        {% include "footer.html" %}
+{% include "footer.html" %}
 
-        <script src="{{ url_for('static', filename='js/vendor/jquery.js') }}"></script>
-        <script src="{{ url_for('static', filename='js/foundation.min.js') }}"></script>
-        <script>
-          $(document).foundation();
-        </script>
-    </body>
+<script src="{{ url_for('static', filename='js/vendor/jquery.js') }}"></script>
+<script src="{{ url_for('static', filename='js/foundation.min.js') }}"></script>
+<script>
+	$(document).foundation();
+</script>
+</body>
 </html>
