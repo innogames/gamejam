@@ -73,13 +73,16 @@
 
 		<!-- Screenshots -->
 		<h3>Screenshots</h3>
-		{% if game.screenshots %}
 		<ul class="block-grid large-block-grid-2">
+			{% if game.screenshots %}
 			{% for screenshot in game.screenshots %}
 			<li><img src="{{screenshot.url}}"></li>
 			{% endfor %}
+			{% else %}
+			<li>No screenshots uploaded :(</li>
+			{% endif %}
 		</ul>
-		{% endif %}
+
 
 		<p style="font-size: 16px; color:#61a400; text-align: center;">This game was created<br>at {{game.jam.title}}
 		</p>
