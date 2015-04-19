@@ -32,7 +32,7 @@
 			<p><a href="{{ url_for('settings') }}" class="pull-right">Profile settings</a></p>
 			{% elif current_user.is_authenticated() %}
 			{% if user.pm_mode == "form" %}
-			<a href="{{ url_for('contact_user', username = user.username) }}" class="btn">Send mail</a>
+			<a href="{{ url_for('contact_user', username = user.username) }}" class="button small">Send mail</a>
 			{% elif user.pm_mode == "email" %}
 			<a href="mailto:{{ user.email }}" class="btn">Send mail</a>
 			{% endif %}
@@ -87,13 +87,16 @@
 			{% if not user.games %}
 			<p><i>This user has not made any games yet.</i></p>
 			{% else %}
-			<ul>
-				{% for game in user.games %}
-				<li>
-					<strong>{{ game.title }}</strong> {% if game.ratings.score %} ({{game.ratings.score}}){% endif %} with
-					<strong>{{ game.team.name }}</strong></a>
-				</li>
-				{% endfor %}
+			{% for game in user.games %}
+			<p>
+				<strong><a href="{{url_for('show_games', game_slug=game.slug)}}">{{ game.title }}</a></strong>
+
+				{% if game.ratings.score %}
+				({{game.ratings.score}}){%
+				endif %} with
+				<strong><a href="{{ game.team.url() }}">{{ game.team.name }}</a></strong></a>
+			</p>
+			{% endfor %}
 			</ul>
 			{% endif %}
 		</div>
