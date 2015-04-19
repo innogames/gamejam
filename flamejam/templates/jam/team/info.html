@@ -2,88 +2,96 @@
 
 {% block title %}{{ team.name }}{% endblock %}
 
+{% block breadcrumb %}
+<!-- Breadcrumb Start -->
+<div class="row">
+	<div class="large-12 columns">
+		<ul class="breadcrumb_menu">
+			<li><a href="{{ url_for('index') }}">Home</a></li>
+			<li><a href="{{ url_for('jams') }}">Game Jams</a></li>
+			<li><a href="{{ url_for('jam_info', jam_slug=team.jam.slug) }}">{{ team.jam.title }}</a></li>
+			<li class="active"><a href="#">{{ team.name }}</a></li>
+		</ul>
+	</div>
+</div>
+<!-- Breadcrumb Stop -->
+{% endblock %}
+
 {% block content %}
+<div class="row">
+	<h1>
+		{{ team.name }}
+		<small class="small">for {{ jam.title }}</small>
+	</h1>
+	<div class="small">
+		{% if current_user.is_authenticated() and current_user.inTeam(team) %}
+		{% if team.canInvite(current_user) %}
+		<a href="{{ url_for('team_settings', jam_slug = team.jam.slug) }}" class="btn btn-normal">Invite a member</a>
+		{% elif team.jam.team_limit > 1 %}
+		<small>Team is full</small>
+		{% endif %}
 
-<h1>
-    {{ team.name }}
-    <small style="margin-right: 20px;">for {{ jam.title }}</small>
+		<a href="{{ url_for('leave_team', jam_slug = jam.slug) }}" class="btn btn-normal">Quit the team</a>
+		<a href="{{ url_for('team_settings', jam_slug = team.jam.slug) }}" class="btn btn-primary btn-normal">Team settings</a>
+		{% endif %}
+	</div>
 
-    <div class="pull-right">
-    {% if current_user.is_authenticated() and current_user.inTeam(team) %}
-        {% if team.canInvite(current_user) %}
-            <a href="{{ url_for('team_settings', jam_slug = team.jam.slug) }}" class="btn btn-normal">Invite a member</a>
-        {% elif team.jam.team_limit > 1 %}
-            <small>Team is full</small>
-        {% endif %}
+	<div class="span4">
+		<h3>Team Details</h3>
+		<dl>
+			<dt>Participants</dt>
+			<dd>
+				{{ team.members | length }} member{{ "" if team.members | length == 1 else "s" }}
+			</dd>
 
-        <a href="{{ url_for('leave_team', jam_slug = jam.slug) }}" class="btn btn-normal">Quit the team</a>
-        <a href="{{ url_for('team_settings', jam_slug = team.jam.slug) }}" class="btn btn-primary btn-normal">Team settings</a>
-    {% endif %}
-    </div>
-</h1>
+			<dt>Founded by</dt>
+			<p>
+				{{ team.members[0].getLink() }}
+			</p>
 
-<div class="row-fluid">
-    <div class="span4">
-        <legend>Team Details</legend>
-        <dl>
-            <dt>Participants</dt>
-            <dd>
-                {{ team.members | length }} member{{ "" if team.members | length == 1 else "s" }}
-                <a href="{{ url_for('map', mode = 'team', id = team.id) }}">Map »</a>
-            </dd>
+			{% if team.livestreams %}
+			<dt>Livestream</dt>
+			<dd>
+				{% for line in team.livestreams.splitlines() %}
+				<a href="{{ line }}">{{ line if line|length < 32 else (line[:32] + "...") }}</a><br/>
+				{% endfor %}
+			</dd>
+			{% endif %}
 
-            <dt>Founded by</dt>
-            <dd>
-                {{ team.members[0].getLink() }}
-            </dd>
+			{% if team.irc %}
+			<dt>IRC Channel</dt>
+			<dd>
+				{{ team.irc }}
+			</dd>
+			{% endif %}
+		</dl>
+	</div>
+	<h3>Description</h3>
+	{{ (team.description or "*no description available*") | markdown }}
 
-            {% if team.livestreams %}
-            <dt>Livestream</dt>
-            <dd>
-                {% for line in team.livestreams.splitlines() %}
-                <a href="{{ line }}">{{ line if line|length < 32 else (line[:32] + "...") }}</a><br />
-                {% endfor %}
-            </dd>
-            {% endif %}
+	{% if team.game %}
+	<h3>This team's Game</h3>
 
-            {% if team.irc %}
-            <dt>IRC Channel</dt>
-            <dd>
-                {{ team.irc }}
-            </dd>
-            {% endif %}
-        </dl>
-    </div>
-    <div class="span4">
-        <legend>Description</legend>
-        {{ (team.description or "*no description available*") | markdown }}
-    </div>
-    <div class="span4">
-        {% if team.game %}
-            <legend>This team's Game</legend>
-            <p style="text-align: center; font-size: 1.3em;"><a href="{{ team.game.url() }}">
-                {{ team.game.title }}
-            </a></p>
-        {% endif %}
+	<p style=" font-size: 1.3em;"><a href="{{ team.game.url() }}">
+		{{ team.game.title }}
+	</a></p>
+	{% endif %}
 
-        <legend>Users in this team</legend>
-        <table class="details">
-            {% for member in team.members %}
-            <tr>
-                <td><img width="40" height="40" src="{{ member.getAvatar(40) }}" /></td>
-                <td>
-                    {{ member.getLink(real = True, avatar = False) }}
-                    {% set as = member.abilityString()|safe %}
-                    <div class="abilities">{{ as if as else "n/a"|safe }}
-                </td>
-            </tr>
-            {% endfor %}
-        </table>
+	<h3>Users in this team</h3>
+	{% for member in team.members %}
+	<p><img width="40" height="40" src="{{ member.getAvatar(40) }}"/>
+		{{ member.getLink(real = True, avatar = False) }}
+		{% set as = member.abilityString()|safe %}
 
-        {% if current_user.is_authenticated() and current_user in team.members %}
-            <p><b>Note:</b> You can invite users from the <a href="{{ url_for('team_settings', jam_slug = team.jam.slug) }}">team settings</a> page.</p>
-        {% endif %}
-    </div>
+		<span class="abilities">{{ as if as else "n/a"|safe }}</span>
+	</p>
+	{% endfor %}
+
+	{% if current_user.is_authenticated() and current_user in team.members %}
+	<p><b>Note:</b> You can invite users from the
+		<a href="{{ url_for('team_settings', jam_slug = team.jam.slug) }}">team settings</a> page.</p>
+	{% endif %}
+</div>
 </div>
 
 {% endblock %}
