@@ -10,7 +10,7 @@ from BeautifulSoup import BeautifulSoup
 @app.route('/news/<news_id>/')
 def news_show(news_id):
     try:
-        wpClient = Client('http://dev.gamejam.innogames.de/xmlrpc.php', 'gamejamRPC', 'g4m3j4mRPCus3r!')
+        wpClient = Client(app.config.get('BLOG_URL'), app.config.get('BLOG_USER'), app.config.get('BLOG_PASSWORD'))
         wpPost = wpClient.call(posts.GetPost(news_id))
     except ServerConnectionError:
         wpPost = []
@@ -33,7 +33,7 @@ def news_show(news_id):
 @app.route('/news/tags/<tag>/')
 def news_tag(tag):
     try:
-        wpClient = Client('http://dev.gamejam.innogames.de/xmlrpc.php', 'gamejamRPC', 'g4m3j4mRPCus3r!')
+        wpClient = Client(app.config.get('BLOG_URL'), app.config.get('BLOG_USER'), app.config.get('BLOG_PASSWORD'))
         wpCats = wpClient.call(taxonomies.GetTerms('category'))
 
         allPosts = wpClient.call(posts.GetPosts())
@@ -53,7 +53,7 @@ def news_tag(tag):
 @app.route('/news/category/<category>/')
 def news_category(category):
     try:
-        wpClient = Client('http://dev.gamejam.innogames.de/xmlrpc.php', 'gamejamRPC', 'g4m3j4mRPCus3r!')
+        wpClient = Client(app.config.get('BLOG_URL'), app.config.get('BLOG_USER'), app.config.get('BLOG_PASSWORD'))
         wpCats = wpClient.call(taxonomies.GetTerms('category'))
         allPosts = wpClient.call(posts.GetPosts())
         wpRelatedPosts = []
@@ -72,7 +72,7 @@ def news_category(category):
 @app.route('/news/')
 def news():
     try:
-        wpClient = Client('http://dev.gamejam.innogames.de/xmlrpc.php', 'gamejamRPC', 'g4m3j4mRPCus3r!')
+        wpClient = Client(app.config.get('BLOG_URL'), app.config.get('BLOG_USER'), app.config.get('BLOG_PASSWORD'))
         wpPost = wpClient.call(posts.GetPosts({'post_status': 'publish'}))
         wpCats = wpClient.call(taxonomies.GetTerms('category'))
     except ServerConnectionError:
