@@ -85,6 +85,16 @@ def humantime(s, short=True):
 
 
 @app.template_filter()
+def jamhumantime(s, short=True):
+    diff = timedelta(s, datetime.utcnow())
+    if diff.months < 1:
+        return Markup('<span title="' + str(s.strftime("%d.%m.%Y - %H:%M")) + '" class="time-title">' + str(
+            humandelta(diff, short=short)) + '</span>')
+    else:
+        return s.strftime("%d.%m.%Y - %H:%M")
+
+
+@app.template_filter()
 def countdowndelta(s):
     hours, remainder = divmod(s.seconds, 60 * 60)
     minutes, seconds = divmod(remainder, 60)
