@@ -35,7 +35,7 @@
 		<div id="gamejams_pulldown">
 			<select id="gameJamSelect">
 				{% for jam in jams %}
-				<option value="{{ jam.url() }}">{{jam.title}}</option>
+				<option value="{{ url_for('jam_games_lis', jam_slug=jam.slug, page=1) }}">{{jam.title}}</option>
 				{% endfor %}
 			</select>
 		</div>
@@ -79,7 +79,11 @@
 		<!-- Games Pagination Start -->
 		<div class="row">
 			<div class="large-4 columns">
+				{% if jam %}
+				<a href="{{ url_for('jam_games_lis', jam_slug=jam.slug, page=games.page-1) }}" class="button prev_next">Prev</a>
+				{% else %}
 				<a href="{{ url_for('games', page=games.page-1) }}" class="button prev_next">Prev</a>
+				{% endif %}
 			</div>
 
 			<div class="large-4 columns">
@@ -87,7 +91,11 @@
 					{%- for page in games.iter_pages() %}
 					{% if page %}
 					{% if page != games.page %}
+					{% if jam %}
+					<a href="{{ url_for('jam_games_lis', jam_slug=jam.slug, page=page) }}">{{ page }}</a>
+					{% else %}
 					<a href="{{ url_for('games', page=page) }}">{{ page }}</a>
+					{% endif %}
 					{% else %}
 					<strong>{{ page }}</strong>
 					{% endif %}
@@ -99,9 +107,19 @@
 			</div>
 			<div class="large-4 columns right">
 				{% if not games.pages == games.page %}
+				{% if jam %}
+				<a href="{{ url_for('jam_games_lis', jam_slug=jam.slug, page=games.page+1) }}"
+						class="button prev_next">Next ></a>
+				{% else %}
 				<a href="{{ url_for('games', page=games.page+1) }}" class="button prev_next">Next ></a>
+				{% endif %}
+				{% else %}
+				{% if jam %}
+				<a href="{{ url_for('jam_games_lis', jam_slug=jam.slug,page=games.page) }}"
+						class="button prev_next">Next ></a>
 				{% else %}
 				<a href="{{ url_for('games', page=games.page) }}" class="button prev_next">Next ></a>
+				{% endif %}
 				{% endif %}
 			</div>
 		</div>

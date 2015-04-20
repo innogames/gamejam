@@ -88,7 +88,7 @@
 		</p>
 
 		<!-- Big Button -->
-		<a href="{{ url_for('jam_games', jam_slug = jam.slug) }}" class="button big allgames">All Games of
+		<a href="{{ url_for('jam_games_lis', jam_slug=jam.slug, page=1) }}" class="button big allgames">All Games of
 			{{jam.title}}</a>
 	</div>
 </div>

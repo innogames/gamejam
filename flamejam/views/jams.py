@@ -1,28 +1,44 @@
 from flamejam import app, db
-from flamejam.models import Jam, JamStatusCode, GamePackage
+from flamejam.models import Jam, JamStatusCode, Game, GamePackage
 from flamejam.forms import ParticipateForm, CancelParticipationForm, TeamFinderFilter
 from flask import render_template, url_for, redirect, flash, request
 from flask.ext.login import login_required, current_user
 from sqlalchemy import desc
 
+
 @app.route('/jams/')
 def jams():
-    return render_template("jams.html", jams = Jam.query.order_by(desc(Jam.start_time)).all())
+    return render_template("jams.html", jams=Jam.query.order_by(desc(Jam.start_time)).all())
+
 
 @app.route('/jams/<jam_slug>/', methods=("GET", "POST"))
 def jam_info(jam_slug):
-    jam = Jam.query.filter_by(slug = jam_slug).first_or_404()
-    return render_template('jam/info.html', jam = jam)
+    jam = Jam.query.filter_by(slug=jam_slug).first_or_404()
+    return render_template('jam/info.html', jam=jam)
+
+
+@app.route('/jams/<jam_slug>/games/<page>')
+def jam_games_lis(jam_slug, page):
+    jam = Jam.query.filter_by(slug=jam_slug).first_or_404()
+    page = int(page)
+    if page < 1:
+        page = 1
+    games = Game.query.filter_by(is_deleted=False, jam_id=jam.id).paginate(page, 6, False)
+    jams = Jam.query.all()
+
+    return render_template("game/list.html", games=games, jams=jams, jam=jam)
+
 
 @app.route('/jams/<jam_slug>/countdown', methods=("GET", "POST"))
 def countdown(jam_slug):
-    jam = Jam.query.filter_by(slug = jam_slug).first_or_404()
-    return render_template('misc/countdown.html', jam = jam)
+    jam = Jam.query.filter_by(slug=jam_slug).first_or_404()
+    return render_template('misc/countdown.html', jam=jam)
 
-@app.route('/jams/<jam_slug>/participate/', methods = ["POST", "GET"])
+
+@app.route('/jams/<jam_slug>/participate/', methods=["POST", "GET"])
 @login_required
 def jam_participate(jam_slug):
-    jam = Jam.query.filter_by(slug = jam_slug).first_or_404()
+    jam = Jam.query.filter_by(slug=jam_slug).first_or_404()
     user = current_user
 
     if jam.getStatus().code > JamStatusCode.PACKAGING:
@@ -46,12 +62,13 @@ def jam_participate(jam_slug):
         flash("You are now registered for this jam.", "success")
         return redirect(jam.url())
 
-    return render_template('jam/participate.html', jam = jam, form = form)
+    return render_template('jam/participate.html', jam=jam, form=form)
 
-@app.route('/jams/<jam_slug>/cancel-participation/', methods = ["POST", "GET"])
+
+@app.route('/jams/<jam_slug>/cancel-participation/', methods=["POST", "GET"])
 @login_required
 def jam_cancel_participation(jam_slug):
-    jam = Jam.query.filter_by(slug = jam_slug).first_or_404()
+    jam = Jam.query.filter_by(slug=jam_slug).first_or_404()
 
     if jam.getStatus().code > JamStatusCode.PACKAGING:
         flash("You cannot unregister from a jam after it has finished or is in rating phase.", "error")
@@ -65,39 +82,45 @@ def jam_cancel_participation(jam_slug):
         flash("You are now unregistered from this jam.", "success")
         return redirect(jam.url())
 
-    return render_template('jam/cancel_participation.html', jam = jam, form = form)
+    return render_template('jam/cancel_participation.html', jam=jam, form=form)
+
 
 @app.route('/jams/<jam_slug>/games/')
 def jam_games(jam_slug):
-    jam = Jam.query.filter_by(slug = jam_slug).first_or_404()
+    jam = Jam.query.filter_by(slug=jam_slug).first_or_404()
     filters = set(request.args['filter'].split(' ')) if 'filter' in request.args else set()
     games = jam.gamesByScore(filters) if jam.showRatings else jam.gamesByTotalRatings(filters)
-    return render_template('jam/games.html', jam = jam, games = games, filters = filters, package_types = GamePackage.packageTypes(), typeStringShort = GamePackage.typeStringShort)
+    return render_template('jam/games.html', jam=jam, games=games, filters=filters,
+                           package_types=GamePackage.packageTypes(), typeStringShort=GamePackage.typeStringShort)
+
 
 @app.route('/jams/<jam_slug>/participants/')
 def jam_participants(jam_slug):
-    jam = Jam.query.filter_by(slug = jam_slug).first_or_404()
-    return render_template('jam/participants.html', jam = jam)
+    jam = Jam.query.filter_by(slug=jam_slug).first_or_404()
+    return render_template('jam/participants.html', jam=jam)
+
 
 @app.route('/jams/<jam_slug>/team_finder/toggle/')
 def jam_toggle_show_in_finder(jam_slug):
-    jam = Jam.query.filter_by(slug = jam_slug).first_or_404()
+    jam = Jam.query.filter_by(slug=jam_slug).first_or_404()
     r = current_user.getParticipation(jam)
     if not r: abort(404)
     r.show_in_finder = not r.show_in_finder
     db.session.commit()
-    flash("You are now %s in the team finder for the jam \"%s\"." % ("shown" if r.show_in_finder else "hidden", jam.title), "success")
+    flash("You are now %s in the team finder for the jam \"%s\"." % (
+        "shown" if r.show_in_finder else "hidden", jam.title), "success")
     return redirect(jam.url())
+
 
 @app.route('/jams/<jam_slug>/team_finder/', methods=("GET", "POST"))
 def jam_team_finder(jam_slug):
-    jam = Jam.query.filter_by(slug = jam_slug).first_or_404()
+    jam = Jam.query.filter_by(slug=jam_slug).first_or_404()
     form = TeamFinderFilter()
     l = []
     for r in jam.participations:
         u = r.user
         if (not form.show_teamed.data) and r.team and (not r.team.isSingleTeam):
-            continue # don't show teamed people
+            continue  # don't show teamed people
 
         if not r.show_in_finder:
             continue
@@ -116,10 +139,10 @@ def jam_team_finder(jam_slug):
         l.append((r, matches))
 
     if form.order.data == "abilities":
-        l.sort(key = lambda pair: pair[1], reverse = True)
+        l.sort(key=lambda pair: pair[1], reverse=True)
     elif form.order.data == "location":
-        l.sort(key = lambda pair: pair[0].user.location)
-    else: # username
-        l.sort(key = lambda pair: pair[0].user.username)
+        l.sort(key=lambda pair: pair[0].user.location)
+    else:  # username
+        l.sort(key=lambda pair: pair[0].user.username)
 
-    return render_template('jam/team_finder.html', jam = jam, form = form, results = l)
+    return render_template('jam/team_finder.html', jam=jam, form=form, results=l)
