@@ -34,8 +34,11 @@
 
 		<div id="gamejams_pulldown">
 			<select id="gameJamSelect">
+				{% if not jam %}
+				<option selected>Please choose a jam...</option>
+				{% endif %}
 				{% for jamEntry in jams %}
-				<option {% if jam.slug==jamEntry.slug %} selected {% endif %}
+				<option {% if jam and jam.slug==jamEntry.slug %} selected {% endif %}
 						value="{{ url_for('jam_games_lis', jam_slug=jamEntry.slug, page=1) }}">
 					{{jamEntry.title}}
 				</option>
