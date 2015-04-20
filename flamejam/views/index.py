@@ -3,7 +3,7 @@ from flamejam.models import Jam, Game
 from flask import render_template, url_for, redirect
 from wordpress_xmlrpc import Client
 from wordpress_xmlrpc.methods import posts
-from wordpress_xmlrpc.exceptions import ServerConnectionError
+from wordpress_xmlrpc.exceptions import ServerConnectionError, InvalidCredentialsError
 
 
 @app.route("/")
@@ -11,7 +11,7 @@ def index():
     try:
         wpClient = Client(app.config.get('BLOG_URL'), app.config.get('BLOG_USER'), app.config.get('BLOG_PASSWORD'))
         wpPosts = wpClient.call(posts.GetPosts({'number': 4}))
-    except ServerConnectionError:
+    except (ServerConnectionError, InvalidCredentialsError):
         wpPosts = []
 
     games = db.engine.execute(

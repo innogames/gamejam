@@ -2,7 +2,7 @@ from flamejam import app, db
 from flask import render_template, url_for, redirect, flash, request
 from wordpress_xmlrpc import Client
 from wordpress_xmlrpc.methods import posts, taxonomies
-from wordpress_xmlrpc.exceptions import ServerConnectionError
+from wordpress_xmlrpc.exceptions import ServerConnectionError, InvalidCredentialsError
 from flask.ext.login import login_required, current_user
 from BeautifulSoup import BeautifulSoup
 
@@ -12,7 +12,7 @@ def news_show(news_id):
     try:
         wpClient = Client(app.config.get('BLOG_URL'), app.config.get('BLOG_USER'), app.config.get('BLOG_PASSWORD'))
         wpPost = wpClient.call(posts.GetPost(news_id))
-    except ServerConnectionError:
+    except (ServerConnectionError, InvalidCredentialsError):
         wpPost = []
 
     for term in wpPost.terms:
@@ -43,7 +43,7 @@ def news_tag(tag):
                 if term.taxonomy == 'post_tag':
                     if term.name == tag:
                         wpRelatedPosts.append(post)
-    except ServerConnectionError:
+    except (ServerConnectionError, InvalidCredentialsError):
         wpCats = []
         wpRelatedPosts = []
 
@@ -62,7 +62,7 @@ def news_category(category):
                 if term.taxonomy == 'category':
                     if term.name == category:
                         wpRelatedPosts.append(post)
-    except ServerConnectionError:
+    except (ServerConnectionError, InvalidCredentialsError):
         wpCats = []
         wpRelatedPosts = []
 
@@ -75,7 +75,7 @@ def news():
         wpClient = Client(app.config.get('BLOG_URL'), app.config.get('BLOG_USER'), app.config.get('BLOG_PASSWORD'))
         wpPost = wpClient.call(posts.GetPosts({'post_status': 'publish'}))
         wpCats = wpClient.call(taxonomies.GetTerms('category'))
-    except ServerConnectionError:
+    except (ServerConnectionError, InvalidCredentialsError):
         wpPost = []
         wpCats = []
 
