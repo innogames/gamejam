@@ -99,10 +99,14 @@
 			{% if status.code == 2 %}
 			<a href="{{ url_for('countdown', jam_slug = jam.slug) }}">
 				<p class="greenbox last">Countdown: <span class="mini-countdown" time="{{ jam.end_time }}">
-                        <span class="time">{{ (jam.end_time - current_datetime) | countdowndelta }}</span>
-                    </span></p></a>
+					<span class="time">{{ (jam.end_time - current_datetime) | countdowndelta }}</span>
+					</span>
+				</p>
+			</a>
 			{% endif %}
-			<p class="greenbox last"> Status: Finished</p>
+			{% if status.code == 1 %}
+			<p class="greenbox last">Registration is open!</p>
+			{% endif %}
 
 			{% if jam.getStatus().code == 5 %}
 			<!-- Winner -->
