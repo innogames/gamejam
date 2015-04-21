@@ -25,7 +25,8 @@
 	<div class="row">
 		<div class="large-6 columns">
 			<!-- Logo -->
-			<a href="{{ url_for('index') }}"><img src="{{ url_for('static', filename='img/logo.png') }}" alt="InnoGames - GAME JAM"></a><br>
+			<a href="{{ url_for('index') }}"><img src="{{ url_for('static', filename='img/logo.png') }}"
+					style="min-width: 240px;" alt="InnoGames - GAME JAM"></a><br>
 			{% if current_jam %}
 			{% if current_jam.getStatus().code <= 1 %}
 			<p><a style="font-size: 20px; color: #fff;" href="{{current_jam.url()}}">

@@ -50,23 +50,24 @@
 					<a href="{{ url_for('faq') }}">Our FAQ</a></p>
 			</div>
 		</div>
-
+		{% if current_jam %}
 		<div class="large-4 columns">
-			<h3>Video</h3>
-			<iframe width="311" height="175" src="//www.youtube.com/embed/GDx6WXpvl1o" frameborder="0" allowfullscreen></iframe>
-		</div>
-
-		<!-- Next Game Jam Banner -->
-		<!--<div class="large-4 columns">
-			<a href="#">
-				<img src="{{ url_for('static', filename='DummyContent/dummy-top-banner.png') }}" alt="Dummy Top Banner Image" class="opacityfade">
+			<a href="{{ current_jam.url() }}">
+				<div class="next_gamejam_box opacityfade">
+					<p>
+						<span class="next">next</span><br>
+						<span class="gamejam">Game Jam</span><br>
+						<span class="more">more info</span><br>
+						<span class="here">here</span>
+					</p>
+				</div>
 			</a>
-		</div>-->
+		</div>
+		{% endif %}
 	</div>
 
 	<!-- 2 Cols -->
 	<div class="row">
-
 		<!-- left Col -->
 		<div class="large-8 columns">
 			<h1 class="green-dark centered">Game Jam News</h1>
@@ -107,10 +108,14 @@
 					<a href="{{ url_for('news') }}" class="button big">All News</a>
 				</div>
 			</div>
-
 		</div>
 
 		<!-- right Col -->
+		<div class="large-4 columns">
+			<h3>Video</h3>
+			<iframe width="311" height="175" src="//www.youtube.com/embed/GDx6WXpvl1o" frameborder="0" allowfullscreen></iframe>
+		</div>
+
 		<!--
 						<div class="large-4 columns">
 							<h3>Video</h3>
