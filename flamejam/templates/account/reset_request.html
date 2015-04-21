@@ -1,27 +1,36 @@
 {% extends "base.html" %}
 {% from "_formhelpers.html" import form_errors %}
 
+{% block breadcrumb %}
+<div class="row">
+	<div class="large-12 columns">
+		<ul class="breadcrumb_menu">
+			<li><a href="{{ url_for('index') }}">Home</a></li>
+			<li class="active">Reset password</li>
+		</ul>
+	</div>
+</div>
+{% endblock %}
+
 {% block content %}
 
-<div class="row-fluid">
-    <div class="span5">
-        <h2>Reset password</h2>
-        <form action="{{ url_for('reset_request') }}" method="post" class="block">
-            {{ form.hidden_tag() }}
-            {{ form_errors(form) }}
+<div class="row">
+	<h2>Reset password</h2>
 
-            <div class="field">
-                {{ form.username.label }}
-                {{ form.username(class="text-input", style="width: 375px;") }}
-            </div>
-            <div class="field">
-                {{ form.captcha }}
-            </div>
-            <p class="form-buttons">
-                <input type="submit" class="btn btn-primary" value="Reset">
-            </p>
-        </form>
-    </div>
+	<form action="{{ url_for('reset_request') }}" method="post" class="block">
+		{{ form.hidden_tag() }}
+		{{ form_errors(form) }}
+
+		<p>
+			{{ form.username.label }}
+			{{ form.username(class="text-input", style="width: 375px;") }}
+		</p>
+		<br/>
+		{{ form.captcha }}
+		<p class="form-buttons">
+			<input type="submit" class="button" value="Reset">
+		</p>
+	</form>
 </div>
 
 {% endblock %}
