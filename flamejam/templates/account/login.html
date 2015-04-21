@@ -2,132 +2,135 @@
 {% from "_formhelpers.html" import form_errors %}
 
 {% block breadcrumb %}
-    <!-- Breadcrumb Start -->
-        <div class="row">
-            <div class="large-12 columns">
-                <ul class="breadcrumb_menu">
-                    <li><a href="">Home</a></li>
-                    <li class="active"><a href="">Login</a></li>
-                </ul>
-            </div>
-        </div>
-    <!-- Breadcrumb Stop -->
+<!-- Breadcrumb Start -->
+<div class="row">
+	<div class="large-12 columns">
+		<ul class="breadcrumb_menu">
+			<li><a href="">Home</a></li>
+			<li class="active"><a href="">Login</a></li>
+		</ul>
+	</div>
+</div>
+<!-- Breadcrumb Stop -->
 {% endblock %}
 
 {% block content %}
 
-        <!-- 2 Column -->
-            <div class="row">
+<!-- 2 Column -->
+<div class="row">
 
-                <!-- Login -->
-                <div class="large-6 columns">
-                        <h2>Login</h2>
-                        <form action="{{ url_for('login') }}" method="post" class="login">
-                            {{ login_form.hidden_tag() }}
-                            {{ form_errors(login_form) }}
-                            <div class="row">
-                                <div class="large-4 columns">
-                                                {{ login_form.username.label }}
-                                </div>
-                                <div class="large-8 columns">
-                                                {{ login_form.username(tabindex="1") }}
-                                </div>
-                            </div>
+	<!-- Login -->
+	<div class="large-6 columns">
+		<h2>Login</h2>
 
-                            <div class="row">
-                                <div class="large-4 columns">
-                                    {{ login_form.password.label }}
-                                </div>
-                                <div class="large-8 columns">
-                                    {{ login_form.password(type="password", tabindex="2") }}
-                                </div>
-                            </div>
+		<form action="{{ url_for('login') }}" method="post" class="login">
+			{{ login_form.hidden_tag() }}
+			{{ form_errors(login_form) }}
+			<div class="row">
+				<div class="large-4 columns">
+					{{ login_form.username.label }}
+				</div>
+				<div class="large-8 columns">
+					{{ login_form.username(tabindex="1") }}
+				</div>
+			</div>
 
-                            <div class="row">
-                                <div class="large-4 columns">
-                                    {{ login_form.remember_me.label }}
-                                </div>
-                                <div class="large-8 columns">
-                                    <div class="checkbox">
-                                        {{ login_form.remember_me(type="checkbox", tabindex="3") }}
-                                        <label for="remember"></label>
-                                    </div>
-                                </div>
-                            </div>
+			<div class="row">
+				<div class="large-4 columns">
+					{{ login_form.password.label }}
+				</div>
+				<div class="large-8 columns">
+					{{ login_form.password(type="password", tabindex="2") }}
+				</div>
+			</div>
 
-                            <div class="row">
-                                <div class="large-7 columns">
-                                    <p><a href="{{ url_for('reset_request') }}" class="green">Forgot your Password?</a></p>
-                                </div>
-                                <div class="large-5 columns">
-                                    <input type="submit" class="button submit" value="Login" tabindex="4">
-                                </div>
-                            </div>
-                        </form>
+			<div class="row">
+				<div class="large-4 columns">
+					{{ login_form.remember_me.label }}
+				</div>
+				<div class="large-8 columns">
+					<div class="checkbox">
+						{{ login_form.remember_me(type="checkbox", tabindex="3") }}
+						<label for="remember"></label>
+					</div>
+				</div>
+			</div>
 
-                </div>
+			<div class="row">
+				<div class="large-7 columns">
+					<p><a href="{{ url_for('reset_request') }}" class="green">Forgot your Password?</a></p>
+				</div>
+				<div class="large-5 columns">
+					<input type="submit" class="button submit" value="Login" tabindex="4">
+				</div>
+			</div>
+		</form>
 
-                <!-- Register -->
-                <div class="large-6 columns">
-                    <div>
-                        <h2>Register</h2>
-                        <form action="{{ url_for('login') }}" method="post" class="register">
-                            {{ register_form.hidden_tag() }}
-                            <p>{{ form_errors(register_form) }}</p>
-                            <div class="row">
-                                <div class="large-4 columns">
-                                    {{ register_form.username.label }}
-                                </div>
-                                <div class="large-8 columns">
-                                    {{ register_form.username(type="text") }}
-                                    <p class="small">Allowed characters: letters, numbers, dashes, underscores</p>
-                                </div>
-                            </div>
-                            <div class="row">
-                                <div class="large-4 columns">
-                                    {{ register_form.password.label }}
-                                </div>
-                                <div class="large-8 columns">
-                                    {{ register_form.password(type="password") }}
-                                    <p class="small">Minimum 8 characters</p>
-                                </div>
-                            </div>
-                            <div class="row">
-                                <div class="large-4 columns">
-                                    {{ register_form.password2.label }}
-                                </div>
-                                <div class="large-8 columns">
-                                    {{ register_form.password2(type="password") }}
-                                    <p class="small">Repeat for verification</p>
-                                </div>
-                            </div>
-                            <div class="row">
-                                <div class="large-4 columns">
-                                    {{ register_form.email.label }}
-                                </div>
-                                <div class="large-8 columns">
-                                    {{ register_form.email(type="text") }}
-                                    <p class="small">Will be used for <a href="http://gravatar.com" target="_blank">Gravatar</a>.</p>
-                                </div>
-                            </div>
+	</div>
 
-                            <!--
-                            {{ register_form.captcha }}
-                            -->
+	<!-- Register -->
+	<div class="large-6 columns">
+		<div>
+			<h2>Register</h2>
 
-                            <div class="row">
-                                <div class="large-6 columns">
-                                    <input type="reset" class="button reset" value="Reset">
-                                </div>
-                                <div class="large-6 columns">
-                                    <input type="submit" class="button submit" value="Register">
-                                </div>
-                            </div>
-                        </form>
-                    </div>
-                </div>
+			<form action="{{ url_for('login') }}" method="post" class="register">
+				{{ register_form.hidden_tag() }}
+				<p>{{ form_errors(register_form) }}</p>
 
-            </div>
-        <!-- 2 Column Stop -->
+				<div class="row">
+					<div class="large-4 columns">
+						{{ register_form.username.label }}
+					</div>
+					<div class="large-8 columns">
+						{{ register_form.username(type="text") }}
+						<p class="small">Allowed characters: letters, numbers, dashes, underscores</p>
+					</div>
+				</div>
+				<div class="row">
+					<div class="large-4 columns">
+						{{ register_form.password.label }}
+					</div>
+					<div class="large-8 columns">
+						{{ register_form.password(type="password") }}
+						<p class="small">Minimum 8 characters</p>
+					</div>
+				</div>
+				<div class="row">
+					<div class="large-4 columns">
+						{{ register_form.password2.label }}
+					</div>
+					<div class="large-8 columns">
+						{{ register_form.password2(type="password") }}
+						<p class="small">Repeat for verification</p>
+					</div>
+				</div>
+				<div class="row">
+					<div class="large-4 columns">
+						{{ register_form.email.label }}
+					</div>
+					<div class="large-8 columns">
+						{{ register_form.email(type="text") }}
+						<p class="small">Will be used for <a href="http://gravatar.com" target="_blank">Gravatar</a>.
+						</p>
+					</div>
+				</div>
+
+				{{ register_form.captcha }}
+				<br/>
+
+				<div class="row">
+					<div class="large-6 columns">
+						<input type="reset" class="button reset" value="Reset">
+					</div>
+					<div class="large-6 columns">
+						<input type="submit" class="button submit" value="Register">
+					</div>
+				</div>
+			</form>
+		</div>
+	</div>
+
+</div>
+<!-- 2 Column Stop -->
 
 {% endblock %}

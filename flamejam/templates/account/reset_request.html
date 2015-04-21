@@ -24,9 +24,13 @@
 		<p>
 			{{ form.username.label }}
 			{{ form.username(class="text-input", style="width: 375px;") }}
+			<br/>
+			<br/>
+			{{ form.captcha }}
 		</p>
 		<br/>
-		{{ form.captcha }}
+
+
 		<p class="form-buttons">
 			<input type="submit" class="button" value="Reset">
 		</p>
