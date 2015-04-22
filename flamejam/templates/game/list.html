@@ -63,11 +63,26 @@
 					<a href="{{ url_for('show_games', game_slug = game.slug) }}">
 						{% if not game.screenshots|count %}
 						<!-- default image for no game screenshot?! -->
-						<img class="opacityfade" src="{{ url_for('static', filename='images/no-game-screenshot.jpg') }}"
-								alt="no screenshot uploaded :(" width="100%">
+						<div class="next_gamejam_box opacityfade">
+							<p>
+								<span class="next">no</span><br>
+								<span class="gamejam">image</span><br>
+								<span class="more">found</span><br>
+								<span class="here">:(</span>
+							</p>
+						</div>
 						{% else %}
 						{% set screenshot = game.screenshots|first %}
-						<img class="opacityfade" src="{{screenshot.url}}" alt="{{screenshot.caption}}" width="100%">
+						<object data="{{screenshot.url}}" type="image/png" width="100%">
+							<div class="next_gamejam_box opacityfade">
+								<p>
+									<span class="next">no</span><br>
+									<span class="gamejam">image</span><br>
+									<span class="more">found</span><br>
+									<span class="here">:(</span>
+								</p>
+							</div>
+						</object>
 						{% endif %}
 
 						<h3>{{game.title}}</h3>

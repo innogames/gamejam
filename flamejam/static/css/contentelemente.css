@@ -53,18 +53,18 @@
     color: #fff;
 }
 
-.top-banner .next_gamejam_box {
+.next_gamejam_box {
     height: 298px;
     background-image: url(../img/next_gamejam_background.jpg);
 }
 
-.top-banner .next_gamejam_box p {
+.next_gamejam_box p {
     padding: 20px 0;
     text-align: center;
     font-family: "Ruda", sans-serif;
 }
 
-.top-banner .next_gamejam_box .next,
+.next_gamejam_box .next,
 a .top-banner .next_gamejam_box .next {
     text-transform: uppercase;
     font-size: 95px;
@@ -73,21 +73,21 @@ a .top-banner .next_gamejam_box .next {
 
 }
 
-.top-banner .next_gamejam_box .gamejam {
+.next_gamejam_box .gamejam {
     text-transform: uppercase;
     font-size: 48px;
     line-height: 48px;
     color: #95fe00;
 }
 
-.top-banner .next_gamejam_box .more {
+.next_gamejam_box .more {
     text-transform: uppercase;
     font-size: 41px;
     line-height: 40px;
     color: #fff;
 }
 
-.top-banner .next_gamejam_box .here {
+.next_gamejam_box .here {
     text-transform: uppercase;
     font-size: 91px;
     line-height: 91px;
