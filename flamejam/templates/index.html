@@ -2,6 +2,16 @@
 
 {% block title %}Home{% endblock %}
 
+{% block breadcrumb %}
+<div class="row">
+	<div class="large-12 columns">
+		<ul class="breadcrumb_menu">
+			<li class="active"><a href="{{ url_for('index') }}">Home</a></li>
+		</ul>
+	</div>
+</div>
+{% endblock %}
+
 {% block content %}
 {% set counting = false %}
 {% for jam in jams if jam.start_time < current_datetime < jam.end_time and not counting %}
@@ -17,16 +27,6 @@
 	</div>
 </a>
 {% endfor %}
-
-<!-- Breadcrumb Start -->
-<div class="row">
-	<div class="large-12 columns">
-		<ul class="breadcrumb_menu">
-			<li class="active"><a href="">Home</a></li>
-		</ul>
-	</div>
-</div>
-<!-- Breadcrumb Stop -->
 
 <div class="content">
 	<!-- Banner -->
@@ -150,8 +150,8 @@
 	<div class="row four-column-teaser">
 		{% for game in games %}
 		<div class="large-3 columns">
-			<a href="{{ url_for('show_games', game_slug = game.slug) }}"><img style="min-width: 200px; min-height: 180px;" src="{{ game.url }}"
-					class="opacityfade">
+			<a href="{{ url_for('show_games', game_slug=game.slug) }}">
+				<img style="min-width: 200px; min-height: 180px;" src="{{ game.url }}" class="opacityfade">
 
 				<h3>{{ game.title }}</h3>
 			</a>

@@ -63,7 +63,7 @@
 					<a href="{{ url_for('show_games', game_slug = game.slug) }}">
 						{% if not game.screenshots|count %}
 						<!-- default image for no game screenshot?! -->
-						<div class="next_gamejam_box opacityfade">
+						<div class="next_gamejam_box opacityfade" style="background-color: grey; background-image: none;">
 							<p>
 								<span class="next">no</span><br>
 								<span class="gamejam">image</span><br>
@@ -73,16 +73,16 @@
 						</div>
 						{% else %}
 						{% set screenshot = game.screenshots|first %}
-						<object data="{{screenshot.url}}" type="image/png" width="100%">
-							<div class="next_gamejam_box opacityfade" style="visibility: hidden;">
-								<p>
-									<span class="next">no</span><br>
-									<span class="gamejam">image</span><br>
-									<span class="more">found</span><br>
-									<span class="here">:(</span>
-								</p>
-							</div>
-						</object>
+						<img src="{{screenshot.url}}" type="image/png" width="100%" onerror="document.getElementById('{{game.slug}}').style.display = 'block';this.style.display = 'none';"/>
+
+						<div id="{{game.slug}}" class="next_gamejam_box opacityfade" style="background-color: grey; background-image: none; display: none;">
+							<p>
+								<span class="next">no</span><br>
+								<span class="gamejam">image</span><br>
+								<span class="more">found</span><br>
+								<span class="here">:(</span>
+							</p>
+						</div>
 						{% endif %}
 
 						<h3>{{game.title}}</h3>

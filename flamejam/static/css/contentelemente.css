@@ -26,7 +26,7 @@
 }
 
 .top-banner h1 {
-    padding: 20px 0 40px 0;
+    padding: 20px 0 20px 0;
     margin: 0;
     color: #fff;
     text-transform: uppercase;
@@ -68,6 +68,7 @@
 a .top-banner .next_gamejam_box .next {
     text-transform: uppercase;
     font-size: 95px;
+    font-weight: bold;
     line-height: 91px;
     color: #fff;
 
@@ -76,6 +77,7 @@ a .top-banner .next_gamejam_box .next {
 .next_gamejam_box .gamejam {
     text-transform: uppercase;
     font-size: 48px;
+    font-weight: bold;
     line-height: 48px;
     color: #95fe00;
 }
@@ -83,6 +85,7 @@ a .top-banner .next_gamejam_box .next {
 .next_gamejam_box .more {
     text-transform: uppercase;
     font-size: 41px;
+    font-weight: bold;
     line-height: 40px;
     color: #fff;
 }
@@ -90,6 +93,7 @@ a .top-banner .next_gamejam_box .next {
 .next_gamejam_box .here {
     text-transform: uppercase;
     font-size: 91px;
+    font-weight: bold;
     line-height: 91px;
     color: #fffc00;
 }
@@ -153,7 +157,7 @@ a .top-banner .next_gamejam_box .next {
     font-size: 28px;
     padding: 25px 65px;
     margin-top: 0px;
-    margin-bottom: 80px;
+    margin-bottom: 5px;
     width: 100%;
 }
 
