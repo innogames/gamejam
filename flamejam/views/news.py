@@ -12,20 +12,21 @@ def news_show(news_id):
     try:
         wpClient = Client(app.config.get('BLOG_URL'), app.config.get('BLOG_USER'), app.config.get('BLOG_PASSWORD'))
         wpPost = wpClient.call(posts.GetPost(news_id))
+        for term in wpPost.terms:
+            if term.taxonomy == 'category':
+                wpCategory = term.name
+        wpCats = wpClient.call(taxonomies.GetTerms('category'))
+        allPosts = wpClient.call(posts.GetPosts())
+        wpRelatedPosts = []
+        for post in allPosts:
+            for term in post.terms:
+                if term.taxonomy == 'category':
+                    if term.name == wpCategory and post.id != news_id:
+                        wpRelatedPosts.append(post)
     except (ServerConnectionError, InvalidCredentialsError):
         wpPost = []
-
-    for term in wpPost.terms:
-        if term.taxonomy == 'category':
-            wpCategory = term.name
-    wpCats = wpClient.call(taxonomies.GetTerms('category'))
-    allPosts = wpClient.call(posts.GetPosts())
-    wpRelatedPosts = []
-    for post in allPosts:
-        for term in post.terms:
-            if term.taxonomy == 'category':
-                if term.name == wpCategory and post.id != news_id:
-                    wpRelatedPosts.append(post)
+        wpCats = []
+        wpRelatedPosts = []
 
     return render_template('news/show.html', news=wpPost, categories=wpCats, related=wpRelatedPosts)
 
