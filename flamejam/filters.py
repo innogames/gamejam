@@ -25,6 +25,11 @@ def nicedate(s):
     return s.strftime("%A, %B %d, %Y - %H:%M")
 
 
+@app.template_filter()
+def wpContent(s):
+    return s.replace("\n", "<br />\n")
+
+
 def _s(n, s):
     if n == 0:
         return ""
