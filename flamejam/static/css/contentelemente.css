@@ -617,6 +617,13 @@ a .gamejam-list-item p,
     text-decoration: none;
 }
 
+.game-list-image {
+    min-width: 300px;
+    min-height: 300px;
+    max-width: 300px;
+    max-height: 300px;
+}
+
 .game-list-item a:hover h3 {
     color: #61a400;
 }

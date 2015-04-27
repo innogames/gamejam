@@ -73,7 +73,7 @@
 						</div>
 						{% else %}
 						{% set screenshot = game.screenshots|first %}
-						<img src="{{screenshot.url}}" type="image/png" width="100%" onerror="document.getElementById('{{game.slug}}').style.display = 'block';this.style.display = 'none';"/>
+						<img class="game-list-image" src="{{screenshot.url}}" type="image/png" width="100%" onerror="document.getElementById('{{game.slug}}').style.display = 'block';this.style.display = 'none';"/>
 
 						<div id="{{game.slug}}" class="next_gamejam_box opacityfade" style="background-color: grey; background-image: none; display: none;">
 							<p>
