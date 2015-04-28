@@ -15,7 +15,7 @@ def games(page):
     page = int(page)
     if page < 1:
         page = 1
-    games = Game.query.filter_by(is_deleted=False).paginate(page, 6, False)
+    games = Game.query.filter_by(is_deleted=False).order_by(desc(Game.id)).paginate(page, 6, False)
     jams = Jam.query.all()
 
     return render_template("game/list.html", games=games, jams=jams)
