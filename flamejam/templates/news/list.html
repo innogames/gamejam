@@ -3,76 +3,79 @@
 {% block title %}News{% endblock %}
 
 {% block breadcrumb %}
-    <div class="row">
-        <div class="large-12 columns">
-            <ul class="breadcrumb_menu">
-                <li><a href="{{ url_for('index') }}">Home</a></li>
-                <li class="active">News</li>
-            </ul>
-        </div>
-    </div>
+<div class="row">
+	<div class="large-12 columns">
+		<ul class="breadcrumb_menu">
+			<li><a href="{{ url_for('index') }}">Home</a></li>
+			<li class="active">News</li>
+		</ul>
+	</div>
+</div>
 {% endblock %}
 
 {% block content %}
-    <div class="row">
-        <div class="large-8 columns news-list">
+<div class="row">
+	<div class="large-8 columns news-list">
 
-            {% for entry in news %}
-                <div class="related-news-list-item">
-                    <a href="{{ url_for('news_show', news_id = entry.id) }}">
-                        <div class="row news-list-item">
-                            <div class="large-6 columns">
-                                {% for term in entry.terms if term.taxonomy == "category" %}
-                                    <div class="news-related-rubrik">{{term.name}}</div>
-                                    {% break %}
-                                {% endfor %}
+		{% for entry in news %}
+		<div class="related-news-list-item">
+			<a href="{{ url_for('news_show', news_id = entry.id) }}">
+				<div class="row news-list-item">
+					<div class="large-6 columns">
+						{% for term in entry.terms if term.taxonomy == "category" %}
+						<div class="news-related-rubrik">{{term.name}}</div>
+						{% break %}
+						{% endfor %}
 
-                                {% if entry.thumbnail %}
-                                    {% for key, value in entry.thumbnail.iteritems() if key == "thumbnail" %}
-                                        <img class="news-related-rubrik-image opacityfade" src="{{ value }}">
-                                    {% endfor %}
-                                {% else %}
-                                    <img class="news-related-rubrik-image opacityfade" src="{{ url_for('static', filename='DummyContent/dummy-news-related2.jpg') }}">
-                                {% endif %}
-                            </div>
-                            <div class="large-6 columns">
-                                <h3>{{ news.title }}</h3>
-                                <p class="date">From {{entry.date.strftime('%d.%m.%Y')}} </p>
-                                <p>{{entry.content[:120]|safe}}...</p>
-                            </div>
-                        </div>
-                    </a>
-                </div>
-            {% endfor %}
+						{% if entry.thumbnail %}
+						{% for key, value in entry.thumbnail.iteritems() if key == "thumbnail" %}
+						<img class="news-related-rubrik-image opacityfade" src="{{ value }}">
+						{% endfor %}
+						{% else %}
+						<img class="news-related-rubrik-image opacityfade" src="{{ url_for('static', filename='DummyContent/dummy-news-related2.jpg') }}">
+						{% endif %}
+					</div>
+					<div class="large-6 columns">
+						<h3>{{ news.title }}</h3>
 
-            <!-- News Pagination Start -->
+						<p class="date">From {{entry.date.strftime('%d.%m.%Y')}} </p>
 
-            <div class="row">
-                <div class="large-4 columns">
-                    <a href="#" class="button prev_next">< Prev</a>
-                </div>
-                <div class="large-4 columns">
-                    <p class="pagination_pagenumbers"><a href="#">1</a> <a href="#"><strong>2</strong></a> <a href="#">3</a></p>
-                </div>
-                <div class="large-4 columns right">
-                    <a href="#" class="button prev_next">Next ></a>
-                </div>
-            </div>
+						<p>{{entry.content[:120]|safe}}...</p>
+					</div>
+				</div>
+			</a>
+		</div>
+		{% endfor %}
 
-            <!-- News Pagination Stop -->
+		<!-- News Pagination Start -->
 
-        </div>
-        <!-- Left Column Stop -->
+		<div class="row">
+			<div class="large-4 columns">
+				<a href="#" class="button prev_next">< Prev</a>
+			</div>
+			<div class="large-4 columns">
+				<p class="pagination_pagenumbers"><a href="#">1</a> <a href="#"><strong>2</strong></a> <a href="#">3</a>
+				</p>
+			</div>
+			<div class="large-4 columns right">
+				<a href="#" class="button prev_next">Next ></a>
+			</div>
+		</div>
 
-        <!-- Right Column Start -->
-        <div class="large-4 columns">
-            <h3>Categories</h3>
-            {% for category in categories %}
-                <a href="{{ url_for('news_category', category = category.name) }}" class="button">{{category.name}}</a>
-            {% endfor %}
-        </div>
-        <!-- Right Column Stop -->
+		<!-- News Pagination Stop -->
 
-    </div>
+	</div>
+	<!-- Left Column Stop -->
+
+	<!-- Right Column Start -->
+	<div class="large-4 columns">
+		<h3>Categories</h3>
+		{% for category in categories %}
+		<a href="{{ url_for('news_category', category = category.name) }}" class="button">{{category.name}}</a>
+		{% endfor %}
+	</div>
+	<!-- Right Column Stop -->
+
+</div>
 
 {% endblock %}

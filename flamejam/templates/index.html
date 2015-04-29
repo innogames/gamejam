@@ -17,7 +17,7 @@
 {% for jam in jams if jam.start_time < current_datetime < jam.end_time and not counting %}
 {% set counting = true %}
 {% block head %}
-<link href='http://fonts.googleapis.com/css?family=Wallpoet&v2' rel='stylesheet' type='text/css'>
+<link href='//fonts.googleapis.com/css?family=Wallpoet&v2' rel='stylesheet' type='text/css'>
 {% endblock %}
 <a href="{{ url_for('countdown', jam_slug = jam.slug) }}">
 	{% set diff = jam.end_time - current_datetime %}
