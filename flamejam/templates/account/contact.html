@@ -3,33 +3,51 @@
 
 {% block title %}{{ user.username }}{% endblock %}
 
-{% block content %}
-<h1>
-    Contact user {{ user.username }}
-    <div class="pull-right">
-        <a href="{{ user.url() }}" class="btn btn-primary">&laquo; Back to Profile</a>
-    </div>
-</h1>
-
-<div style="margin-left: auto; margin-right: auto; width: 450px;">
-    <p>
-        You are sending an eMail to {{ user.getLink() }}. This user will receive your
-        message, as well as your own eMail address for replies. By using this feature,
-        you allow us to publish your address for this purpose to the selected
-        recipient.
-    </p>
-    {{ form_errors(form) }}
+{% block breadcrumb %}
+<!-- Breadcrumb Start -->
+<div class="row">
+	<div class="large-12 columns">
+		<ul class="breadcrumb_menu">
+			<li><a href="">Home</a></li>
+			<li><a href="{{ user.url() }}">User</a></li>
+			<li><a href="">{{ user.username }}</a></li>
+			<li class="active"><a href="">Contact</a></li>
+		</ul>
+	</div>
 </div>
+<!-- Breadcrumb Stop -->
+{% endblock %}
+
+{% block content %}
+<div class="content">
+	<div class="row">
+		<h1>
+			Contact user {{ user.username }}
+			<div class="pull-right">
+				<a href="{{ user.url() }}" class="button">&laquo; Back to Profile</a>
+			</div>
+		</h1>
+
+		<div style="margin-left: auto; margin-right: auto; width: 450px;">
+			<p>
+				You are sending an eMail to {{ user.getLink() }}. This user will receive your
+				message, as well as your own eMail address for replies. By using this feature,
+				you allow us to publish your address for this purpose to the selected
+				recipient.
+			</p>
+			{{ form_errors(form) }}
+		</div>
 
 
-<form method="post" style="text-align: center;">
-    {{ form.hidden_tag() }}
+		<form method="post" style="text-align: center;">
+			{{ form.hidden_tag() }}
 
-    <div>{{ form.message(rows = 10, style="width: 436px;") }}</div>
+			<div>{{ form.message(rows = 10, style="width: 436px;") }}</div>
 
-    <div>{{ form.captcha() | safe }}</div>
+			<div>{{ form.captcha | safe }}</div>
 
-    <input type="submit" value="Send mail" class="btn btn-primary" />
-</form>
-
+			<input type="submit" value="Send mail" class="button primary"/>
+		</form>
+	</div>
+</div>
 {% endblock %}
