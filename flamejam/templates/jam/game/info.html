@@ -54,6 +54,9 @@
 	<!-- right Col -->
 	<div class="large-4 columns">
 
+		{% if current_user.is_authenticated() and current_user in game.team.members %}
+		<a href="{{ url_for('edit_game', jam_slug = game.jam.slug, game_id = game.id) }}" class="button">Edit game</a>
+		{% endif %}
 		<!-- Downloads -->
 		<h3>Downloads</h3>
 		{% if game.packages %}
@@ -62,11 +65,6 @@
 		{% endfor %}
 		{% else %}
 		<p class="greenbox">There are no packages available yet.</p>
-		{% if current_user.is_authenticated() and current_user in game.team.members %}
-		<p class="greenbox">
-			<a href="{{ url_for('edit_game', jam_slug = game.jam.slug, game_id = game.id) }}" class="btn btn-mini">Upload a package</a>
-		</p>
-		{% endif %}
 		{% endif %}
 
 		<!-- Screenshots -->

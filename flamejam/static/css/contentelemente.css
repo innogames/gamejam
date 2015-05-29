@@ -510,6 +510,7 @@ a.circle {
     font-size: 30px;
     text-align: center;
     color: #fff;
+    margin-top: 10px;
     text-transform: uppercase;
     transition: background-color 300ms ease-out 0s;
 }

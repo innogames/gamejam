@@ -49,7 +49,7 @@ class GamePackage(db.Model):
         self.game = game
 
     def getLink(self):
-        return Markup('<a href="%s" style="color: #FFF;" target="_blank">%s</a>' % (self.url, GamePackage.typeString(
+        return Markup('<a href="%s" target="_blank">%s</a>' % (self.url, GamePackage.typeString(
             self.type)))
 
     def getLinkShort(self):
@@ -83,4 +83,3 @@ class GamePackage(db.Model):
             return -1
         else:
             return 0
-

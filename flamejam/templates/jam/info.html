@@ -40,20 +40,24 @@
 				{% if jam.getStatus().code >= 1 %}
 				{% set r = current_user.getParticipation(jam) if current_user.is_authenticated() else None %}
 				{% if r %}
-				<!--				<span style="font-size: 8pt; vertical-align: middle; margin-right: 10px;">
-									{% if r.team and r.team.members|length > 1 %}
-										You already have a team, not marked as "Looking for a team"
-									{% else %}
-										You are {% if not r.show_in_finder %}<b>not</b>{% endif %} marked as "Looking for a team"
-									&ndash;
-									<a href="{{ url_for('jam_toggle_show_in_finder', jam_slug = jam.slug) }}" class="link">Toggle</a>
-									{% endif %}
-								</span> -->
-
 				<div class="large-4 columns">
 					<a href="{{ url_for('jam_cancel_participation', jam_slug = jam.slug) }}" class="circle"
 							style="background-color: #df8505;">Sign out</a>
 				</div>
+				<div class="large-4 columns">
+					<a href="{{ url_for('jam_current_team', jam_slug = jam.slug) }}" class="circle">Team</a>
+				</div>
+
+				{% if r.team.game %}
+				<div class="large-4 columns">
+					<a href="{{ url_for('edit_game', jam_slug = jam.slug, game_id = r.team.game.id) }}" class="circle">Game</a>
+				</div>
+				{% else %}
+				<div class="large-4 columns">
+					<a href="{{ url_for('create_game', jam_slug = jam.slug) }}" class="circle">Game</a>
+				</div>
+				{% endif %}
+
 				{% else %}
 				{% if current_user.is_anonymous() == false %}
 				<div class="large-4 columns">
@@ -63,6 +67,19 @@
 				{% endif %}
 				{% endif %}
 			</div>
+			{% if r %}
+			<h3>Team search</h3>
+
+			<p>
+				{% if r.team and r.team.members|length > 1 %}
+				You already have a team, not marked as "Looking for a team"
+				{% else %}
+				You are {% if not r.show_in_finder %}<b>not</b>{% endif %} marked as "Looking for a team"
+				&ndash;
+				<a href="{{ url_for('jam_toggle_show_in_finder', jam_slug = jam.slug) }}" class="link">Toggle</a>
+				{% endif %}
+			</p>
+			{% endif %}
 
 			<h3>Description</h3>
 
