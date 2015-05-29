@@ -25,17 +25,20 @@
 	<!-- left Col -->
 	<div class="large-8 columns">
 
+		<h1 class="gamejam_overview">{{ game.title }}</h1>
+
+		<p class="gamejam_subline"><a href="{{ game.team.url() }}">{{ game.team.name }}</a></p>
+
 		{% if not game.screenshots|count %}
 		{% else %}
 		{% set screenshot = game.screenshots|first %}
 		<img class="game_banner" src="{{ screenshot.url }}">
 		{% endif %}
 
-		<h1 class="gamejam_overview">{{ game.title }}</h1>
-
-		<p class="gamejam_subline"><a href="{{ game.team.url() }}">{{ game.team.name }}</a></p>
 
 		{% if game.description %}
+		<br/><br/>
+
 		<p><strong>Description</strong><br>
 			{{ (game.description or "*This game has no description.*") | markdown }}
 		</p>
@@ -61,7 +64,7 @@
 		<h3>Downloads</h3>
 		{% if game.packages %}
 		{% for package in game.packages %}
-		<p class="greenbox">{{ package.getLink() }}</p>
+		<p>{{ package.getLink() }}</p>
 		{% endfor %}
 		{% else %}
 		<p class="greenbox">There are no packages available yet.</p>
@@ -96,6 +99,7 @@
 	</div>
 	<div class="row">
 		<div class="large-8 columns">
+			<br/>
 			{% set status = game.jam.getStatus().code %}
 			{% if status >= 4 %}
 			{% set categories = game.ratingCategories + ["overall"] %}
@@ -208,7 +212,7 @@
 				<div class="small">You can use markdown in the comments!</div>
 
 				<p style="text-align: right;">
-					<input type="submit" value="Post comment" class="btn btn-primary">
+					<input type="submit" value="Post comment" class="button">
 				</p>
 				</p>
 			</form>

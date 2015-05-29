@@ -1,42 +1,49 @@
 {% extends "jam/base.html" %}
 {% from "_formhelpers.html" import form_errors %}
 
-{% block content %}
-<h1>Leave team {{ team.name }}</h1>
-
-<form method="post">
-{{ form.hidden_tag() }}
-{{ form_errors(form) }}
-
-<div class="row-fluid">
-    <div class="span3">
-    </div>
-    <div class="span6">
-        <h2>Confirmation</h2>
-        <p>
-            You are in the process of leaving your team. If there is no
-            user left in that team, it is <b style="color: red;">PERMANENTLY DELETED</b>,
-            including all games, invitations and other team-related
-            data.
-        </p>
-        <p>
-            You will still be participating in the jam, and you can still be invited
-            to other teams via the participant list. You will have your <b>own team</b>
-            with its own page, to which you can invite other people, too.
-        </p>
-        <p>
-            <label class="checkbox">
-                {{ form.confirm() }}
-                {{ form.confirm.label.text }}
-            </label>
-        </p>
-        <p>
-            <input type="submit" class="btn btn-primary" value="I understand, leave the team" />
-        </p>
-    </div>
-    <div class="span3">
-    </div>
+{% block breadcrumb %}
+<div class="row" xmlns="http://www.w3.org/1999/html">
+	<div class="large-12 columns">
+		<ul class="breadcrumb_menu">
+			<li><a href="{{ url_for('index') }}">Home</a></li>
+			<li>Game Jams</li>
+			<li><a href="{{ url_for('jam_info', jam_slug=jam.slug) }}">{{ jam.title }}</a></li>
+			<li class="active"><a href="#">Leave team</a></li>
+		</ul>
+	</div>
 </div>
-</form>
+{% endblock %}
+
+{% block content %}
+<div class="row">
+	<h1>Leave team "{{ team.name }}"</h1>
+
+	<form method="post">
+		{{ form.hidden_tag() }}
+		{{ form_errors(form) }}
+
+		<p>
+			You are in the process of leaving your team. If there is no
+			user left in that team, it is <b style="color: red;">PERMANENTLY DELETED</b>,
+			including all games, invitations and other team-related
+			data.
+		</p>
+
+		<p>
+			You will still be participating in the jam, and you can still be invited
+			to other teams via the participant list. You will have your <b>own team</b>
+			with its own page, to which you can invite other people, too.
+		</p>
+		</br>
+		<p>
+			{{ form.confirm(style="max-width:20px;max-height:14px;") }}
+			{{ form.confirm.label.text }}
+		</p>
+
+		<p>
+			<input type="submit" class="button alert" value="I understand, leave the team"/>
+		</p>
+	</form>
+</div>
 
 {% endblock %}
