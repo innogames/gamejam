@@ -3,15 +3,6 @@
 {% set status = jam.getStatus() %}
 {% block center %}
 {% set s = ["Announced", "Registrations", "In Progress", "Packaging", "Rating", "Finished"][status.code] %}
-<div class="center-status" title="{{ status }}">
-	{% if status.code == 2 %}
-	<a href="{{ url_for('countdown', jam_slug = jam.slug) }}">
-		<div class="mini-countdown" time="{{ jam.end_time }}">
-			<div class="time">{{ (jam.end_time - current_datetime) | countdowndelta }}</div>
-		</div>
-	</a>
-	{% endif %}
-</div>
 {% endblock %}
 
 {% block menu %}
