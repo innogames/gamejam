@@ -10,26 +10,29 @@ from flamejam.utils import get_current_jam
 from flask import render_template, request, url_for, redirect, flash, jsonify
 from werkzeug.exceptions import *
 
+
 @app.errorhandler(404)
 @app.errorhandler(403)
 def error(e):
-    return render_template("error.html", error = e), e.code
+    return render_template("error.html", error=e), e.code
+
 
 @app.errorhandler(PermissionDenied)
 def error_permission(e):
     return error(Forbidden())
 
+
 @app.errorhandler(500)
 def application_error(e):
     msg = Message("[%s] Exception Detected: %s" % (app.config['SHORT_NAME'], e.message),
-                    recipients=app.config['ADMINS'])
+                  recipients=app.config['ADMINS'])
     msg_contents = [
         'Traceback:',
-        '='*80,
+        '=' * 80,
         traceback.format_exc(),
         '\n',
         'Request Information:',
-        '='*80
+        '=' * 80
     ]
     environ = request.environ
     environkeys = sorted(environ.keys())
@@ -41,25 +44,27 @@ def application_error(e):
     mail.send(msg)
     return error(InternalServerError())
 
+
 @app.errorhandler(SMTPRecipientsRefused)
 def invalid_email(exception):
     flash("Invalid email address.", "error")
     return redirect(url_for('login'))
 
+
 @app.route("/map")
 @app.route("/map/<mode>")
 @app.route("/map/<mode>/<int:id>")
-def map(mode = "users", id = 0):
+def map(mode="users", id=0):
     users = []
     extra = None
     if mode == "jam":
-        extra = Jam.query.filter_by(id = id).first_or_404()
+        extra = Jam.query.filter_by(id=id).first_or_404()
         users = extra.participants
     elif mode == "user":
-        extra = User.query.filter_by(id = id).first_or_404()
+        extra = User.query.filter_by(id=id).first_or_404()
         users = [extra]
     elif mode == "team":
-        extra = Team.query.filter_by(id = id).first_or_404()
+        extra = Team.query.filter_by(id=id).first_or_404()
         users = extra.members
     else:
         mode = "users"
@@ -70,7 +75,8 @@ def map(mode = "users", id = 0):
         if user.location_coords:
             x += 1
 
-    return render_template("misc/map.html", users = users, mode = mode, extra = extra, x = x)
+    return render_template("misc/map.html", users=users, mode=mode, extra=extra, x=x)
+
 
 @app.route("/search")
 def search():
@@ -82,11 +88,11 @@ def search():
     jams = Jam.query.filter(db.or_(
         Jam.title.like(like))).all()
 
-    games = Game.query.filter_by(is_deleted = False).filter(
+    games = Game.query.filter_by(is_deleted=False).filter(
         db.or_(Game.description.like(like),
                Game.title.like(like))).all()
 
-    users = User.query.filter_by(is_deleted = False).filter(
+    users = User.query.filter_by(is_deleted=False).filter(
         User.username.like(like)).all()
 
     total = len(jams) + len(games) + len(users)
@@ -98,16 +104,19 @@ def search():
     elif len(users) == total == 1:
         return redirect(users[0].url())
 
-    return render_template("misc/search.html", q = q, jams = jams, games = games, users = users)
+    return render_template("misc/search.html", q=q, jams=jams, games=games, users=users)
+
 
 @app.route('/contact')
 def contact():
     return render_template('misc/contact.html')
 
+
 @app.route('/rules')
 @app.route('/rulez')
 def rules():
     return render_template('misc/rules.html')
+
 
 @app.route('/stats')
 @app.route('/statistics')
@@ -130,7 +139,7 @@ def statistics():
         users = 0
         for game in jam.games:
             if not game.is_deleted:
-                teamsize = len(game.team.members) # for the author
+                teamsize = len(game.team.members)  # for the author
                 users += teamsize
 
                 if teamsize > biggest_team_size:
@@ -141,7 +150,7 @@ def statistics():
             most_users_per_jam = users
             most_users_jam = jam
 
-        games = Game.query.filter_by(is_deleted = False).count()
+        games = Game.query.filter_by(is_deleted=False).count()
 
         if games > most_games_per_jam:
             most_games_per_jam = games
@@ -149,19 +158,19 @@ def statistics():
 
         all_jam_users += users
 
-    all_games = Game.query.filter_by(is_deleted = False).all()
+    all_games = Game.query.filter_by(is_deleted=False).all()
     finished_games = []
     for game in all_games:
         if game.jam.getStatus() == JamStatusCode.FINISHED:
             finished_games.append(game)
-    finished_games.sort(key = Game.score.fget, reverse = True)
+    finished_games.sort(key=Game.score.fget, reverse=True)
     stats["best_games"] = finished_games[:3]
 
-    user_most_games = User.query.filter_by(is_deleted = False).all()
-    user_most_games.sort(key = User.numberOfGames, reverse = True)
+    user_most_games = User.query.filter_by(is_deleted=False).all()
+    user_most_games.sort(key=User.numberOfGames, reverse=True)
     stats["user_most_games"] = user_most_games[:3]
 
-    if stats["total_jams"]: # against division by zero
+    if stats["total_jams"]:  # against division by zero
         stats["average_users"] = all_jam_users * 1.0 / stats["total_jams"];
     else:
         stats["average_users"] = 0
@@ -169,14 +178,14 @@ def statistics():
     stats["most_users_jam"] = most_users_jam
 
     stats["total_games"] = Game.query.filter_by(is_deleted=False).count()
-    if stats["total_jams"]: # against division by zero
+    if stats["total_jams"]:  # against division by zero
         stats["average_games"] = stats["total_games"] * 1.0 / stats["total_jams"]
     else:
         stats["average_games"] = 0
     stats["most_games_per_jam"] = most_games_per_jam
     stats["most_games_jam"] = most_games_jam
 
-    if stats["average_games"]: # against division by zero
+    if stats["average_games"]:  # against division by zero
         stats["average_team_size"] = stats["average_users"] * 1.0 / stats["average_games"]
     else:
         stats["average_team_size"] = 0
@@ -184,25 +193,24 @@ def statistics():
     stats["biggest_team_game"] = biggest_team_game
 
 
-    #Best rated games
-    #User with most games
+    # Best rated games
+    # User with most games
 
-    return render_template('misc/statistics.html', stats = stats)
+    return render_template('misc/statistics.html', stats=stats)
+
 
 @app.route('/faq')
 @app.route('/faq/<page>')
-def faq(page = ""):
+def faq(page=""):
     if page.lower() == "packaging":
         return render_template('misc/faq_packaging.html')
     return render_template('misc/faq.html')
+
 
 @app.route('/links')
 def links():
     return render_template('misc/links.html')
 
-@app.route('/subreddit')
-def subreddit():
-    return redirect("http://www.reddit.com/r/bacongamejam")
 
 @app.route('/current_jam_info')
 def current_jam_info():
@@ -216,6 +224,7 @@ def current_jam_info():
                    participants_count=len(jam.participations),
                    teams_count=len(jam.teams))
 
+
 @app.route('/site_info')
 def site_info():
     stats = {}
@@ -225,8 +234,8 @@ def site_info():
     return jsonify(total_jams=stats["total_jams"],
                    total_users=stats["total_users"],
                    total_games=stats["total_games"],
-                   subreddit=url_for('subreddit', _external=True),
                    rules=url_for('rules', _external=True))
+
 
 @app.route('/tick')
 def tick():
@@ -247,7 +256,7 @@ def tick():
             msg += "sending notification " + str(n) + " on jam " + jam.slug + "\n"
 
     # Delete unverified users
-    for user in User.query.filter_by(is_verified = False):
+    for user in User.query.filter_by(is_verified=False):
         # new_mail is set on users that *changed* their address
         if not user.new_email and user.registered < datetime.utcnow() - timedelta(days=7):
             msg += "deleted user " + user.username + " for being unverified too long\n"

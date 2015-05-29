@@ -1,7 +1,7 @@
 {% extends "emails/base.txt" %}
 
 {% block content %}
-Hello {{ recipient.username }}, {% if not email_changed %}welcome to BaconGameJam!{% endif %}
+Hello {{ recipient.username }}, {% if not email_changed %}welcome to InnoGames Game Jam!{% endif %}
 
 You have recieved this email to confirm your ownership of the email given during
 signup for the user {{ recipient.username }}.
@@ -10,5 +10,5 @@ To verify your email address, please visit the following verification link:
 
 {{ url_for('verify', username=recipient.username, verification=recipient.getVerificationHash(), _external=True) }}
 
-If you received this email by error or did not {% if email_changed %}change your settings{% else %}register on bacongamejam.org{% endif %}, please ignore this email.
+If you received this email by error or did not {% if email_changed %}change your settings{% else %}register on gamejam.innogames.com{% endif %}, please ignore this email.
 {% endblock %}

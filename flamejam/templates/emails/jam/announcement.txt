@@ -4,7 +4,7 @@
 Hello {{ recipient.username }}!
 
 You receive this notification because a new game jam was announced
-on bacongamejam.org. We'd love to see you participating, so mark
+on gamejam.innogames.com. We'd love to see you participating, so mark
 the date in your calendar and create a great game!
 
 Some jam info

@@ -1,8 +1,8 @@
 {% extends "emails/base.txt" %}
 
 {% block content %}
-You received a message on BaconGameJam from {{ sender.username }}. Below is
-this message. Note that this message is not sent from the BaconGameJam staff
+You received a message on InnoGames Game Jam from {{ sender.username }}. Below is
+this message. Note that this message is not sent from the InnoGames Game Jam staff
 but another user of the website. We are not responsible for it. You can reply
 via eMail to <{{ sender.email }}>.
 
