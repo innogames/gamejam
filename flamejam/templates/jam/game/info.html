@@ -64,7 +64,7 @@
 		<h3>Downloads</h3>
 		{% if game.packages %}
 		{% for package in game.packages %}
-		<p>{{ package.getLink() }}</p>
+		<p class="greenbox">{{ package.getLink() }}</p>
 		{% endfor %}
 		{% else %}
 		<p class="greenbox">There are no packages available yet.</p>
