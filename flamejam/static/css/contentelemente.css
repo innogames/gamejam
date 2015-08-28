@@ -10,6 +10,10 @@
     margin-bottom: 2em;
 }
 
+.greenbox a {
+    color: #FFFFFF !important;
+}
+
 /*****************************************************/
 .top-banner {
     margin-bottom: 50px;
