@@ -15,7 +15,9 @@ def games(page):
     page = int(page)
     if page < 1:
         page = 1
-    games = Game.query.filter_by(is_deleted=False).order_by(desc(Game.id)).paginate(page, 6, False)
+
+    # is_deleted=False for enabling games again
+    games = Game.query.filter_by(is_deleted=True).order_by(desc(Game.id)).paginate(page, 6, False)
     jams = Jam.query.all()
 
     return render_template("game/list.html", games=games, jams=jams)
@@ -147,6 +149,9 @@ def game_screenshot_edit(id, action):
 
 @app.route('/jams/<jam_slug>/<game_id>/', methods=("POST", "GET"))
 def show_game(jam_slug, game_id):
+    # Temporary disabled games
+    return redirect(url_for("index"))
+
     comment_form = WriteComment()
     jam = Jam.query.filter_by(slug=jam_slug).first_or_404()
     game = Game.query.filter_by(is_deleted=False, id=game_id).filter_by(jam=jam).first_or_404()
