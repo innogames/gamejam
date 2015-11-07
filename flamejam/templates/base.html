@@ -41,7 +41,7 @@
             <!-- Lang Menu -->
             <p class="lang_menu"><a href="#" class="active">en</a></p>
             <!-- Login -->
-            {% if current_user.is_anonymous %}
+            {% if current_user.is_anonymous == True %}
             <a href="{{ url_for('login') }}" class="button login">Login / Signup</a>
 
             <p class="logout_headline">&nbsp;</p>
