@@ -38,26 +38,6 @@
             {{ form.help.label() }}
             <p>{{ form.help(rows = 6, class="small-5") }}</p>
 
-            <h3>Rating categories</h3>
-            {% if game.jam.getStatus().code < 4 %}
-            {% for category in RATING_CATEGORIES if category != "overall" %}
-            {{ form.get(category)(style="max-width:20px;max-height:14px;") }}
-            {{ form.get(category).label.text }}
-            {% endfor %}
-            <p>
-                Select the categories for which users should give feedback during
-                rating. This feedback does not count into the score, but may
-                give you a hint what they liked about your game.
-                <i>This selection will be locked when the rating starts.</i>
-            </p>
-            {% else %}
-            <span style="vertical-align: -7px;"><b>{{ ", ".join(game.ratingCategories).title() }}</b></span>
-
-            <div class="form-info">
-                This selection has been locked since the rating started.
-            </div>
-            {% endif %}
-
             <p style="text-align: center">
                 <input type="reset" value="Reset" class="button alert"/>
                 <input type="submit" value="Save settings" class="button"/>
