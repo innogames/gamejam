@@ -31,14 +31,14 @@
             <div class="span6">
                 <p>
                     You were invited to the team
-                    <a href="{{ invitation.team.url() }}">{{ invitation.team.name }}</a>. You can either
+                    <a href="{{ invitation.team.url() }}" class="link">{{ invitation.team.name }}</a>. You can either
                     accept or decline this invitation.
                 </p>
                 {% set current_team = current_user.getTeam(invitation.team.jam) %}
 
                 {% if current_team %}
                 <p>
-                    Notice that you will leave your current team (<a href="{{ current_team.url() }}">{{
+                    Notice that you will leave your current team (<a href="{{ current_team.url() }}" class="link">{{
                     current_team.name }}</a>).
                     If there is no user left in that team, it is <b style="color: red;">PERMANENTLY DELETED</b>,
                     including all games, invitations and other team-related
@@ -51,19 +51,20 @@
                 </p>
 
                 <p style="text-align: center">
-                    <a href="{{ invitation.url(action = 'decline') }}" class="btn btn-danger">Decline</a>
-                    <a href="{{ invitation.url(action = 'accept') }}" class="btn btn-success">Accept</a>
+                    <a href="{{ invitation.url(action = 'decline') }}" class="button btn-danger">Decline</a>
+                    <a href="{{ invitation.url(action = 'accept') }}" class="button btn-success">Accept</a>
                 </p>
                 {% else %}
                 <p class="alert alert-error">
-                    You are not yet registered for participation in <a href="{{ jam.url() }}">{{ jam.title }}</a>.
+                    You are not yet registered for participation in <a href="{{ jam.url() }}" class="link">{{ jam.title
+                    }}</a>.
                     This is required to join a team. Please register first and return to
                     this page.
                 </p>
 
                 <p>
                     <a href="{{ url_for('jam_participate', jam_slug = jam.slug) }}" target="_blank"
-                       class="btn btn-primary">Participate in the jam</a>
+                       class="button btn-primary">Participate in the jam</a>
                 </p>
                 {% endif %}
             </div>
@@ -74,7 +75,7 @@
         <div class="well" style="max-width: 400px;">
             <p>
                 This is the invitation for {{ invitation.user.getLink() }} to your team
-                <a href="{{ invitation.team.url() }}">{{ invitation.team.name }}</a>.
+                <a href="{{ invitation.team.url() }}" class="link">{{ invitation.team.name }}</a>.
             </p>
 
             <p>
@@ -89,7 +90,7 @@
             </p>
 
             <p style="font-weight: bold; font-size: 1.2em;">
-                <a href="{{ invitation.url() }}">{{ invitation.url() }}</a>
+                <a href="{{ invitation.url() }}" class="link">{{ invitation.url() }}</a>
             </p>
 
             <p>
