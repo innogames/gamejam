@@ -55,6 +55,85 @@ def create_game(jam_slug):
     return render_template("jam/game/create.html", jam=jam, enabled=enabled, form=form)
 
 
+
+@app.route("/jams/<jam_slug>/<game_id>/edit/image", methods=("GET", "POST"))
+@login_required
+def upload_game_image(jam_slug, game_id):
+    jam = Jam.query.filter_by(slug=jam_slug).first_or_404()
+    game = Game.query.filter_by(is_deleted=False, id=game_id).first_or_404()
+
+    if not game or not current_user in game.team.members:
+        abort(403)
+
+    if request.method == 'POST':
+        file = request.files['file']
+        if file and allowed_file(file.filename):
+            origFilename = secure_filename(file.filename)
+            filename = str(game.id) + '_' + origFilename
+            filepath = os.path.join(app.config.get('UPLOAD_FOLDER_IMAGES'), filename)
+            if not os.path.isfile(filepath):
+                file.save(filepath)
+                imageUrl = url_for('game_image', jam_slug=jam_slug, game_id=game_id, filename=origFilename)
+                screenshot_form = GameAddScreenshotForm()
+                s = GameScreenshot(imageUrl, imageUrl, game)
+                db.session.add(s)
+                db.session.commit()
+                flash("Your screenshot has been added.", "success")
+            else:
+                flash("Image already exist, please delete it first!", "error")
+
+    return redirect(url_for('edit_game', jam_slug=jam_slug, game_id=game_id))
+
+
+@app.route("/jams/<jam_slug>/<game_id>/edit/package", methods=("GET", "POST"))
+@login_required
+def upload_game_package(jam_slug, game_id):
+    jam = Jam.query.filter_by(slug=jam_slug).first_or_404()
+    game = Game.query.filter_by(is_deleted=False, id=game_id).first_or_404()
+    package_form = GameAddPackageForm()
+
+    if not game or not current_user in game.team.members:
+        abort(403)
+
+    if request.method == 'POST':
+        file = request.files['file']
+        if file and allowed_file(file.filename):
+            origFilename = secure_filename(file.filename)
+            filename = str(game.id) + '_' + origFilename
+            filepath = os.path.join(app.config.get('UPLOAD_FOLDER_PACKAGES'), filename)
+            if not os.path.isfile(filepath):
+                file.save(filepath)
+                packageUrl = url_for('game_package', jam_slug=jam_slug, game_id=game_id,
+                                     filename=origFilename)
+
+                p = GamePackage(game, packageUrl, package_form.type.data)
+                db.session.add(p)
+                db.session.commit()
+                flash("Your package has been added.", "success")
+            else:
+                flash("Package already exist, please delete it first!", "error")
+
+    return redirect(url_for('edit_game', jam_slug=jam_slug, game_id=game_id))
+
+
+@app.route("/jams/<jam_slug>/<game_id>/image/<filename>", methods=("GET", "POST"))
+def game_image(jam_slug, game_id, filename):
+    jam = Jam.query.filter_by(slug=jam_slug).first_or_404()
+    game = Game.query.filter_by(is_deleted=False, id=game_id).first_or_404()
+    filename = str(game.id) + '_' + filename
+
+    return send_from_directory(app.config.get('UPLOAD_FOLDER_IMAGES'), filename)
+
+
+@app.route("/jams/<jam_slug>/<game_id>/package/<filename>", methods=("GET", "POST"))
+def game_package(jam_slug, game_id, filename):
+    jam = Jam.query.filter_by(slug=jam_slug).first_or_404()
+    game = Game.query.filter_by(is_deleted=False, id=game_id).first_or_404()
+    filename = str(game.id) + '_' + filename
+
+    return send_from_directory(app.config.get('UPLOAD_FOLDER_PACKAGES'), filename)
+
+
 @app.route("/jams/<jam_slug>/<game_id>/edit/", methods=("GET", "POST"))
 @login_required
 def edit_game(jam_slug, game_id):
@@ -89,19 +168,19 @@ def edit_game(jam_slug, game_id):
         flash("Your settings have been applied.", category="success")
         return redirect(game.url())
 
-    if package_form.validate_on_submit():
-        s = GamePackage(game, package_form.url.data, package_form.type.data)
-        db.session.add(s)
-        db.session.commit()
-        flash("Your package has been added.", "success")
-        return redirect(request.url)
+    # if package_form.validate_on_submit():
+    #    s = GamePackage(game, package_form.url.data, package_form.type.data)
+    #    db.session.add(s)
+    #    db.session.commit()
+    #    flash("Your package has been added.", "success")
+    #    return redirect(request.url)
 
-    if screenshot_form.validate_on_submit():
-        s = GameScreenshot(screenshot_form.url.data, screenshot_form.caption.data, game)
-        db.session.add(s)
-        db.session.commit()
-        flash("Your screenshot has been added.", "success")
-        return redirect(request.url)
+    # if screenshot_form.validate_on_submit():
+    #    s = GameScreenshot(screenshot_form.url.data, screenshot_form.caption.data, game)
+    #    db.session.add(s)
+    #    db.session.commit()
+    #    flash("Your screenshot has been added.", "success")
+    #    return redirect(request.url)
 
     return render_template("jam/game/edit.html", jam=jam, game=game,
                            form=form, package_form=package_form, screenshot_form=screenshot_form)
@@ -118,7 +197,12 @@ def game_package_edit(id, action):
         abort(403)
 
     if action == "delete":
+        filename = str(p.game.id) + '_' + p.url.rsplit('/', 1)[-1]
+        filepath = os.path.join(app.config.get('UPLOAD_FOLDER_PACKAGES'), filename)
+        os.remove(filepath)
         db.session.delete(p)
+        flash("Your package has been deleted.", "success")
+
     db.session.commit()
     return redirect(url_for("edit_game", jam_slug=p.game.jam.slug, game_id=p.game.id))
 
@@ -138,7 +222,12 @@ def game_screenshot_edit(id, action):
     elif action == "down":
         s.move(1)
     elif action == "delete":
+        filename = str(s.game.id) + '_' + s.url.rsplit('/', 1)[-1]
+        filepath = os.path.join(app.config.get('UPLOAD_FOLDER_IMAGES'), filename)
+        os.remove(filepath)
         db.session.delete(s)
+        flash("Your image has been deleted.", "success")
+
         i = 0
         for x in s.game.screenshotsOrdered:
             x.index = i
