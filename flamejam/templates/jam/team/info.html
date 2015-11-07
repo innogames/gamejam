@@ -5,95 +5,95 @@
 {% block breadcrumb %}
 <!-- Breadcrumb Start -->
 <div class="row">
-	<div class="large-12 columns">
-		<ul class="breadcrumb_menu">
-			<li><a href="{{ url_for('index') }}">Home</a></li>
-			<li><a href="{{ url_for('jams') }}">Game Jams</a></li>
-			<li><a href="{{ url_for('jam_info', jam_slug=team.jam.slug) }}">{{ team.jam.title }}</a></li>
-			<li class="active"><a href="#">{{ team.name }}</a></li>
-		</ul>
-	</div>
+    <div class="large-12 columns">
+        <ul class="breadcrumb_menu">
+            <li><a href="{{ url_for('index') }}">Home</a></li>
+            <li><a href="{{ url_for('jams') }}">Game Jams</a></li>
+            <li><a href="{{ url_for('jam_info', jam_slug=team.jam.slug) }}">{{ team.jam.title }}</a></li>
+            <li class="active"><a href="#">{{ team.name }}</a></li>
+        </ul>
+    </div>
 </div>
 <!-- Breadcrumb Stop -->
 {% endblock %}
 
 {% block content %}
 <div class="row">
-	<h1>
-		{{ team.name }}
-		<small class="small">at {{ jam.title }}</small>
-	</h1>
-	<div class="small">
-		{% if current_user.is_authenticated() and current_user.inTeam(team) %}
-		{% if team.canInvite(current_user) %}
-		<a style="color:#1e7f11" href="{{ url_for('team_settings', jam_slug = team.jam.slug) }}"
-				class="btn btn-normal">Invite a member</a>
-		{% elif team.jam.team_limit > 1 %}
-		<small>Team is full</small>
-		{% endif %}
-		|
-		<a style="color:#1e7f11" href="{{ url_for('leave_team', jam_slug = jam.slug) }}" class="btn btn-normal">Quit
-			the team</a> |
-		<a style="color:#1e7f11" href="{{ url_for('team_settings', jam_slug = team.jam.slug) }}"
-				class="btn btn-primary btn-normal">Team settings</a>
-		{% endif %}
-	</div>
+    <h1>
+        {{ team.name }}
+        <small class="small">at {{ jam.title }}</small>
+    </h1>
+    <div class="small">
+        {% if current_user.is_authenticated and current_user.inTeam(team) %}
+        {% if team.canInvite(current_user) %}
+        <a style="color:#1e7f11" href="{{ url_for('team_settings', jam_slug = team.jam.slug) }}"
+           class="btn btn-normal">Invite a member</a>
+        {% elif team.jam.team_limit > 1 %}
+        <small>Team is full</small>
+        {% endif %}
+        |
+        <a style="color:#1e7f11" href="{{ url_for('leave_team', jam_slug = jam.slug) }}" class="btn btn-normal">Quit
+            the team</a> |
+        <a style="color:#1e7f11" href="{{ url_for('team_settings', jam_slug = team.jam.slug) }}"
+           class="btn btn-primary btn-normal">Team settings</a>
+        {% endif %}
+    </div>
 
-	<div class="span4">
-		<h3>Team Details</h3>
-		<dl>
-			<dt>Participants</dt>
-			<dd>
-				{{ team.members | length }} member{{ "" if team.members | length == 1 else "s" }}
-			</dd>
+    <div class="span4">
+        <h3>Team Details</h3>
+        <dl>
+            <dt>Participants</dt>
+            <dd>
+                {{ team.members | length }} member{{ "" if team.members | length == 1 else "s" }}
+            </dd>
 
-			<dt>Founded by</dt>
-			<p>
-				{{ team.members[0].getLink() }}
-			</p>
+            <dt>Founded by</dt>
+            <p>
+                {{ team.members[0].getLink() }}
+            </p>
 
-			{% if team.livestreams %}
-			<dt>Livestream</dt>
-			<dd>
-				{% for line in team.livestreams.splitlines() %}
-				<a href="{{ line }}">{{ line if line|length < 32 else (line[:32] + "...") }}</a><br/>
-				{% endfor %}
-			</dd>
-			{% endif %}
+            {% if team.livestreams %}
+            <dt>Livestream</dt>
+            <dd>
+                {% for line in team.livestreams.splitlines() %}
+                <a href="{{ line }}">{{ line if line|length < 32 else (line[:32] + "...") }}</a><br/>
+                {% endfor %}
+            </dd>
+            {% endif %}
 
-			{% if team.irc %}
-			<dt>IRC Channel</dt>
-			<dd>
-				{{ team.irc }}
-			</dd>
-			{% endif %}
-		</dl>
-	</div>
-	<h3>Description</h3>
-	{{ (team.description or "*no description available*") | markdown }}
+            {% if team.irc %}
+            <dt>IRC Channel</dt>
+            <dd>
+                {{ team.irc }}
+            </dd>
+            {% endif %}
+        </dl>
+    </div>
+    <h3>Description</h3>
+    {{ (team.description or "*no description available*") | markdown }}
 
-	{% if team.game %}
-	<h3>This team's Game</h3>
+    {% if team.game %}
+    <h3>This team's Game</h3>
 
-	<p style=" font-size: 1.3em;"><a href="{{ team.game.url() }}">
-		{{ team.game.title }}
-	</a></p>
-	{% endif %}
+    <p style=" font-size: 1.3em;"><a href="{{ team.game.url() }}">
+        {{ team.game.title }}
+    </a></p>
+    {% endif %}
 
-	<h3>Users in this team</h3>
-	{% for member in team.members %}
-	<p><img width="40" height="40" src="{{ member.getAvatar(40) }}"/>
-		{{ member.getLink(real = True, avatar = False) }}
-		{% set as = member.abilityString()|safe %}
+    <h3>Users in this team</h3>
+    {% for member in team.members %}
+    <p><img width="40" height="40" src="{{ member.getAvatar(40) }}"/>
+        {{ member.getLink(real = True, avatar = False) }}
+        {% set as = member.abilityString()|safe %}
 
-		<span class="abilities">{{ as if as else "n/a"|safe }}</span>
-	</p>
-	{% endfor %}
+        <span class="abilities">{{ as if as else "n/a"|safe }}</span>
+    </p>
+    {% endfor %}
 
-	{% if current_user.is_authenticated() and current_user in team.members %}
-	<p><b>Note:</b> You can invite users from the
-		<a href="{{ url_for('team_settings', jam_slug = team.jam.slug) }}">team settings</a> page.</p>
-	{% endif %}
+    {% if current_user.is_authenticated and current_user in team.members %}
+    <p><b>Note:</b> You can invite users from the
+        <a href="{{ url_for('team_settings', jam_slug = team.jam.slug) }}">team settings</a> page.</p>
+    {% endif %}
 </div>
 </div>
 

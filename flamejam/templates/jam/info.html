@@ -5,202 +5,202 @@
 {% block breadcrumb %}
 <!-- Breadcrumb Start -->
 <div class="row">
-	<div class="large-12 columns">
-		<ul class="breadcrumb_menu">
-			<li><a href="{{ url_for('index') }}">Home</a></li>
-			<li><a href="{{ url_for('jams') }}">Game Jams</a></li>
-			<li class="active"><a href="">{{ jam.title }}</a></li>
-		</ul>
-	</div>
+    <div class="large-12 columns">
+        <ul class="breadcrumb_menu">
+            <li><a href="{{ url_for('index') }}">Home</a></li>
+            <li><a href="{{ url_for('jams') }}">Game Jams</a></li>
+            <li class="active"><a href="">{{ jam.title }}</a></li>
+        </ul>
+    </div>
 </div>
 <!-- Breadcrumb Stop -->
 {% endblock %}
 
 {% block content %}
 <div class="content">
-	<!-- 2 Col -->
-	<div class="row">
+    <!-- 2 Col -->
+    <div class="row">
 
-		<!-- left Col -->
-		<div class="large-8 columns">
-			<h1 class="gamejam_overview">{{ jam.title }}</h1>
+        <!-- left Col -->
+        <div class="large-8 columns">
+            <h1 class="gamejam_overview">{{ jam.title }}</h1>
 
-			<p class="gamejam_subline">{{ (jam.theme) if jam.showTheme else "Theme not announced" }}</p>
+            <p class="gamejam_subline">{{ (jam.theme) if jam.showTheme else "Theme not announced" }}</p>
 
-			<p><strong>Location</strong> Hamburg<br>
-				<strong>Date</strong> {{ jam.start_time | datenoyear }} - {{ jam.end_time | date }}</p>
+            <p><strong>Location</strong> Hamburg<br>
+                <strong>Date</strong> {{ jam.start_time | datenoyear }} - {{ jam.end_time | date }}</p>
 
-			<div class="row" style="margin-top: 4em; margin-bottom: 3em;">
-				<div class="large-4 columns">
-					<a href="{{ url_for('faq') }}" class="circle">FAQ</a>
-				</div>
-				<div class="large-4 columns">
-					<a href="{{ url_for('rules') }}" class="circle">Rules</a>
-				</div>
-				{% if jam.getStatus().code >= 1 %}
-				{% set r = current_user.getParticipation(jam) if current_user.is_authenticated() else None %}
-				{% if r %}
-				<div class="large-4 columns">
-					<a href="{{ url_for('jam_cancel_participation', jam_slug = jam.slug) }}" class="circle"
-							style="background-color: #df8505;">Sign out</a>
-				</div>
-				<div class="large-4 columns">
-					<a href="{{ url_for('jam_current_team', jam_slug = jam.slug) }}" class="circle">Team</a>
-				</div>
+            <div class="row" style="margin-top: 4em; margin-bottom: 3em;">
+                <div class="large-4 columns">
+                    <a href="{{ url_for('faq') }}" class="circle">FAQ</a>
+                </div>
+                <div class="large-4 columns">
+                    <a href="{{ url_for('rules') }}" class="circle">Rules</a>
+                </div>
+                {% if jam.getStatus().code >= 1 %}
+                {% set r = current_user.getParticipation(jam) if current_user.is_authenticated else None %}
+                {% if r %}
+                <div class="large-4 columns">
+                    <a href="{{ url_for('jam_cancel_participation', jam_slug = jam.slug) }}" class="circle"
+                       style="background-color: #df8505;">Sign out</a>
+                </div>
+                <div class="large-4 columns">
+                    <a href="{{ url_for('jam_current_team', jam_slug = jam.slug) }}" class="circle">Team</a>
+                </div>
 
-				{% if r.team.game %}
-				<div class="large-4 columns">
-					<a href="{{ url_for('edit_game', jam_slug = jam.slug, game_id = r.team.game.id) }}" class="circle">Game</a>
-				</div>
-				{% else %}
-				<div class="large-4 columns">
-					<a href="{{ url_for('create_game', jam_slug = jam.slug) }}" class="circle">Game</a>
-				</div>
-				{% endif %}
+                {% if r.team.game %}
+                <div class="large-4 columns">
+                    <a href="{{ url_for('edit_game', jam_slug = jam.slug, game_id = r.team.game.id) }}" class="circle">Game</a>
+                </div>
+                {% else %}
+                <div class="large-4 columns">
+                    <a href="{{ url_for('create_game', jam_slug = jam.slug) }}" class="circle">Game</a>
+                </div>
+                {% endif %}
 
-				{% else %}
-				{% if current_user.is_anonymous() == false %}
-				<div class="large-4 columns">
-					<a href="{{ url_for('jam_participate', jam_slug = jam.slug) }}" class="circle">Sign up</a>
-				</div>
-				{% endif %}
-				{% endif %}
-				{% endif %}
-			</div>
-			{% if r %}
-			<h3>Team search</h3>
+                {% else %}
+                {% if current_user.is_anonymous == false %}
+                <div class="large-4 columns">
+                    <a href="{{ url_for('jam_participate', jam_slug = jam.slug) }}" class="circle">Sign up</a>
+                </div>
+                {% endif %}
+                {% endif %}
+                {% endif %}
+            </div>
+            {% if r %}
+            <h3>Team search</h3>
 
-			<p>
-				{% if r.team and r.team.members|length > 1 %}
-				You already have a team, not marked as "Looking for a team"
-				{% else %}
-				You are {% if not r.show_in_finder %}<b>not</b>{% endif %} marked as "Looking for a team"
-				&ndash;
-				<a href="{{ url_for('jam_toggle_show_in_finder', jam_slug = jam.slug) }}" class="link">Toggle</a>
-				{% endif %}
-			</p>
-			{% endif %}
+            <p>
+                {% if r.team and r.team.members|length > 1 %}
+                You already have a team, not marked as "Looking for a team"
+                {% else %}
+                You are {% if not r.show_in_finder %}<b>not</b>{% endif %} marked as "Looking for a team"
+                &ndash;
+                <a href="{{ url_for('jam_toggle_show_in_finder', jam_slug = jam.slug) }}" class="link">Toggle</a>
+                {% endif %}
+            </p>
+            {% endif %}
 
-			<h3>Description</h3>
+            <h3>Description</h3>
 
-			<p> {{ (jam.description or "*This jam has no description.*") | markdown }}<br>&nbsp;<br>&nbsp;</p>
+            <p> {{ (jam.description or "*This jam has no description.*") | markdown }}<br>&nbsp;<br>&nbsp;</p>
 
-			<!--
-			<h3>Images</h3>
-			<ul class="block-grid large-block-grid-4">
-				<li><img src="http://lorempixel.com/220/160/"></li>
-				<li><img src="http://lorempixel.com/220/160/"></li>
-				<li><img src="http://lorempixel.com/220/160/"></li>
-				<li><img src="http://lorempixel.com/220/160/"></li>
-			</ul>
+            <!--
+            <h3>Images</h3>
+            <ul class="block-grid large-block-grid-4">
+                <li><img src="http://lorempixel.com/220/160/"></li>
+                <li><img src="http://lorempixel.com/220/160/"></li>
+                <li><img src="http://lorempixel.com/220/160/"></li>
+                <li><img src="http://lorempixel.com/220/160/"></li>
+            </ul>
 
-			<h3>Videos</h3>
+            <h3>Videos</h3>
 
-			<div class="row">
-				<div class="large-6 columns">
-					<iframe width="311" height="175" src="//www.youtube.com/embed/GDx6WXpvl1o" frameborder="0" allowfullscreen></iframe>
-				</div>
-				<div class="large-6 columns">
-					<h4>Innogames Game Jam #7</h4>
+            <div class="row">
+                <div class="large-6 columns">
+                    <iframe width="311" height="175" src="//www.youtube.com/embed/GDx6WXpvl1o" frameborder="0" allowfullscreen></iframe>
+                </div>
+                <div class="large-6 columns">
+                    <h4>Innogames Game Jam #7</h4>
 
-					<p>Aliquam eu fermentum tortor. Nam et fermentum lacus. Morbi at libero a mi euismod facilisis sed et augue. Nunc ac pharetra tellus.<br>&nbsp;
-					</p>
-				</div>
-			</div>
-			-->
-		</div>
+                    <p>Aliquam eu fermentum tortor. Nam et fermentum lacus. Morbi at libero a mi euismod facilisis sed et augue. Nunc ac pharetra tellus.<br>&nbsp;
+                    </p>
+                </div>
+            </div>
+            -->
+        </div>
 
-		<!-- right Col -->
-		<div class="large-4 columns">
-			<!-- Status 2 -->
-			{% if status.code == 2 %}
-			<a href="{{ url_for('countdown', jam_slug = jam.slug) }}">
-				<p class="greenbox last">Countdown: <span class="mini-countdown" time="{{ jam.end_time }}">
+        <!-- right Col -->
+        <div class="large-4 columns">
+            <!-- Status 2 -->
+            {% if status.code == 2 %}
+            <a href="{{ url_for('countdown', jam_slug = jam.slug) }}">
+                <p class="greenbox last">Countdown: <span class="mini-countdown" time="{{ jam.end_time }}">
 					<span class="time">{{ (jam.end_time - current_datetime) | countdowndelta }}</span>
 					</span>
-				</p>
-			</a>
-			{% endif %}
-			{% if status.code == 1 %}
-			<p class="greenbox last">Registration is open!</p>
-			{% endif %}
+                </p>
+            </a>
+            {% endif %}
+            {% if status.code == 1 %}
+            <p class="greenbox last">Registration is open!</p>
+            {% endif %}
 
-			{% if jam.getStatus().code == 5 %}
-			<!-- Winner -->
-			<h3>Winner of the Jam</h3>
-			{% if jam.games %}
-			{% set count = 1 %}
-			{% for game in jam.gamesByScore()[:3] %}
-			<div class="gamejam-winner">
-				<div class="number">{{ count }}</div>
-				<p><strong><a href="{{ game.team.url() }}">{{ game.team.name }}</a></strong> with
-					<strong><a href="{{ game.url() }}">{{ game.title }}</a></strong> ({{ "%.1f" | format(game.score) }})
-				</p>
-			</div>
-			{% set count = count + 1 %}
-			{% endfor %}
-			{% endif %}
-			{% endif %}
+            {% if jam.getStatus().code == 5 %}
+            <!-- Winner -->
+            <h3>Winner of the Jam</h3>
+            {% if jam.games %}
+            {% set count = 1 %}
+            {% for game in jam.gamesByScore()[:3] %}
+            <div class="gamejam-winner">
+                <div class="number">{{ count }}</div>
+                <p><strong><a href="{{ game.team.url() }}">{{ game.team.name }}</a></strong> with
+                    <strong><a href="{{ game.url() }}">{{ game.title }}</a></strong> ({{ "%.1f" | format(game.score) }})
+                </p>
+            </div>
+            {% set count = count + 1 %}
+            {% endfor %}
+            {% endif %}
+            {% endif %}
 
-			<!-- Big Button  jam_games_lis -->
-			<a href="{{ url_for('jam_games_lis', jam_slug=jam.slug,page=1) }}" class="button big allgames">All Games of
-				{{jam.title}}</a>
+            <!-- Big Button  jam_games_lis -->
+            <a href="{{ url_for('jam_games_lis', jam_slug=jam.slug,page=1) }}" class="button big allgames">All Games of
+                {{jam.title}}</a>
 
-		</div>
-	</div>
+        </div>
+    </div>
 
-	<!--
-		<div class="row" style="margin-top: 1em;">
-			<div class="large-12 columns">
-				<h3>Related News</h3>
-			</div>
-		</div>
+    <!--
+        <div class="row" style="margin-top: 1em;">
+            <div class="large-12 columns">
+                <h3>Related News</h3>
+            </div>
+        </div>
 
-			<div class="row">
-				<div class="large-4 columns">
-					<div class="news-list-item">
-						<a href="news-single.html">
-							<div class="news-related-rubrik">Cooperation</div>
-							<img class="news-related-rubrik-image opacityfade" src="DummyContent/dummy-news-related1.jpg" alt="Innogames Provides a Scholarship for the School4Games">
+            <div class="row">
+                <div class="large-4 columns">
+                    <div class="news-list-item">
+                        <a href="news-single.html">
+                            <div class="news-related-rubrik">Cooperation</div>
+                            <img class="news-related-rubrik-image opacityfade" src="DummyContent/dummy-news-related1.jpg" alt="Innogames Provides a Scholarship for the School4Games">
 
-							<h3>The Winner of Game Jam #7</h3>
+                            <h3>The Winner of Game Jam #7</h3>
 
-							<p class="date">From 12.12.2014</p>
+                            <p class="date">From 12.12.2014</p>
 
-							<p>Sunday evening our 7th in-house Game Jam ended and what can I say? It was loud, creative, exhausting and a great deal of fun – all at once!</p>
-						</a>
-					</div>
-				</div>
+                            <p>Sunday evening our 7th in-house Game Jam ended and what can I say? It was loud, creative, exhausting and a great deal of fun – all at once!</p>
+                        </a>
+                    </div>
+                </div>
 
-				<div class="large-4 columns">
-					<div class="news-list-item">
-						<a href="news-single.html">
-							<div class="news-related-rubrik">Cooperation</div>
-							<img class="news-related-rubrik-image opacityfade" src="DummyContent/dummy-news-related2.jpg" alt="Innogames Provides a Scholarship for the School4Games">
+                <div class="large-4 columns">
+                    <div class="news-list-item">
+                        <a href="news-single.html">
+                            <div class="news-related-rubrik">Cooperation</div>
+                            <img class="news-related-rubrik-image opacityfade" src="DummyContent/dummy-news-related2.jpg" alt="Innogames Provides a Scholarship for the School4Games">
 
-							<h3>Game Jam #7</h3>
+                            <h3>Game Jam #7</h3>
 
-							<p class="date">From 12.12.2014</p>
+                            <p class="date">From 12.12.2014</p>
 
-							<p>InnoGames provides a scholarship for the School4Games</p>
-						</a>
-					</div>
-				</div>
+                            <p>InnoGames provides a scholarship for the School4Games</p>
+                        </a>
+                    </div>
+                </div>
 
-		<div class="large-4 columns">
-			<div class="news-list-item">
-				<a href="news-single.html">
-					<div class="news-related-rubrik">Cooperation</div>
-					<img class="news-related-rubrik-image opacityfade" src="DummyContent/dummy-news-related3.jpg" alt="Innogames Provides a Scholarship for the School4Games">
+        <div class="large-4 columns">
+            <div class="news-list-item">
+                <a href="news-single.html">
+                    <div class="news-related-rubrik">Cooperation</div>
+                    <img class="news-related-rubrik-image opacityfade" src="DummyContent/dummy-news-related3.jpg" alt="Innogames Provides a Scholarship for the School4Games">
 
-					<h3>InnoGames provides a scholarship for the School4Games</h3>
+                    <h3>InnoGames provides a scholarship for the School4Games</h3>
 
-					<p class="date">From 12.12.2014</p>
+                    <p class="date">From 12.12.2014</p>
 
-					<p>Sunday evening our 7th in-house Game Jam ended and what can I say? It was loud, creative, exhausting and a great deal of fun – all at once!</p>
-				</a>
-			</div>
-		</div>-->
+                    <p>Sunday evening our 7th in-house Game Jam ended and what can I say? It was loud, creative, exhausting and a great deal of fun – all at once!</p>
+                </a>
+            </div>
+        </div>-->
 </div>
 
 </section>

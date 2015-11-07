@@ -57,7 +57,7 @@
     <!-- right Col -->
     <div class="large-4 columns">
 
-        {% if current_user.is_authenticated() and current_user in game.team.members %}
+        {% if current_user.is_authenticated and current_user in game.team.members %}
         <a href="{{ url_for('edit_game', jam_slug = game.jam.slug, game_id = game.id) }}" class="button">Edit game</a>
         {% endif %}
         <!-- Downloads -->
@@ -148,7 +148,7 @@
             <p>No comments yet.</p>
             {% endif %}
             <br/>
-            {% if current_user.is_authenticated() %}
+            {% if current_user.is_authenticated %}
             <form method="POST">
                 <p>
                     {{ form_errors(form) }}

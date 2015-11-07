@@ -3,12 +3,12 @@
 {% block breadcrumb %}
 <!-- Breadcrumb Start -->
 <div class="row">
-	<div class="large-12 columns">
-		<ul class="breadcrumb_menu">
-			<li><a href="">Home</a></li>
-			<li class="active"><a href="">User</a></li>
-		</ul>
-	</div>
+    <div class="large-12 columns">
+        <ul class="breadcrumb_menu">
+            <li><a href="">Home</a></li>
+            <li class="active"><a href="">User</a></li>
+        </ul>
+    </div>
 </div>
 <!-- Breadcrumb Stop -->
 {% endblock %}
@@ -18,89 +18,89 @@
 {% block content %}
 
 <div class="content">
-	<!-- 2 Col -->
-	<div class="row">
-		<div class="large-8 columns">
-			<img src="{{ user.getAvatar(96) }}" class="rounded person-pic">
+    <!-- 2 Col -->
+    <div class="row">
+        <div class="large-8 columns">
+            <img src="{{ user.getAvatar(96) }}" class="rounded person-pic">
 
-			<div class="person">
-				<h1>{{ user.username }}</h1>
+            <div class="person">
+                <h1>{{ user.username }}</h1>
 
-				<h3>{% if user.real_name %} {{ user.real_name }} {% endif %}</h3>
-			</div>
-			{% if current_user.is_authenticated() and current_user == user %}
-			<p><a href="{{ url_for('settings') }}" class="pull-right">Profile settings</a></p>
-			{% elif current_user.is_authenticated() %}
-			{% if user.pm_mode == "form" %}
-			<a href="{{ url_for('contact_user', username = user.username) }}" class="button small">Send mail</a>
-			{% elif user.pm_mode == "email" %}
-			<a href="mailto:{{ user.email }}" class="btn">Send mail</a>
-			{% endif %}
-			{% endif %}
+                <h3>{% if user.real_name %} {{ user.real_name }} {% endif %}</h3>
+            </div>
+            {% if current_user.is_authenticated and current_user == user %}
+            <p><a href="{{ url_for('settings') }}" class="pull-right">Profile settings</a></p>
+            {% elif current_user.is_authenticated %}
+            {% if user.pm_mode == "form" %}
+            <a href="{{ url_for('contact_user', username = user.username) }}" class="button small">Send mail</a>
+            {% elif user.pm_mode == "email" %}
+            <a href="mailto:{{ user.email }}" class="btn">Send mail</a>
+            {% endif %}
+            {% endif %}
 
-			<h2>Personal Data</h2>
+            <h2>Personal Data</h2>
 
-			<p><strong>Member since</strong><br>
-				{{ user.registered | humantime }}<br>
-				{% if user.location %}
-				<strong>Location</strong><br>
-				{{ user.getLocation() }} <br>
-				{% endif %}
-				{% if user.real_name %}
-				<strong>Real Name</strong><br>
-				{{ user.real_name }}<br>
-				{% endif %}
-				{% if user.pm_mode != "disabled" %}
-				<strong>eMail</strong><br>
-				{% if user.pm_mode == "email" %}
-				<a href="mailto:{{ user.email }}">{{ user.email }}</a>
-				{% else %}
-				{% if user == current_user %}
-				[hidden]
-				{% else %}
-				[<a href="{{ url_for('contact_user', username = user.username) }}">hidden</a>]
-				{% endif %}
-				{% endif %}
-				&nbsp;<br>
-				{% endif %}
+            <p><strong>Member since</strong><br>
+                {{ user.registered | humantime }}<br>
+                {% if user.location %}
+                <strong>Location</strong><br>
+                {{ user.getLocation() }} <br>
+                {% endif %}
+                {% if user.real_name %}
+                <strong>Real Name</strong><br>
+                {{ user.real_name }}<br>
+                {% endif %}
+                {% if user.pm_mode != "disabled" %}
+                <strong>eMail</strong><br>
+                {% if user.pm_mode == "email" %}
+                <a href="mailto:{{ user.email }}">{{ user.email }}</a>
+                {% else %}
+                {% if user == current_user %}
+                [hidden]
+                {% else %}
+                [<a href="{{ url_for('contact_user', username = user.username) }}">hidden</a>]
+                {% endif %}
+                {% endif %}
+                &nbsp;<br>
+                {% endif %}
 
-				{% if user.website %}
-				<strong>Website</strong><br>
-				{{ user.website }}
-				&nbsp;<br>
-				{% endif %}
+                {% if user.website %}
+                <strong>Website</strong><br>
+                {{ user.website }}
+                &nbsp;<br>
+                {% endif %}
 
-				{% if user.abilities or user.abilities_extra %}
-				<strong>GameDev Abilities</strong><br>
-				{{ ", ".join(user.abilities) }}<br>
-				{{ user.abilities_extra }}
-				{% endif %}
-			</p>
+                {% if user.abilities or user.abilities_extra %}
+                <strong>GameDev Abilities</strong><br>
+                {{ ", ".join(user.abilities) }}<br>
+                {{ user.abilities_extra }}
+                {% endif %}
+            </p>
 
-			<h2>About</h2>
+            <h2>About</h2>
 
-			<p>{{ (user.about or "*This user has not written a description about themselves.*" ) | markdown }}</p>
-		</div>
+            <p>{{ (user.about or "*This user has not written a description about themselves.*" ) | markdown }}</p>
+        </div>
 
-		<div class="large-4 columns">
-			<h3>Games Created</h3>
-			{% if not user.games %}
-			<p><i>This user has not made any games yet.</i></p>
-			{% else %}
-			{% for game in user.games %}
-			<p>
-				<strong><a href="{{url_for('show_games', game_slug=game.slug)}}">{{ game.title }}</a></strong>
+        <div class="large-4 columns">
+            <h3>Games Created</h3>
+            {% if not user.games %}
+            <p><i>This user has not made any games yet.</i></p>
+            {% else %}
+            {% for game in user.games %}
+            <p>
+                <strong><a href="{{url_for('show_games', game_slug=game.slug)}}">{{ game.title }}</a></strong>
 
-				{% if game.ratings.score %}
-				({{game.ratings.score}}){%
-				endif %} with
-				<strong><a href="{{ game.team.url() }}">{{ game.team.name }}</a></strong></a>
-			</p>
-			{% endfor %}
-			</ul>
-			{% endif %}
-		</div>
-	</div>
+                {% if game.ratings.score %}
+                ({{game.ratings.score}}){%
+                endif %} with
+                <strong><a href="{{ game.team.url() }}">{{ game.team.name }}</a></strong></a>
+            </p>
+            {% endfor %}
+            </ul>
+            {% endif %}
+        </div>
+    </div>
 
 </div>
 
