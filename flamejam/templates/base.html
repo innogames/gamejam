@@ -51,7 +51,7 @@
                 <i class="icon-envelope"></i></a>
             {% endif %}
             <a href="{{ url_for('profile') }}" class="button login" id="account">
-                <img class="avatar" src="{{ current_user.getAvatar(16) }}" width="16" height="16"/>
+                <img class="avatar" src="{{ current_user.avatar }}" width="16" height="16"/>
                 {{ current_user.username }} <br/>
             </a>
 
