@@ -101,81 +101,25 @@
 		<div class="large-8 columns">
 			<br/>
 			{% set status = game.jam.getStatus().code %}
-			{% if status >= 4 %}
-			{% set categories = game.ratingCategories + ["overall"] %}
-			{% set cols = (categories | length) + 2 %}
 
-
-			{% if status == 4 %}
-			<p class="alert alert-info">The voting for this jam is not over, so other people's ratings are hidden.</p>
-			{% endif %}
-
-			{% if game.ratings %}
-			<h2>Feedback</h2>
-			<table class="ratings table table-bordered table-hover">
-				<thead>
-				<tr>
-					<th>User</th>
-					{% for c in categories %}
-					<th class="score"><span class="icon-16 icon-16-{{ c }}" title="{{ c }}"></span></th>
-					{% endfor %}
-					<th>Notes</th>
-				</tr>
-				</thead>
-				<tbody>
-				{% if status == 5 %}
-				<tr class="average">
-					<td>Average</td>
-					{% for c in categories %}
-					<td class="score">{{ "%.2f" % game.feedbackAverage(c) }}</td>
-					{% endfor %}
-					<td></td>
-				</tr>
-
-				{% for rating in game.ratings %}
-				<tr class="{{ 'deleted' if rating.user.is_deleted else ''}}">
-					<td><p>{{ rating.user.getLink() }}</p></td>
-					{% for c in categories %}
-					<td class="score">{{ rating.get(c) }}</td>
-					{% endfor %}
-					<td>{{ rating.text or "&mdash;" | safe }}</td>
-				</tr>
-				{% endfor %}
-				{% else %}
-				{% if rating %}
-				<tr>
-					<td>{{ rating.user.getLink() }}</td>
-					{% for c in categories %}
-					<td class="score">{{ rating.get(c) }}</td>
-					{% endfor %}
-					<td>{{ rating.text or "&mdash;" | safe }}</td>
-				</tr>
-				<tr>
-					<td colspan="{{ cols }}" style="text-align: center;">
-						<a href="{{ url_for('rate_game', jam_slug = jam.slug, game_id = game.id) }}" class="btn btn-small">Edit my Rating</a>
-					</td>
-				</tr>
-				{% elif current_user.is_authenticated() %}
-				<tr>
-					<td colspan="{{ cols }}" style="text-align: center;">
-						<a href="{{ url_for('rate_game', jam_slug = jam.slug, game_id = game.id) }}" class="btn btn-small">Rate Game</a>
-					</td>
-				</tr>
-				{% else %}
-				<tr>
-					<td colspan="{{ cols }}" style="text-align: center;"><p>Please
-						<a href="{{ url_for('login') }}">login or register</a>
-						to vote on games.</p>
-					</td>
-				</tr>
-				{% endif %}
-				{% endif %}
-				</tbody>
-			</table>
+			{% if status == 5 %}4
+			<p class="alert alert-info">The voting for this jam is not over, so other people's votes are hidden.</p>
+			{% if game.getVoteCountByUser(current_user) < 3 %}
+			<a href="{{ url_for('vote_game', jam_slug=game.jam.slug, game_id=game.id) }}" class="button big allgames">Vote for this game! ({{ 3-game.getVoteCountByUser(current_user)}} votes left)</a>
 			{% endif %}
 			{% else %}
-			<p>Rating has not yet started.</p>
+
+			{% if true %}
+			<h2>Votes</h2>
+
+			<p class="gamejam_subline">{{game.numberVotes}} people voted for this game. Overall the game ranked #{{game.rank}} at the Jam!</p>
 			{% endif %}
+
+			{% if status < 4 %}
+			<p>The voting has not yet started.</p>
+			{% endif %}
+			{% endif %}
+
 			<h2>Comments</h2>
 			{% if game.comments %}
 			{% for comment in game.comments %}

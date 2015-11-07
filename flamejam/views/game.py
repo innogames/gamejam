@@ -1,13 +1,17 @@
 from flamejam import app, db, mail
 from flamejam.utils import get_slug
 from flamejam.models import Jam, Game, User, Comment, GamePackage, \
-    GameScreenshot, JamStatusCode, Rating
+    GameScreenshot, JamStatusCode, Rating, Vote
 from flamejam.models.rating import RATING_CATEGORIES
 from flamejam.forms import WriteComment, GameEditForm, GameAddScreenshotForm, \
     GameAddPackageForm, GameAddTeamMemberForm, GameCreateForm, RateGameForm
-from flask import render_template, url_for, redirect, flash, request, abort
+from flask import render_template, url_for, redirect, flash, request, abort, send_from_directory
 from flask.ext.login import login_required, current_user
 from sqlalchemy import desc
+from werkzeug import secure_filename
+import os
+
+ALLOWED_EXTENSIONS = set(['tgz', 'rar', 'zip', 'tar', 'png', 'jpg', 'jpeg', 'gif'])
 
 
 @app.route("/games/<page>")
@@ -54,6 +58,22 @@ def create_game(jam_slug):
 
     return render_template("jam/game/create.html", jam=jam, enabled=enabled, form=form)
 
+
+@app.route("/jams/<jam_slug>/<game_id>/vote")
+@login_required
+def vote_game(jam_slug, game_id):
+    jam = Jam.query.filter_by(slug=jam_slug).first_or_404()
+    game = Game.query.filter_by(is_deleted=False, id=game_id).first_or_404()
+    vote = Vote(game, current_user)
+    db.session.add(vote)
+    db.session.commit()
+
+    return redirect(game.url())
+
+
+def allowed_file(filename):
+    return '.' in filename and \
+           filename.rsplit('.', 1)[1] in ALLOWED_EXTENSIONS
 
 
 @app.route("/jams/<jam_slug>/<game_id>/edit/image", methods=("GET", "POST"))
@@ -238,9 +258,6 @@ def game_screenshot_edit(id, action):
 
 @app.route('/jams/<jam_slug>/<game_id>/', methods=("POST", "GET"))
 def show_game(jam_slug, game_id):
-    # Temporary disabled games
-    return redirect(url_for("index"))
-
     comment_form = WriteComment()
     jam = Jam.query.filter_by(slug=jam_slug).first_or_404()
     game = Game.query.filter_by(is_deleted=False, id=game_id).filter_by(jam=jam).first_or_404()

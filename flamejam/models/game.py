@@ -4,6 +4,7 @@ from flamejam import app, db
 from flamejam.utils import get_slug, average, average_non_zero
 from flamejam.models.gamescreenshot import GameScreenshot
 from flamejam.models.rating import Rating, RATING_CATEGORIES
+from flamejam.models.vote import Vote
 from flask import url_for
 from datetime import datetime
 
@@ -25,6 +26,7 @@ class Game(db.Model):
     comments = db.relationship('Comment', backref='game', lazy="subquery")
     packages = db.relationship('GamePackage', backref='game', lazy="subquery")
     screenshots = db.relationship('GameScreenshot', backref='game', lazy="subquery")
+    votes = db.relationship('Vote', backref='game', lazy="subquery")
 
     # score_CATEGORY_enabled = db.Column(db.Boolean, default = True)
 
@@ -48,6 +50,8 @@ class Game(db.Model):
             db.session.delete(package)
         for screenshot in self.screenshots:
             db.session.delete(screenshot)
+        for vote in self.votes:
+            db.session.delete(vote)
         db.session.delete(self)
 
     def url(self, **values):
@@ -76,12 +80,22 @@ class Game(db.Model):
     @property
     def rank(self):
         jam_games = list(self.jam.games.all())
-        jam_games.sort(key="score", reverse=True)
+        jam_games.sort(key="numberRatings", reverse=True)
         return jam_games.index(self) + 1
 
     @property
     def numberRatings(self):
         return len(self.ratings)
+
+    @property
+    def numberVotes(self):
+        return len(self.votes)
+
+    def getVoteByUser(self, user):
+        return Vote.query.filter_by(user_id=user.id).first()
+
+    def getVoteCountByUser(self, user):
+        return Vote.query.filter_by(user_id=user.id, jam_id=self.jam_id).count()
 
     @property
     def ratingCategories(self):
