@@ -6,93 +6,97 @@
 {% block breadcrumb %}
 <!-- Breadcrumb Start -->
 <div class="row">
-	<div class="large-12 columns">
-		<ul class="breadcrumb_menu">
-			<li><a href="{{ url_for('index') }}">Home</a></li>
-			<li><a href="{{ url_for('jams') }}">Game Jams</a></li>
-			<li><a href="{{ url_for('jam_info', jam_slug=jam.slug) }}">{{ jam.title }}</a></li>
-			<li class="active"><a href="">Team invite</a></li>
-		</ul>
-	</div>
+    <div class="large-12 columns">
+        <ul class="breadcrumb_menu">
+            <li><a href="{{ url_for('index') }}">Home</a></li>
+            <li><a href="{{ url_for('jams') }}">Game Jams</a></li>
+            <li><a href="{{ url_for('jam_info', jam_slug=jam.slug) }}">{{ jam.title }}</a></li>
+            <li class="active"><a href="">Team invite</a></li>
+        </ul>
+    </div>
 </div>
 <!-- Breadcrumb Stop -->
 {% endblock %}
 
 {% block content %}
+<div class="content">
+    <div class="row">
 
-<div class="row">
+        <h1>Invitation to {{ invitation.team.name }}</h1>
 
-	<h1>Invitation to {{ invitation.team.name }}</h1>
+        {% if current_user == invitation.user %}
+        <div class="row-fluid">
+            <div class="span3">
+            </div>
+            <div class="span6">
+                <p>
+                    You were invited to the team
+                    <a href="{{ invitation.team.url() }}">{{ invitation.team.name }}</a>. You can either
+                    accept or decline this invitation.
+                </p>
+                {% set current_team = current_user.getTeam(invitation.team.jam) %}
 
-	{% if current_user == invitation.user %}
-	<div class="row-fluid">
-		<div class="span3">
-		</div>
-		<div class="span6">
-			<p>
-				You were invited to the team
-				<a href="{{ invitation.team.url() }}">{{ invitation.team.name }}</a>. You can either
-				accept or decline this invitation.
-			</p>
-			{% set current_team = current_user.getTeam(invitation.team.jam) %}
+                {% if current_team %}
+                <p>
+                    Notice that you will leave your current team (<a href="{{ current_team.url() }}">{{
+                    current_team.name }}</a>).
+                    If there is no user left in that team, it is <b style="color: red;">PERMANENTLY DELETED</b>,
+                    including all games, invitations and other team-related
+                    data.
+                </p>
 
-			{% if current_team %}
-			<p>
-				Notice that you will leave your current team (<a href="{{ current_team.url() }}">{{ current_team.name }}</a>).
-				If there is no user left in that team, it is <b style="color: red;">PERMANENTLY DELETED</b>,
-				including all games, invitations and other team-related
-				data.
-			</p>
+                <p>
+                    You will have to join a team before the packaging phase of the
+                    game jam ends. After packaging, team joining is disabled.
+                </p>
 
-			<p>
-				You will have to join a team before the packaging phase of the
-				game jam ends. After packaging, team joining is disabled.
-			</p>
+                <p style="text-align: center">
+                    <a href="{{ invitation.url(action = 'decline') }}" class="btn btn-danger">Decline</a>
+                    <a href="{{ invitation.url(action = 'accept') }}" class="btn btn-success">Accept</a>
+                </p>
+                {% else %}
+                <p class="alert alert-error">
+                    You are not yet registered for participation in <a href="{{ jam.url() }}">{{ jam.title }}</a>.
+                    This is required to join a team. Please register first and return to
+                    this page.
+                </p>
 
-			<p style="text-align: center">
-				<a href="{{ invitation.url(action = 'decline') }}" class="btn btn-danger">Decline</a>
-				<a href="{{ invitation.url(action = 'accept') }}" class="btn btn-success">Accept</a>
-			</p>
-			{% else %}
-			<p class="alert alert-error">
-				You are not yet registered for participation in <a href="{{ jam.url() }}">{{ jam.title }}</a>.
-				This is required to join a team. Please register first and return to
-				this page.
-			</p>
+                <p>
+                    <a href="{{ url_for('jam_participate', jam_slug = jam.slug) }}" target="_blank"
+                       class="btn btn-primary">Participate in the jam</a>
+                </p>
+                {% endif %}
+            </div>
+            <div class="span3">
+            </div>
+        </div>
+        {% else %}
+        <div class="well" style="max-width: 400px;">
+            <p>
+                This is the invitation for {{ invitation.user.getLink() }} to your team
+                <a href="{{ invitation.team.url() }}">{{ invitation.team.name }}</a>.
+            </p>
 
-			<p>
-				<a href="{{ url_for('jam_participate', jam_slug = jam.slug) }}" target="_blank" class="btn btn-primary">Participate in the jam</a>
-			</p>
-			{% endif %}
-		</div>
-		<div class="span3">
-		</div>
-	</div>
-	{% else %}
-	<div class="well" style="max-width: 400px;">
-		<p>
-			This is the invitation for {{ invitation.user.getLink() }} to your team
-			<a href="{{ invitation.team.url() }}">{{ invitation.team.name }}</a>.
-		</p>
+            <p>
+                To accept this invitation, the user has to visit this page, where they will
+                be asked to confirm the invitation. This invitation is personalized, so only
+                the selected user can accept it, while logged in.
+            </p>
 
-		<p>
-			To accept this invitation, the user has to visit this page, where they will
-			be asked to confirm the invitation. This invitation is personalized, so only
-			the selected user can accept it, while logged in.
-		</p>
+            <p>
+                <b>If the user has disabled eMail notifications or the eMail was not received yet, you can share this
+                    invitation link on some other way with the user:</b>
+            </p>
 
-		<p>
-			<b>If the user has disabled eMail notifications or the eMail was not received yet, you can share this invitation link on some other way with the user:</b>
-		</p>
+            <p style="font-weight: bold; font-size: 1.2em;">
+                <a href="{{ invitation.url() }}">{{ invitation.url() }}</a>
+            </p>
 
-		<p style="font-weight: bold; font-size: 1.2em;">
-			<a href="{{ invitation.url() }}">{{ invitation.url() }}</a>
-		</p>
-
-		<p>
-			<a href="{{ invitation.url(action='revoke') }}" class="button alert">Revoke this invitation</a>
-		</p>
-		{% endif %}
-	</div>
+            <p>
+                <a href="{{ invitation.url(action='revoke') }}" class="button alert">Revoke this invitation</a>
+            </p>
+            {% endif %}
+        </div>
+    </div>
 </div>
 {% endblock %}
