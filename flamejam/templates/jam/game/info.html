@@ -75,7 +75,9 @@
         <ul class="block-grid large-block-grid-2">
             {% if game.screenshots %}
             {% for screenshot in game.screenshots %}
-            <li><img src="{{screenshot.url}}"></li>
+            <li>
+                <a href="{{ screenshot.caption }}"><img src="{{screenshot.url}}"></a>
+            </li>
             {% endfor %}
             {% else %}
             <div class="next_gamejam_box opacityfade" style="background-color: grey; background-image: none;">
