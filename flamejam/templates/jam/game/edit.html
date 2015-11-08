@@ -7,7 +7,7 @@
     <div class="large-12 columns">
         <ul class="breadcrumb_menu">
             <li><a href="{{ url_for('index') }}">Home</a></li>
-            <li>Game Jams</li>
+            <li><a href="{{ url_for('jams') }}">Game Jams</a></li>
             <li><a href="{{ url_for('jam_info', jam_slug=jam.slug) }}">{{ jam.title }}</a></li>
             <li class="active"><a href="#">Edit game</a></li>
         </ul>
