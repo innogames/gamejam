@@ -111,6 +111,10 @@ def upload_game_image(jam_slug, game_id):
                 flash("Your screenshot has been added.", "success")
             else:
                 flash("Image already exist, please delete it first!", "error")
+        else:
+            flash(
+                "Your file extension is not allowed. Please only upload: 'tgz', 'rar', 'zip', 'tar', 'png', 'jpg', 'jpeg', 'gif'",
+                "error")
 
     return redirect(url_for('edit_game', jam_slug=jam_slug, game_id=game_id))
 
