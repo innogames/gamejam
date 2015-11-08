@@ -1,8 +1,7 @@
 ToDos:
     Backend:
-    * Fix mails
-    * Fix captcha
     * Add Translation mechanism
+    * Add remove team member
 
     Frontend:
     * Pagination
