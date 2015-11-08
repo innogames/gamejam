@@ -111,7 +111,7 @@
             {% if current_user.is_authenticated and current_user in game.team.members %}
             You can't vote for your own game!
             {% else %}
-            {% if game.getVoteCountByUser(current_user) < 3 %}
+            {% if current_user.is_authenticated and game.getVoteCountByUser(current_user) < 3 %}
             <a href="{{ url_for('vote_game', jam_slug=game.jam.slug, game_id=game.id) }}" class="button big allgames">Vote
                 for this game! ({{ 3-game.getVoteCountByUser(current_user)}} votes left)</a>
             {% endif %}
