@@ -64,9 +64,16 @@ def create_game(jam_slug):
 def vote_game(jam_slug, game_id):
     jam = Jam.query.filter_by(slug=jam_slug).first_or_404()
     game = Game.query.filter_by(is_deleted=False, id=game_id).first_or_404()
-    vote = Vote(game, current_user)
-    db.session.add(vote)
-    db.session.commit()
+    if (current_user in game.team.members):
+        flash("You can't vote for your own game!", "error")
+    else:
+        if (game.getVoteCountByUser(current_user) < 3):
+            vote = Vote(game, current_user)
+            db.session.add(vote)
+            db.session.commit()
+            flash("Your vote was saved!", "success")
+        else:
+            flash("You don't have any votes left!", "error")
 
     return redirect(game.url())
 
