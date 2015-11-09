@@ -20,7 +20,11 @@ def jam_info(jam_slug):
 @app.route('/jams/<jam_slug>/games/<page>')
 def jam_games_lis(jam_slug, page):
     jam = Jam.query.filter_by(slug=jam_slug).first_or_404()
-    page = int(page)
+    if page.isdigit():
+        page = int(page)
+    else:
+        page = 1
+
     if page < 1:
         page = 1
     games = Game.query.filter_by(is_deleted=False, jam_id=jam.id).paginate(page, 6, False)
