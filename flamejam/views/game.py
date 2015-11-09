@@ -9,19 +9,23 @@ from flask import render_template, url_for, redirect, flash, request, abort, sen
 from flask.ext.login import login_required, current_user
 from sqlalchemy import desc
 from werkzeug import secure_filename
-import os
+import os, string
 
-ALLOWED_EXTENSIONS = set(['tgz', 'rar', 'zip', 'tar', 'png', 'jpg', 'jpeg', 'gif'])
+ALLOWED_EXTENSIONS = set(['tar.gz', 'tgz', 'rar', 'zip', 'tar', 'png', 'jpg', 'jpeg', 'gif'])
 
 
 @app.route("/games/<page>")
 def games(page):
-    page = int(page)
+    if string.isdigit(page):
+        page = int(page)
+    else:
+        page = 1
+
     if page < 1:
         page = 1
 
     # is_deleted=False for enabling games again
-    games = Game.query.filter_by(is_deleted=True).order_by(desc(Game.id)).paginate(page, 6, False)
+    games = Game.query.filter_by(is_deleted=False).order_by(desc(Game.id)).paginate(page, 6, False)
     jams = Jam.query.all()
 
     return render_template("game/list.html", games=games, jams=jams)
