@@ -16,7 +16,7 @@ ALLOWED_EXTENSIONS = set(['tar.gz', 'tgz', 'rar', 'zip', 'tar', 'png', 'jpg', 'j
 
 @app.route("/games/<page>")
 def games(page):
-    if string.isdigit(page):
+    if page.isdigit():
         page = int(page)
     else:
         page = 1
