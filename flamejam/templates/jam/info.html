@@ -59,11 +59,13 @@
                 {% endif %}
 
                 {% else %}
-                {% if current_user.is_anonymous == false %}
+
+                {% if current_user.username %}
                 <div class="large-4 columns">
                     <a href="{{ url_for('jam_participate', jam_slug = jam.slug) }}" class="circle">Sign up</a>
                 </div>
                 {% endif %}
+
                 {% endif %}
                 {% endif %}
             </div>
