@@ -1,4 +1,4 @@
-from flamejam import app, db
+from flamejam import app, db, cache_it
 from flask import render_template, url_for, redirect, flash, request
 from wordpress_xmlrpc import Client
 from wordpress_xmlrpc.methods import posts, taxonomies
@@ -7,16 +7,37 @@ from flask.ext.login import login_required, current_user
 from BeautifulSoup import BeautifulSoup
 
 
+@cache_it
+def getWordpressPostById(id):
+    wpClient = Client(app.config.get('BLOG_URL'), app.config.get('BLOG_USER'), app.config.get('BLOG_PASSWORD'))
+    wpPost = wpClient.call(posts.GetPost(id))
+    return wpPost
+
+
+@cache_it
+def getWordpressPosts():
+    wpClient = Client(app.config.get('BLOG_URL'), app.config.get('BLOG_USER'), app.config.get('BLOG_PASSWORD'))
+    allPosts = wpClient.call(posts.GetPosts({'post_status': 'publish'}))
+    return allPosts
+
+
+@cache_it
+def getWordpressCategories():
+    wpClient = Client(app.config.get('BLOG_URL'), app.config.get('BLOG_USER'), app.config.get('BLOG_PASSWORD'))
+    wpCats = wpClient.call(taxonomies.GetTerms('category'))
+    return wpCats
+
+
 @app.route('/news/<news_id>/')
 def news_show(news_id):
     try:
-        wpClient = Client(app.config.get('BLOG_URL'), app.config.get('BLOG_USER'), app.config.get('BLOG_PASSWORD'))
-        wpPost = wpClient.call(posts.GetPost(news_id))
+        wpPost = getWordpressPostById(news_id)
+
         for term in wpPost.terms:
             if term.taxonomy == 'category':
                 wpCategory = term.name
-        wpCats = wpClient.call(taxonomies.GetTerms('category'))
-        allPosts = wpClient.call(posts.GetPosts())
+        wpCats = getWordpressCategories()
+        allPosts = getWordpressPosts()
         wpRelatedPosts = []
         for post in allPosts:
             for term in post.terms:
@@ -34,10 +55,9 @@ def news_show(news_id):
 @app.route('/news/tags/<tag>/')
 def news_tag(tag):
     try:
-        wpClient = Client(app.config.get('BLOG_URL'), app.config.get('BLOG_USER'), app.config.get('BLOG_PASSWORD'))
-        wpCats = wpClient.call(taxonomies.GetTerms('category'))
+        wpCats = getWordpressCategories()
+        allPosts = getWordpressPosts()
 
-        allPosts = wpClient.call(posts.GetPosts())
         wpRelatedPosts = []
         for post in allPosts:
             for term in post.terms:
@@ -54,9 +74,8 @@ def news_tag(tag):
 @app.route('/news/category/<category>/')
 def news_category(category):
     try:
-        wpClient = Client(app.config.get('BLOG_URL'), app.config.get('BLOG_USER'), app.config.get('BLOG_PASSWORD'))
-        wpCats = wpClient.call(taxonomies.GetTerms('category'))
-        allPosts = wpClient.call(posts.GetPosts())
+        wpCats = getWordpressCategories()
+        allPosts = getWordpressPosts()
         wpRelatedPosts = []
         for post in allPosts:
             for term in post.terms:
@@ -73,9 +92,8 @@ def news_category(category):
 @app.route('/news/')
 def news():
     try:
-        wpClient = Client(app.config.get('BLOG_URL'), app.config.get('BLOG_USER'), app.config.get('BLOG_PASSWORD'))
-        wpPost = wpClient.call(posts.GetPosts({'post_status': 'publish'}))
-        wpCats = wpClient.call(taxonomies.GetTerms('category'))
+        wpPost = getWordpressPosts()
+        wpCats = getWordpressCategories()
     except (ServerConnectionError, InvalidCredentialsError):
         wpPost = []
         wpCats = []

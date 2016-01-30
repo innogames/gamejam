@@ -7,6 +7,9 @@ from flask.ext.markdown import Markdown
 from flask.ext.principal import Principal, Permission, RoleNeed
 from flask.ext.login import LoginManager, current_user
 from flask.ext.cache import Cache
+import pyfscache
+
+cache_it = pyfscache.FSCache('/tmp/iggj', days=1)
 
 app = Flask(__name__)
 
@@ -37,9 +40,10 @@ import flamejam.filters
 import flamejam.views
 import flamejam.models
 
+
 @app.context_processor
 def inject():
-    return dict(current_user = current_user,
-        current_datetime = datetime.utcnow(),
-        current_jam = get_current_jam(),
-        RATING_CATEGORIES = flamejam.models.rating.RATING_CATEGORIES)
+    return dict(current_user=current_user,
+                current_datetime=datetime.utcnow(),
+                current_jam=get_current_jam(),
+                RATING_CATEGORIES=flamejam.models.rating.RATING_CATEGORIES)

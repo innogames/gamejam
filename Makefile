@@ -7,10 +7,13 @@ setup:
 			flask-login flask-markdown python-dateutil \
 			scrypt requests alembic flask-principal mysql-python \
 			flask-cache python-memcached psycopg2 python-wordpress-xmlrpc \
-			BeautifulSoup
+			BeautifulSoup tornado pyfscache
 
 run:
 	. env/bin/activate && python2 runserver.py
+
+run-dev:
+	. env/bin/activate && python2 runserver-dev.py
 
 init-db:
 	. env/bin/activate && python2 scripts/init-db.py
