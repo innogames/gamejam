@@ -7,7 +7,10 @@ setup:
 			flask-login flask-markdown python-dateutil \
 			scrypt requests alembic flask-principal mysql-python \
 			flask-cache python-memcached psycopg2 python-wordpress-xmlrpc \
-			BeautifulSoup tornado pyfscache
+			BeautifulSoup tornado pyfscache gunicorn
+
+run-prod:
+	. env/bin/activate && gunicorn -w 50 -b 127.0.0.1:5000 flamejam:app
 
 run:
 	. env/bin/activate && python2 runserver.py
