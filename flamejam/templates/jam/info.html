@@ -136,7 +136,8 @@
             <div class="gamejam-winner">
                 <div class="number">{{ count }}</div>
                 <p><strong><a href="{{ game.team.url() }}">{{ game.team.name }}</a></strong> with
-                    <strong><a href="{{ game.url() }}">{{ game.title }}</a></strong> ({{ "%.1f" | format(game.score) }})
+                    <strong><a href="{{ game.url() }}">{{ game.title }}</a></strong> ({{ "%i" |
+                    format(game.numberVotes) }})
                 </p>
             </div>
             {% set count = count + 1 %}

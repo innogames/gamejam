@@ -80,7 +80,7 @@ class Game(db.Model):
     @property
     def rank(self):
         jam_games = list(self.jam.games.all())
-        jam_games.sort(key="numberRatings", reverse=True)
+        jam_games.sort(key="numberVotes", reverse=True)
         return jam_games.index(self) + 1
 
     @property
@@ -103,6 +103,7 @@ class Game(db.Model):
 
     def getRatingByUser(self, user):
         return Rating.query.filter_by(user_id=user.id).first()
+
 
 # Adds fields "dynamically" (which score categories are enabled?)
 for c in RATING_CATEGORIES:

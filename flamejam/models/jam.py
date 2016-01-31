@@ -10,30 +10,31 @@ from flask.ext.mail import Message
 from random import shuffle
 from smtplib import SMTPRecipientsRefused
 
+
 class Jam(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     slug = db.Column(db.String(128), unique=True)
     title = db.Column(db.String(128), unique=True)
     theme = db.Column(db.String(128))
-    announced = db.Column(db.DateTime) # Date on which the jam was announced
-    start_time = db.Column(db.DateTime) # The jam starts at this moment
-    team_limit = db.Column(db.Integer) # 0 = no limit
-    games = db.relationship('Game', backref="jam", lazy = "subquery")
-    participations = db.relationship("Participation", backref = "jam", lazy = "subquery")
-    teams = db.relationship("Team", backref = "jam", lazy = "subquery")
+    announced = db.Column(db.DateTime)  # Date on which the jam was announced
+    start_time = db.Column(db.DateTime)  # The jam starts at this moment
+    team_limit = db.Column(db.Integer)  # 0 = no limit
+    games = db.relationship('Game', backref="jam", lazy="subquery")
+    participations = db.relationship("Participation", backref="jam", lazy="subquery")
+    teams = db.relationship("Team", backref="jam", lazy="subquery")
 
     description = db.Column(db.Text)
     restrictions = db.Column(db.Text)
 
-    registration_duration = db.Column(db.Integer) # hours
-    packaging_duration = db.Column(db.Integer) # hours
-    rating_duration = db.Column(db.Integer) # hours
-    duration = db.Column(db.Integer) # hours
+    registration_duration = db.Column(db.Integer)  # hours
+    packaging_duration = db.Column(db.Integer)  # hours
+    rating_duration = db.Column(db.Integer)  # hours
+    duration = db.Column(db.Integer)  # hours
 
     # last notification that was sent, e.g. 0 = announcement, 1 = registration, (see status codes)
-    last_notification_sent = db.Column(db.Integer, default = -1)
+    last_notification_sent = db.Column(db.Integer, default=-1)
 
-    def __init__(self, title, start_time, duration = 48, team_limit = 0, theme = ''):
+    def __init__(self, title, start_time, duration=48, team_limit=0, theme=''):
         self.title = title
         self.slug = get_slug(title)
         self.start_time = start_time
@@ -51,19 +52,19 @@ class Jam(db.Model):
 
     @property
     def end_time(self):
-        return self.start_time + timedelta(hours = self.duration)
+        return self.start_time + timedelta(hours=self.duration)
 
     @property
     def packaging_deadline(self):
-        return self.end_time + timedelta(hours = self.packaging_duration)
+        return self.end_time + timedelta(hours=self.packaging_duration)
 
     @property
     def rating_end(self):
-        return self.packaging_deadline + timedelta(hours = self.rating_duration)
+        return self.packaging_deadline + timedelta(hours=self.rating_duration)
 
     @property
     def registration_start(self):
-        return self.start_time - timedelta(hours = self.registration_duration)
+        return self.start_time - timedelta(hours=self.registration_duration)
 
     def __repr__(self):
         return '<Jam %r>' % self.slug
@@ -84,7 +85,7 @@ class Jam(db.Model):
             return JamStatus(JamStatusCode.FINISHED, self.end_time)
 
     def url(self, **values):
-        return url_for('jam_info', jam_slug = self.slug, **values)
+        return url_for('jam_info', jam_slug=self.slug, **values)
 
     def gamesFilteredByPackageTypes(self, filters):
         games = Game.query.filter_by(is_deleted=False).filter_by(jam_id=self.id)
@@ -98,12 +99,12 @@ class Jam(db.Model):
 
     def gamesByScore(self, filters=set()):
         e = self.gamesFilteredByPackageTypes(filters)
-        e.sort(key = Game.score.fget, reverse = True)
+        e.sort(key=Game.numberVotes.fget, reverse=True)
         return e
 
     def gamesByTotalRatings(self, filters=set()):
         e = self.gamesFilteredByPackageTypes(filters)
-        e.sort(key = Game.numberRatings.fget)
+        e.sort(key=Game.numberRatings.fget)
         return e
 
     @property
@@ -155,7 +156,7 @@ class Jam(db.Model):
             template = "finished"
             notify = "jam_finish"
             subject = "Rating for " + self.title + " finished - Winners"
-            kwargs = { "games": self.gamesByScore()[:3] }
+            kwargs = {"games": self.gamesByScore()[:3]}
 
         if n >= JamStatusCode.RUNNING and n != JamStatusCode.RATING:
             users = [r.user for r in self.participations]
@@ -187,13 +188,15 @@ class Jam(db.Model):
     def livestreamTeams(self):
         return [t for t in self.teams if t.livestream]
 
+
 class JamStatusCode(object):
-    ANNOUNCED    = 0
+    ANNOUNCED = 0
     REGISTRATION = 1
-    RUNNING      = 2
-    PACKAGING    = 3
-    RATING       = 4
-    FINISHED     = 5
+    RUNNING = 2
+    PACKAGING = 3
+    RATING = 4
+    FINISHED = 5
+
 
 class JamStatus(object):
     def __init__(self, code, time):
