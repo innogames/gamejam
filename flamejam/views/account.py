@@ -50,6 +50,7 @@ def login():
         db.session.commit()
 
         flash("Your account has been created.", "success")
+        login_user(new_user, True)
         return redirect(url_for('verify_status', username=username))
     return render_template('account/login.html', login_form=login_form, register_form=register_form)
 
