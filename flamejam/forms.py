@@ -12,6 +12,7 @@ from flamejam import app, models, utils
 from flamejam.models.rating import RATING_CATEGORIES
 from sqlalchemy import func
 
+
 ############## VALIDATORS ####################
 
 class Not(object):
@@ -120,7 +121,7 @@ class VerifyForm(Form):
 
 class ContactUserForm(Form):
     message = TextAreaField("Message", validators=[Required()])
-    # captcha = RecaptchaField("Captcha")
+    captcha = RecaptchaField("Captcha")
 
 
 class JamDetailsForm(Form):
@@ -151,6 +152,7 @@ class GameEditForm(Form):
 
     def get(self, name):
         return getattr(self, "score_" + name + "_enabled")
+
 
 # Adds fields "dynamically" (which score categories are enabled?)
 for c in RATING_CATEGORIES:
