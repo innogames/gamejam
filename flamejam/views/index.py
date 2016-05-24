@@ -8,12 +8,13 @@ from wordpress_xmlrpc.exceptions import ServerConnectionError, InvalidCredential
 
 @cache_it
 def getWordpressPostsLimit(limit):
+    wpPost = []
+
     try:
         wpClient = Client(app.config.get('BLOG_URL'), app.config.get('BLOG_USER'), app.config.get('BLOG_PASSWORD'))
         wpPost = wpClient.call(posts.GetPosts({'number': limit, 'post_status': 'publish'}))
-    except (ServerConnectionError, InvalidCredentialsError):
-        wpPost = []
-    return wpPost
+    finally:
+        return wpPost
 
 
 def getBestGames():
