@@ -18,7 +18,7 @@ def getWordpressPostsLimit(limit):
 
 def getBestGames():
     games = db.engine.execute(
-        "SELECT count(v.game_id) as score, v.game_id, g.title, g.slug, gs.url FROM vote v LEFT JOIN game_screenshot gs on gs.game_id = v.game_id LEFT JOIN game g on v.game_id = g.id GROUP BY v.game_id ORDER BY 1 DESC LIMIT 4;")
+        "SELECT count(v.game_id) as score, v.game_id, g.title, g.slug, gs.url FROM vote v LEFT JOIN game_screenshot gs on gs.game_id = v.game_id LEFT JOIN game g on v.game_id = g.id GROUP BY v.game_id, gs.url ORDER BY 1 DESC LIMIT 4;")
 
     return games
 
