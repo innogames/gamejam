@@ -1,7 +1,8 @@
 /*****************************************************/
 .lang_menu {
 	height: 40px;
-	display: block;}
+	display: block;
+}
 
 .lang_menu,
 .lang_menu a {
@@ -10,6 +11,7 @@
 	font-size: 14px;
 	text-transform: uppercase;
 }
+
 .lang_menu a.active {
 	font-weight: bold;
 }
@@ -17,10 +19,12 @@
 .main_menu {
 	padding: 0;
 	margin: 0;
-	list-style: none;}
+	list-style: none;
+}
 
 .main_menu li {
-	float: left;}
+	float: left;
+}
 
 .main_menu li a {
 	line-height: 80px;
@@ -32,27 +36,28 @@
 	transition: all 0.2s ease-in;
 	-moz-transition: all 0.2s ease-in;
 	-webkit-transition: all 0.2s ease-in;
-	-o-transition: all 0.2s ease-in;}
+	-o-transition: all 0.2s ease-in;
+}
 
 .main_menu li.active a,
 .main_menu li a:hover {
 	background-color: #61a400;
 }
 
-
 /*****************************************************/
 .socialmedia {
 	float: right;
 	padding: 18px 0 0 0;
 	margin: 0;
-	list-style: none;}
+	list-style: none;
+}
 
-.socialmedia  li {
+.socialmedia li {
 	float: left;
 	margin-left: 8px;
 }
 
-.socialmedia  li a{
+.socialmedia li a {
 	text-indent: -999999px;
 	height: 44px;
 	width: 44px;
@@ -62,45 +67,55 @@
 	transition: opacity .3s ease-in-out;
 	-moz-transition: opacity .3s ease-in-out;
 	-webkit-transition: opacity .3s ease-in-out;
-	-o-transition: all 0.3s ease-in;}
+	-o-transition: all 0.3s ease-in;
+}
 
-.socialmedia  li a:hover{
-	opacity: 0.5;}
+.socialmedia li a:hover {
+	opacity: 0.5;
+}
 
-.socialmedia  li.facebook a{
-	background-image: url(../img/facebook.gif);}
+.socialmedia li.facebook a {
+	background-image: url(../img/facebook.gif);
+}
 
-.socialmedia  li.youtube a{
-	background-image: url(../img/youtube.gif);}
+.socialmedia li.youtube a {
+	background-image: url(../img/youtube.gif);
+}
 
-.socialmedia  li.googleplus a{
-	background-image: url(../img/googleplus.gif);}
+.socialmedia li.googleplus a {
+	background-image: url(../img/googleplus.gif);
+}
 
-.socialmedia  li.twitter a{
-	background-image: url(../img/twitter.gif);}
-
-
+.socialmedia li.twitter a {
+	background-image: url(../img/twitter.gif);
+}
 
 /*****************************************************/
 .breadcrumb_menu {
 	list-style: none;
 	padding: 0;
-	margin: 0;}
+	margin: 0;
+}
 
-.breadcrumb_menu  li{
+.breadcrumb_menu li {
 	float: left;
-	line-height: 80px;}
+	line-height: 80px;
+}
 
-.breadcrumb_menu  li.active {
+.breadcrumb_menu li.active {
 	font-weight: bold;
 }
 
-.breadcrumb_menu  li,
-.breadcrumb_menu  li a {
-	color: #1e7f11;}
+.breadcrumb_menu li,
+.breadcrumb_menu li a {
+	color: #1e7f11;
+}
 
-.breadcrumb_menu  li a:after {
-	content:" >";
-	padding: 0 5px;}
-.breadcrumb_menu  li.active a:after {
-	content:"";}
+.breadcrumb_menu li a:after {
+	content: " >";
+	padding: 0 5px;
+}
+
+.breadcrumb_menu li.active a:after {
+	content: "";
+}

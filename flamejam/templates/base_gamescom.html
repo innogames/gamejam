@@ -1,12 +1,9 @@
-{% if gamescom %}
-{% extends "base_gamescom.html" %}
-{% else %}
 <!doctype html>
 <html class="no-js" lang="en">
 	<head>
 		<meta charset="utf-8"/>
 		<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-		<title>{% block title %}{% endblock %} « InnoGames Game Jam</title>
+		<title>{% block title %}{% endblock %} « IGJam.eu</title>
 
 		<link rel="stylesheet" href="{{ url_for('static', filename='css/foundation.min.css') }}"/>
 		<link rel="stylesheet" href="{{ url_for('static', filename='css/layout.css') }}"/>
@@ -27,18 +24,15 @@
 		<section id="header">
 			<div class="row">
 				<div class="large-6 columns">
-					<!-- Logo -->
-					<a href="{{ url_for('index') }}"><img src="{{ url_for('static', filename='img/logo.png') }}"
-							style="min-width: 240px; margin-top: 20px;"
-							alt="InnoGames - GAME JAM"></a><br>
-					{% if current_jam %}
-					{% if current_jam.getStatus().code <= 1 %}
-					<p><a style="font-size: 20px; color: #fff;" href="{{current_jam.url()}}">
-						{{current_jam.title}} | {{ current_jam.start_time |
-						jamhumantime }}</a>
-					</p>
-					{% endif %}
-					{% endif %}
+					<!-- Header text -->
+					<a href="#">
+						<p class="logo-top">
+							GAMESCOM 2016
+						</p>
+						<p class="logo-bottom">
+							17-19.08
+						</p>
+					</a>
 				</div>
 
 				<div class="large-6 columns right">
@@ -71,7 +65,7 @@
 		<!-- Navi Start -->
 		<nav>
 			<div class="row">
-				<div class="large-12 columns">
+				<div class="large-12 columns nav-content">
 					<ul class="main_menu">
 						{% if request.endpoint == "index" %}
 						<li class="active"><a href="{{ url_for('index') }}">Home</a></li>
@@ -114,15 +108,6 @@
 						{% else %}
 						<li><a href="{{ url_for('contact') }}">Contact</a></li>
 						{% endif %}
-
-						<!--                    <li><a href="{{ url_for('statistics') }}">Stats</a></li>-->
-						<!--                    <li><a href="{{ url_for('map') }}">Map</a></li>-->
-						<!--
-						Search Form
-													<form action="{{ url_for('search') }}">
-														<input class="text search" type="text" placeholder="Search..." name="q" />
-													</form>
-						-->
 					</ul>
 					<ul class="socialmedia">
 						<li class="facebook"><a href="https://www.facebook.com/InnoGames" target="_blank">facebook</a></li>
@@ -162,25 +147,6 @@
 		</section>
 		<!-- Content Stop -->
 
-		<!--
-							{% block menu %}
-								{% if current_jam %}
-									{% if current_jam.getStatus().code <= 1 %}
-										{{ current_jam.start_time | humantime }}
-										Next jam is
-										<b>{{ current_jam.getLink() }}</b>
-										{{ current_jam.start_time | humantime }}
-									{% elif current_jam.getStatus().code == 2 %}
-										Currently running jam is
-										<b>{{ current_jam.getLink() }}</b>
-										ending {{ current_jam.end_time | humantime }}
-									{% else %}
-										<b>{{ current_jam.getLink() }}</b>
-										has finished
-									{% endif %}
-								{% endif %}
-							{% endblock %}
-		-->
 		{% include "footer.html" %}
 
 		<script src="{{ url_for('static', filename='js/vendor/jquery.js') }}"></script>
@@ -190,4 +156,3 @@
 		</script>
 	</body>
 </html>
-{% endif %}

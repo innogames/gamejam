@@ -1,6 +1,6 @@
 from flamejam import app, db, cache_it
 from flamejam.models import Jam, Game
-from flask import render_template, url_for, redirect
+from flask import render_template, url_for, redirect, request
 from wordpress_xmlrpc import Client
 from wordpress_xmlrpc.methods import posts
 from wordpress_xmlrpc.exceptions import ServerConnectionError, InvalidCredentialsError
@@ -26,6 +26,8 @@ def getBestGames():
 
 @app.route("/")
 def index():
+    if (request.host.find('igjam.eu') != -1):
+        return render_template("index_gamescom.html")
     wpPosts = getWordpressPostsLimit(4)
     games = getBestGames()
     return render_template("index.html", all_jams=Jam.query.all(), news=wpPosts, games=games)
