@@ -9,27 +9,40 @@ from BeautifulSoup import BeautifulSoup
 
 @cache_it
 def getWordpressPostById(id):
-    wpClient = Client(app.config.get('BLOG_URL'), app.config.get('BLOG_USER'), app.config.get('BLOG_PASSWORD'))
-    wpPost = wpClient.call(posts.GetPost(id))
-    return wpPost
+    wpPost = []
+    try:
+        wpClient = Client(app.config.get('BLOG_URL'), app.config.get('BLOG_USER'), app.config.get('BLOG_PASSWORD'))
+        wpPost = wpClient.call(posts.GetPost(id))
+    finally:
+        return wpPost
 
 
 @cache_it
 def getWordpressPosts():
-    wpClient = Client(app.config.get('BLOG_URL'), app.config.get('BLOG_USER'), app.config.get('BLOG_PASSWORD'))
-    allPosts = wpClient.call(posts.GetPosts({'post_status': 'publish'}))
-    return allPosts
+    allPosts = []
+    try:
+        wpClient = Client(app.config.get('BLOG_URL'), app.config.get('BLOG_USER'), app.config.get('BLOG_PASSWORD'))
+        allPosts = wpClient.call(posts.GetPosts({'post_status': 'publish'}))
+    finally:
+        return allPosts
 
 
 @cache_it
 def getWordpressCategories():
-    wpClient = Client(app.config.get('BLOG_URL'), app.config.get('BLOG_USER'), app.config.get('BLOG_PASSWORD'))
-    wpCats = wpClient.call(taxonomies.GetTerms('category'))
-    return wpCats
+    wpCats = []
+    try:
+        wpClient = Client(app.config.get('BLOG_URL'), app.config.get('BLOG_USER'), app.config.get('BLOG_PASSWORD'))
+        wpCats = wpClient.call(taxonomies.GetTerms('category'))
+    finally:
+        return wpCats
 
 
 @app.route('/news/<news_id>/')
 def news_show(news_id):
+    wpPost = []
+    wpCats = []
+    wpRelatedPosts = []
+
     try:
         wpPost = getWordpressPostById(news_id)
 
@@ -44,16 +57,15 @@ def news_show(news_id):
                 if term.taxonomy == 'category':
                     if term.name == wpCategory and post.id != news_id:
                         wpRelatedPosts.append(post)
-    except (ServerConnectionError, InvalidCredentialsError):
-        wpPost = []
-        wpCats = []
-        wpRelatedPosts = []
-
-    return render_template('news/show.html', news=wpPost, categories=wpCats, related=wpRelatedPosts)
+    finally:
+        return render_template('news/show.html', news=wpPost, categories=wpCats, related=wpRelatedPosts)
 
 
 @app.route('/news/tags/<tag>/')
 def news_tag(tag):
+    wpCats = []
+    wpRelatedPosts = []
+
     try:
         wpCats = getWordpressCategories()
         allPosts = getWordpressPosts()
@@ -64,15 +76,15 @@ def news_tag(tag):
                 if term.taxonomy == 'post_tag':
                     if term.name == tag:
                         wpRelatedPosts.append(post)
-    except (ServerConnectionError, InvalidCredentialsError):
-        wpCats = []
-        wpRelatedPosts = []
-
-    return render_template('news/list.html', news=wpRelatedPosts, categories=wpCats)
+    finally:
+        return render_template('news/list.html', news=wpRelatedPosts, categories=wpCats)
 
 
 @app.route('/news/category/<category>/')
 def news_category(category):
+    wpCats = []
+    wpRelatedPosts = []
+
     try:
         wpCats = getWordpressCategories()
         allPosts = getWordpressPosts()
@@ -82,20 +94,17 @@ def news_category(category):
                 if term.taxonomy == 'category':
                     if term.name == category:
                         wpRelatedPosts.append(post)
-    except (ServerConnectionError, InvalidCredentialsError):
-        wpCats = []
-        wpRelatedPosts = []
-
-    return render_template('news/list.html', news=wpRelatedPosts, categories=wpCats)
+    finally:
+        return render_template('news/list.html', news=wpRelatedPosts, categories=wpCats)
 
 
 @app.route('/news/')
 def news():
+    wpPost = []
+    wpCats = []
+
     try:
         wpPost = getWordpressPosts()
         wpCats = getWordpressCategories()
-    except (ServerConnectionError, InvalidCredentialsError):
-        wpPost = []
-        wpCats = []
-
-    return render_template('news/list.html', news=wpPost, categories=wpCats)
+    finally:
+        return render_template('news/list.html', news=wpPost, categories=wpCats)

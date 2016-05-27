@@ -10,3 +10,5 @@ from participation import *
 from rating import *
 from team import *
 from user import *
+from vote import *
+from gamescomapplication import *

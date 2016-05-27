@@ -104,6 +104,23 @@ class UserRegistration(Form):
     captcha = RecaptchaField()
 
 
+class GamescomRegistration(Form):
+    real_name = TextField("Real Name", validators=[Required(message="Please enter your real name.")])
+    city = TextField("City", validators=[Required(message="You have to enter your city where you live.")])
+    zipcode = TextField("Zip Code", validators=[Required(message="Please enter the zip code of your city where you live.")])
+    street = TextField("Street / House Number", validators=[Required(message="Please enter your street where you live.")])
+    job_title = TextField("Job Title", validators=[Required(message="Please enter your current job title.")])
+    website = TextField("Website / Blog")
+    ability_programmer = BooleanField("Programming")
+    ability_gamedesigner = BooleanField("Game Design")
+    ability_2dartist = BooleanField("Graphics / 2D Art")
+    ability_3dartist = BooleanField("Modelling / 3D Art")
+    ability_composer = BooleanField("Composing")
+    ability_sounddesigner = BooleanField("Sound Design")
+    abilities_extra = TextField("Detailed abilities")
+    captcha = RecaptchaField()
+
+
 class ResetPassword(Form):
     username = TextField("Username", validators=[UsernameValidator()])
     captcha = RecaptchaField()
