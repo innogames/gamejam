@@ -100,22 +100,22 @@ nav {
 }
 
 .socialmedia li.facebook a {
-	background-image: url(../img/gamescom/facebook.png);
+	background-image: url(../img/gamescom/facebook.gif);
 	background-size: cover;
 }
 
 .socialmedia li.youtube a {
-	background-image: url(../img/gamescom/youtube.png);
+	background-image: url(../img/gamescom/youtube.gif);
 	background-size: cover;
 }
 
 .socialmedia li.googleplus a {
-	background-image: url(../img/gamescom/googleplus.png);
+	background-image: url(../img/gamescom/googleplus.gif);
 	background-size: cover;
 }
 
 .socialmedia li.twitter a {
-	background-image: url(../img/gamescom/twitter.png);
+	background-image: url(../img/gamescom/twitter.gif);
 	background-size: cover;
 }
 
