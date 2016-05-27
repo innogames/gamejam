@@ -19,6 +19,7 @@ if os.environ.get('CONFIG_TYPE') == "production":
 else:
     app.config.from_pyfile('../doc/flamejam.cfg.default')
     app.config.from_pyfile('../flamejam.cfg', silent=True)
+    app.config.from_pyfile('../doc/flamejam.cfg', silent=True)
 
 app.jinja_env.add_extension('jinja2.ext.loopcontrols')
 
