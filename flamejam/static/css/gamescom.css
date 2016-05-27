@@ -9,6 +9,7 @@ body {
 #content {
 	background-color: transparent;
 	background-image: none;
+	margin-bottom: 20px;
 }
 
 .content li {
@@ -224,4 +225,8 @@ input.button:focus {
 
 a {
 	color: rgba(24, 234, 132, 1);
+}
+
+.content li:before {
+	color: #65e9c2;
 }
