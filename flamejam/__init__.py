@@ -46,5 +46,5 @@ def inject():
     return dict(current_user=current_user,
                 current_datetime=datetime.utcnow(),
                 current_jam=get_current_jam(),
-                gamescom=(request.host.find('igjam.eu') != -1),
+                gamescom=(request.host.find('igjam.eu') != -1 | request.host.find('gamejam-staging.innogames.com') != -1),
                 RATING_CATEGORIES=flamejam.models.rating.RATING_CATEGORIES)
