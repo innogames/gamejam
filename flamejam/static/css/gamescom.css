@@ -53,13 +53,12 @@ h1, h2, h3, h4 {
 a.button.login {
 	color: white;
 	background-color: #65e9c2;
-	background: rgba(24, 234, 132, 1);
 	border-bottom: 0px;
 	height: 65px;
 }
 
 a.button.login:hover {
-	background-color: #65e9c2;
+	background-color: rgba(24, 234, 132, 1);
 }
 
 nav {
