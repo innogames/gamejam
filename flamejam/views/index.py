@@ -26,7 +26,7 @@ def getBestGames():
 
 @app.route("/")
 def index():
-    if ((request.host.find('igjam.eu') != -1 | request.host.find('gamejam-staging.innogames.com') != -1)):
+    if (((request.host.find('igjam.eu') != -1) | (request.host.find('gamejam-staging.innogames.com') != -1))):
         return render_template("index_gamescom.html")
     wpPosts = getWordpressPostsLimit(4)
     games = getBestGames()
