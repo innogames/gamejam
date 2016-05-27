@@ -11,6 +11,10 @@ body {
 	background-image: none;
 }
 
+.content li {
+	padding: 0 0 0.5em 1em;
+}
+
 .breadcrumb_menu li,
 .breadcrumb_menu li a {
 	color: #4cb91e;
