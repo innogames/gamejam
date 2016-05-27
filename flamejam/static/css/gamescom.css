@@ -153,11 +153,6 @@ a .news-list-item p,
 	color: rgba(24, 234, 132, 1);
 }
 
-a.button {
-	background-color: rgba(24, 234, 132, 1);
-	color: #fff;
-}
-
 .content p a,
 .content p a:hover {
 	color: #65e9c2;
@@ -215,7 +210,7 @@ input.button {
 
 input.button:hover,
 input.button:focus {
-	background-color: rgba(24, 234, 132, 1);
+	background-color: #65e9c2;
 }
 
 .alert-box.success {
@@ -229,4 +224,14 @@ a {
 
 .content li:before {
 	color: #65e9c2;
+}
+
+a.button {
+	background-color: #65e9c2;
+	color: #fff;
+}
+
+a:hover.button, a.button:hover,
+a:focus.button, a.button:focus {
+	background-color: rgba(24, 234, 132, 1);
 }
