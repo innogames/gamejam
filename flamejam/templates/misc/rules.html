@@ -47,7 +47,11 @@
 <!-- Rule Start -->
 <div class="row rule">
 	<div class="large-3 columns">
-		<img src="{{ url_for('static', filename='DummyContent/dummy-rules-icon-procedure.png') }}" alt="Procedure">
+		{% if gamescom %}
+		<img src="{{ url_for('static', filename='img/gamescom/rules/icon-procedure.png') }}" alt="Procedure">
+		{% else %}
+		<img src="{{ url_for('static', filename='img/rules/icon-procedure.png') }}" alt="Procedure">
+		{% endif %}
 	</div>
 	<div class="large-9 columns">
 		<h2>Procedure</h2>
@@ -72,7 +76,11 @@
 <!-- Rule Start -->
 <div class="row rule">
 	<div class="large-3 columns">
-		<img src="{{ url_for('static', filename='DummyContent/dummy-rules-icon-artwork.png') }}" alt="Procedure">
+		{% if gamescom %}
+		<img src="{{ url_for('static', filename='img/gamescom/rules/icon-artwork.png') }}" alt="Artwork">
+		{% else %}
+		<img src="{{ url_for('static', filename='img/rules/icon-artwork.png') }}" alt="Artwork">
+		{% endif %}
 	</div>
 	<div class="large-9 columns">
 		<h2>Artwork</h2>
@@ -86,7 +94,11 @@
 <!-- Rule Start -->
 <div class="row rule">
 	<div class="large-3 columns">
-		<img src="{{ url_for('static', filename='DummyContent/dummy-rules-icon-crossplatform.png') }}" alt="Procedure">
+		{% if gamescom %}
+		<img src="{{ url_for('static', filename='img/gamescom/rules/icon-crossplatform.png') }}" alt="Crossplatform">
+		{% else %}
+		<img src="{{ url_for('static', filename='img/rules/icon-crossplatform.png') }}" alt="Crossplatform">
+		{% endif %}
 	</div>
 	<div class="large-9 columns">
 		<h2>Cross-platform</h2>
@@ -99,7 +111,11 @@
 <!-- Rule Start -->
 <div class="row rule">
 	<div class="large-3 columns">
-		<img src="{{ url_for('static', filename='DummyContent/dummy-rules-icon-theme.png') }}" alt="Procedure">
+		{% if gamescom %}
+		<img src="{{ url_for('static', filename='img/gamescom/rules/icon-theme.png') }}" alt="Theme">
+		{% else %}
+		<img src="{{ url_for('static', filename='img/rules/icon-theme.png') }}" alt="Theme">
+		{% endif %}
 	</div>
 	<div class="large-9 columns">
 		<h2>Theme</h2>
@@ -117,7 +133,11 @@
 <!-- Rule Start -->
 <div class="row rule">
 	<div class="large-3 columns">
-		<img src="{{ url_for('static', filename='DummyContent/dummy-rules-icon-engines.png') }}" alt="Procedure">
+		{% if gamescom %}
+		<img src="{{ url_for('static', filename='img/gamescom/rules/icon-engines.png') }}" alt="Engines">
+		{% else %}
+		<img src="{{ url_for('static', filename='img/rules/icon-engines.png') }}" alt="Engines">
+		{% endif %}
 	</div>
 	<div class="large-9 columns">
 		<h2>Libraries/Engines</h2>
@@ -130,7 +150,11 @@
 <!-- Rule Start -->
 <div class="row rule">
 	<div class="large-3 columns">
-		<img src="{{ url_for('static', filename='DummyContent/dummy-rules-icon-procedure.png') }}" alt="Procedure">
+		{% if gamescom %}
+		<img src="{{ url_for('static', filename='img/gamescom/rules/icon-procedure.png') }}" alt="Procedure">
+		{% else %}
+		<img src="{{ url_for('static', filename='img/rules/icon-procedure.png') }}" alt="Procedure">
+		{% endif %}
 	</div>
 	<div class="large-9 columns">
 		<h2>Snippets/personal Code</h2>
@@ -143,7 +167,11 @@
 <!-- Rule Start -->
 <div class="row rule">
 	<div class="large-3 columns">
-		<img src="{{ url_for('static', filename='DummyContent/dummy-rules-icon-sourcecontrol.png') }}" alt="Procedure">
+		{% if gamescom %}
+		<img src="{{ url_for('static', filename='img/gamescom/rules/icon-sourcecontrol.png') }}" alt="Sourcecontrol">
+		{% else %}
+		<img src="{{ url_for('static', filename='img/rules/icon-sourcecontrol.png') }}" alt="Sourcecontrol">
+		{% endif %}
 	</div>
 	<div class="large-9 columns">
 		<h2>Source control</h2>
@@ -156,7 +184,11 @@
 <!-- Rule Start -->
 <div class="row rule">
 	<div class="large-3 columns">
-		<img src="{{ url_for('static', filename='DummyContent/dummy-rules-icon-teamsize.png') }}" alt="Procedure">
+		{% if gamescom %}
+		<img src="{{ url_for('static', filename='img/gamescom/rules/icon-teamsize.png') }}" alt="Teamsize">
+		{% else %}
+		<img src="{{ url_for('static', filename='img/rules/icon-teamsize.png') }}" alt="Teamsize">
+		{% endif %}
 	</div>
 	<div class="large-9 columns">
 		<h2>Team size</h2>
@@ -169,7 +201,11 @@
 <!-- Rule Start -->
 <div class="row rule">
 	<div class="large-3 columns">
-		<img src="{{ url_for('static', filename='DummyContent/dummy-rules-icon-timeline.png') }}" alt="Procedure">
+		{% if gamescom %}
+		<img src="{{ url_for('static', filename='img/gamescom/rules/icon-timeline.png') }}" alt="Timeline">
+		{% else %}
+		<img src="{{ url_for('static', filename='img/rules/icon-timeline.png') }}" alt="Timeline">
+		{% endif %}
 	</div>
 	<div class="large-9 columns">
 		<h2>Time limit</h2>

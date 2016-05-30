@@ -4,6 +4,7 @@ from flask import render_template, url_for, redirect, request
 from wordpress_xmlrpc import Client
 from wordpress_xmlrpc.methods import posts
 from wordpress_xmlrpc.exceptions import ServerConnectionError, InvalidCredentialsError
+import logging
 
 
 @cache_it
@@ -13,6 +14,8 @@ def getWordpressPostsLimit(limit):
     try:
         wpClient = Client(app.config.get('BLOG_URL'), app.config.get('BLOG_USER'), app.config.get('BLOG_PASSWORD'))
         wpPost = wpClient.call(posts.GetPosts({'number': limit, 'post_status': 'publish'}))
+    except (ServerConnectionError, InvalidCredentialsError) as e:
+        logging.warn(e.message)
     finally:
         return wpPost
 

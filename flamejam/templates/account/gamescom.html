@@ -142,6 +142,16 @@
 					</div>
 				</div>
 				<div class="row">
+					<h3>Legal</h3>
+
+					<div class="large-10">
+						{{ gamescom_form.age(style="max-width:20px;max-height:14px;") }} {{ gamescom_form.age.label.text }}
+						<br/>
+						{{ gamescom_form.tac(style="max-width:20px;max-height:14px;") }}
+						<a href="{{ url_for('tac') }}" target="_blank">{{ gamescom_form.tac.label.text }}</a>
+					</div>
+				</div>
+				<div class="row">
 					<h3>GameDev Abilities</h3>
 
 					<div class="large-10">

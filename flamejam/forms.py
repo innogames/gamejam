@@ -111,6 +111,8 @@ class GamescomRegistration(Form):
     street = TextField("Street / House Number", validators=[Required(message="Please enter your street where you live.")])
     job_title = TextField("Job Title", validators=[Required(message="Please enter your current job title.")])
     website = TextField("Website / Blog")
+    age = BooleanField("Are you at least 18 years old?", validators=[Required(message="Please confirm your age.")])
+    tac = BooleanField("I accept the terms and conditions", validators=[Required(message="Please confirm our terms and conditions.")])
     ability_programmer = BooleanField("Programming")
     ability_gamedesigner = BooleanField("Game Design")
     ability_2dartist = BooleanField("Graphics / 2D Art")

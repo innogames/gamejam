@@ -1,10 +1,9 @@
-from flamejam import app, db, cache_it
-from flask import render_template, url_for, redirect, flash, request
+from flamejam import app, cache_it
+from flask import render_template
 from wordpress_xmlrpc import Client
 from wordpress_xmlrpc.methods import posts, taxonomies
 from wordpress_xmlrpc.exceptions import ServerConnectionError, InvalidCredentialsError
-from flask.ext.login import login_required, current_user
-from BeautifulSoup import BeautifulSoup
+import logging
 
 
 @cache_it
@@ -13,6 +12,8 @@ def getWordpressPostById(id):
     try:
         wpClient = Client(app.config.get('BLOG_URL'), app.config.get('BLOG_USER'), app.config.get('BLOG_PASSWORD'))
         wpPost = wpClient.call(posts.GetPost(id))
+    except (ServerConnectionError, InvalidCredentialsError) as e:
+        logging.warn(e.message)
     finally:
         return wpPost
 
@@ -23,6 +24,8 @@ def getWordpressPosts():
     try:
         wpClient = Client(app.config.get('BLOG_URL'), app.config.get('BLOG_USER'), app.config.get('BLOG_PASSWORD'))
         allPosts = wpClient.call(posts.GetPosts({'post_status': 'publish'}))
+    except (ServerConnectionError, InvalidCredentialsError) as e:
+        logging.warn(e.message)
     finally:
         return allPosts
 
@@ -33,6 +36,8 @@ def getWordpressCategories():
     try:
         wpClient = Client(app.config.get('BLOG_URL'), app.config.get('BLOG_USER'), app.config.get('BLOG_PASSWORD'))
         wpCats = wpClient.call(taxonomies.GetTerms('category'))
+    except (ServerConnectionError, InvalidCredentialsError) as e:
+        logging.warn(e.message)
     finally:
         return wpCats
 
@@ -57,6 +62,8 @@ def news_show(news_id):
                 if term.taxonomy == 'category':
                     if term.name == wpCategory and post.id != news_id:
                         wpRelatedPosts.append(post)
+    except (ServerConnectionError, InvalidCredentialsError) as e:
+        logging.warn(e.message)
     finally:
         return render_template('news/show.html', news=wpPost, categories=wpCats, related=wpRelatedPosts)
 
@@ -76,6 +83,8 @@ def news_tag(tag):
                 if term.taxonomy == 'post_tag':
                     if term.name == tag:
                         wpRelatedPosts.append(post)
+    except (ServerConnectionError, InvalidCredentialsError) as e:
+        logging.warn(e.message)
     finally:
         return render_template('news/list.html', news=wpRelatedPosts, categories=wpCats)
 
@@ -94,6 +103,8 @@ def news_category(category):
                 if term.taxonomy == 'category':
                     if term.name == category:
                         wpRelatedPosts.append(post)
+    except (ServerConnectionError, InvalidCredentialsError) as e:
+        logging.warn(e.message)
     finally:
         return render_template('news/list.html', news=wpRelatedPosts, categories=wpCats)
 
@@ -106,5 +117,7 @@ def news():
     try:
         wpPost = getWordpressPosts()
         wpCats = getWordpressCategories()
+    except (ServerConnectionError, InvalidCredentialsError) as e:
+        logging.warn(e.message)
     finally:
         return render_template('news/list.html', news=wpPost, categories=wpCats)
