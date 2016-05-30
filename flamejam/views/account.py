@@ -94,25 +94,25 @@ def gamescom():
             flash("You applied successfully to our Gamescom Game Jam 2016! You will get an email with further details soon.")
 
             return redirect(url_for('index'))
-        else:
-            register_form = UserRegistration()
-            if register_form.validate_on_submit():
-                username = register_form.username.data.strip()
-                password = register_form.password.data
-                email = register_form.email.data
+    else:
+        register_form = UserRegistration()
+        if register_form.validate_on_submit():
+            username = register_form.username.data.strip()
+            password = register_form.password.data
+            email = register_form.email.data
 
-                new_user = User(username, password, email)
+            new_user = User(username, password, email)
 
-                # body = render_template("emails/account/verification.txt", recipient = new_user, email_changed = False)
-                # mail.send_message(subject="Welcome to " + app.config["LONG_NAME"] + ", " + username, recipients=[new_user.email], body=body)
+            # body = render_template("emails/account/verification.txt", recipient = new_user, email_changed = False)
+            # mail.send_message(subject="Welcome to " + app.config["LONG_NAME"] + ", " + username, recipients=[new_user.email], body=body)
 
-                db.session.add(new_user)
-                db.session.commit()
+            db.session.add(new_user)
+            db.session.commit()
 
-                flash("Your account has been created.", "success")
-                login_user(new_user, True)
+            flash("Your account has been created.", "success")
+            login_user(new_user, True)
 
-                return redirect(url_for('gamescom'))
+            return redirect(url_for('gamescom'))
 
     return render_template('account/gamescom.html', register_form=register_form, gamescom_form=gamescom_form)
 
