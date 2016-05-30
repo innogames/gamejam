@@ -22,9 +22,6 @@ else:
     app.config.from_pyfile('../doc/flamejam.cfg', silent=True)
     app.config.from_pyfile('/etc/flamejam/flamejam-staging.cfg', silent=True)
 
-if os.environ.get('CONFIG_SITE') == "gamescom":
-    app.config.from_pyfile('/etc/flamejam/flamejam-gamescom.cfg', silent=True)
-
 app.jinja_env.add_extension('jinja2.ext.loopcontrols')
 
 mail = Mail(app)
@@ -48,6 +45,9 @@ import flamejam.models
 
 @app.context_processor
 def inject():
+    if ((request.host.find('igjam.eu') != -1) | (request.host.find('gamejam-staging.innogames.com') != -1)):
+        app.config.from_pyfile('/etc/flamejam/flamejam-gamescom.cfg', silent=True)
+
     return dict(current_user=current_user,
                 current_datetime=datetime.utcnow(),
                 current_jam=get_current_jam(),
