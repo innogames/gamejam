@@ -91,7 +91,8 @@ def gamescom():
             db.session.add(gamescom_application)
             db.session.commit()
 
-            flash("You applied successfully to our Gamescom Game Jam 2016! You will get an email with further details soon.")
+            flash(
+                "You applied successfully to our Gamescom Game Jam 2016! Remember: This is an application to take part - you still are not registered for for the event quite yet! Those chosen based on their applications will receive an email with further details on how to register soon.")
 
             return redirect(url_for('index'))
 
