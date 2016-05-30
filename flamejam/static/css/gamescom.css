@@ -125,9 +125,9 @@ nav {
 }
 
 #footer {
-	background-color: #000;
-	border-color: #65e9c2;
-	border-style: solid;
+	background-color: transparent;
+	border-color: transparent;
+	border-style: none;
 	border-bottom-color: rgba(0, 0, 0, 0);
 	border-left-color: rgba(0, 0, 0, 0);
 	border-right-color: rgba(0, 0, 0, 0);
