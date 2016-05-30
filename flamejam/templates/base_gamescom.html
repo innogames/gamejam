@@ -37,7 +37,7 @@
 
 				<div class="large-6 columns right">
 					<!-- Lang Menu -->
-					<p class="lang_menu"><a href="#" class="active">en</a></p>
+					<p class="lang_menu" style="visibility: hidden"><a href="#" class="active">en</a></p>
 					<!-- Login -->
 					{% if current_user.is_anonymous == True %}
 					<a href="{{ url_for('login') }}" class="button login">Login / Signup</a>
