@@ -100,22 +100,23 @@ nav {
 }
 
 .socialmedia li.facebook a {
-	background-image: url(../img/gamescom/facebook.gif);
+	background-image: url(../img/gamescom/facebook.png);
 	background-size: cover;
 }
 
 .socialmedia li.youtube a {
-	background-image: url(../img/gamescom/youtube.gif);
+	background-image: url(../img/gamescom/youtube.png);
 	background-size: cover;
 }
 
 .socialmedia li.googleplus a {
 	background-image: url(../img/gamescom/googleplus.gif);
 	background-size: cover;
+	display: none;
 }
 
 .socialmedia li.twitter a {
-	background-image: url(../img/gamescom/twitter.gif);
+	background-image: url(../img/gamescom/twitter.png);
 	background-size: cover;
 }
 
@@ -215,6 +216,10 @@ input.button:focus {
 .alert-box.success {
 	background-color: rgba(24, 234, 132, 1);
 	border-color: #65e9c2;
+}
+
+.alert-box a {
+	color: #65e9c2;
 }
 
 a {
