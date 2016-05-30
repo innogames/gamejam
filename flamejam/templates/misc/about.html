@@ -1,0 +1,47 @@
+{% extends "base.html" %}
+
+{% block title %}About{% endblock %}
+
+{% block breadcrumb %}
+<div class="row">
+	<div class="large-12 columns">
+		<ul class="breadcrumb_menu">
+			<li><a href="">Home</a></li>
+			<li class="active">About</li>
+		</ul>
+	</div>
+</div>
+{% endblock %}
+
+{% block content %}
+
+<div class="row top-banner">
+	<div class="large-8 columns">
+		<div class="green">
+			<h1>About</h1>
+
+			<p>Here you can find more info about the Jam.</p>
+		</div>
+	</div>
+</div>
+<!-- Banner Stop -->
+
+<!-- Plain Text Start -->
+<div class="row">
+	<div class="large-12 columns">
+		<p>The InnoGames Jam is about bringing people from all around the world together to have fun and create unique games. This jam is the first major gamejam at the gamescom and it is a non profit event.</p>
+		<br>
+		<p>At a gamejam the participants will usually get a topic at the opening event. After that they will have to create a game for that topic within 48h. Only the most creative and wonderful games can win the jam. So it encourages you to try new things and try out new ideas. It’s dangerous to participate at a jam alone, make a friend! As you know by now, this is what it’s all about. So don’t give yourself a hard time by doing everything by yourself. Meet people to help you bring your ideas to life. Or find completely new ideas with them. Be creative together!
+		</p>
+		<br>
+		<p>As you can see, a gamejam is a great possibility to meet new friends. Additionally we are inviting not only experienced people, we are also encouraging newcomers to participate, so that we have a wide variety of people with all kinds of skill sets. Also we want to show the newbies how wonderful and loving our industry really is.</p>
+		<br>
+		<p>But we don't only want to show the newcomers who we are, we also want to show the world outside how open minded and creative our industry really is. Aside from games everyone knows and that games are indeed a form of art.</p>
+		<br>
+		<p>The InnoGames Jam is organized by a team of game developers, who love gamejams themselves and who are passionate about making the industry even more colourful, more open minded and more connected.</p>
+		<br>
+		Please also read our <a href="{{ url_for('rules')}}">Safe Space Policy</a>.
+	</div>
+</div>
+
+{% endblock %}

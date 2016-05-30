@@ -123,6 +123,11 @@ def tac():
     return render_template('misc/tac.html')
 
 
+@app.route('/about')
+def about():
+    return render_template('misc/about.html')
+
+
 @app.route('/stats')
 @app.route('/statistics')
 def statistics():
