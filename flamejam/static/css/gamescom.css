@@ -52,6 +52,7 @@ h1, h2, h3, h4 {
 
 a.button.login {
 	color: white;
+	background-image: url(../img/gamescom/login-btn.png);
 	background-color: #65e9c2;
 	border-bottom: 0px;
 	height: 65px;
