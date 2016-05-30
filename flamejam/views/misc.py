@@ -118,6 +118,11 @@ def rules():
     return render_template('misc/rules.html')
 
 
+@app.route('/gamescom_terms')
+def tac():
+    return render_template('misc/tac.html')
+
+
 @app.route('/stats')
 @app.route('/statistics')
 def statistics():
@@ -191,7 +196,6 @@ def statistics():
         stats["average_team_size"] = 0
     stats["biggest_team_size"] = biggest_team_size
     stats["biggest_team_game"] = biggest_team_game
-
 
     # Best rated games
     # User with most games
