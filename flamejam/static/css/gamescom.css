@@ -239,3 +239,7 @@ a:hover.button, a.button:hover,
 a:focus.button, a.button:focus {
 	background-color: rgba(24, 234, 132, 1);
 }
+
+form a, form a:hover {
+	color: rgba(24, 234, 132, 1);
+}
