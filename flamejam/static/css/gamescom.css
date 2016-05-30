@@ -52,6 +52,7 @@ h1, h2, h3, h4 {
 
 a.button.login {
 	color: white;
+	background-image: url(../img/gamescom/login-btn.png);
 	background-color: #65e9c2;
 	border-bottom: 0px;
 	height: 65px;
@@ -110,8 +111,6 @@ nav {
 }
 
 .socialmedia li.googleplus a {
-	background-image: url(../img/gamescom/googleplus.gif);
-	background-size: cover;
 	display: none;
 }
 
@@ -125,9 +124,9 @@ nav {
 }
 
 #footer {
-	background-color: #000;
-	border-color: #65e9c2;
-	border-style: solid;
+	background-color: transparent;
+	border-color: transparent;
+	border-style: none;
 	border-bottom-color: rgba(0, 0, 0, 0);
 	border-left-color: rgba(0, 0, 0, 0);
 	border-right-color: rgba(0, 0, 0, 0);
