@@ -94,6 +94,9 @@ def gamescom():
             flash("You applied successfully to our Gamescom Game Jam 2016! You will get an email with further details soon.")
 
             return redirect(url_for('index'))
+
+        register_form = UserRegistration()
+        return render_template('account/gamescom.html', register_form=register_form, gamescom_form=gamescom_form)
     else:
         register_form = UserRegistration()
         if register_form.validate_on_submit():
@@ -114,7 +117,9 @@ def gamescom():
 
             return redirect(url_for('gamescom'))
 
-    return render_template('account/gamescom.html', register_form=register_form, gamescom_form=gamescom_form)
+        gamescom_form = GamescomRegistration()
+
+        return render_template('account/gamescom.html', register_form=register_form, gamescom_form=gamescom_form)
 
 
 @app.route('/logout')
