@@ -246,7 +246,7 @@ form a, form a:hover {
 }
 
 .apply_box {
-	height: 190px;
+	height: 150px;
 	background-image: url(../img/gamescom/login-btn.png);
 	background-color: rgba(24, 234, 132, 1);
 }
@@ -260,9 +260,9 @@ form a, form a:hover {
 .apply_box .next,
 a .top-banner .next_gamejam_box .next {
 	text-transform: uppercase;
-	font-size: 95px;
+	font-size: 70px;
 	font-weight: bold;
-	line-height: 91px;
+	line-height: 66px;
 	color: #fff;
 
 }
@@ -285,8 +285,8 @@ a .top-banner .next_gamejam_box .next {
 
 .apply_box .here {
 	text-transform: uppercase;
-	font-size: 91px;
+	font-size: 71px;
 	font-weight: bold;
-	line-height: 91px;
+	line-height: 71px;
 	color: white;
 }
