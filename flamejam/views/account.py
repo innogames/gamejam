@@ -57,9 +57,8 @@ def login():
 
 @app.route('/gamescom', methods=['GET', 'POST'])
 def gamescom():
-    register_form = UserRegistration()
     user = current_user
-    gamescom_form = GamescomRegistration(obj=user)
+
     if (user.is_authenticated):
         participation = GamescomApplication.query.filter_by(user_id=user.id).first()
 
@@ -68,49 +67,52 @@ def gamescom():
 
             return redirect(url_for('index'))
 
-    if register_form.validate_on_submit():
-        username = register_form.username.data.strip()
-        password = register_form.password.data
-        email = register_form.email.data
+        gamescom_form = GamescomRegistration(obj=user)
+        if gamescom_form.validate_on_submit():
+            user.ability_programmer = gamescom_form.ability_programmer.data
+            user.ability_gamedesigner = gamescom_form.ability_gamedesigner.data
+            user.ability_2dartist = gamescom_form.ability_2dartist.data
+            user.ability_3dartist = gamescom_form.ability_3dartist.data
+            user.ability_composer = gamescom_form.ability_composer.data
+            user.ability_sounddesigner = gamescom_form.ability_sounddesigner.data
+            user.abilities_extra = gamescom_form.abilities_extra.data
+            user.real_name = gamescom_form.real_name.data
+            user.website = gamescom_form.website.data
 
-        new_user = User(username, password, email)
+            gamescom_application = GamescomApplication(user)
+            gamescom_application.city = gamescom_form.city.data
+            gamescom_application.zip_code = gamescom_form.zipcode.data
+            gamescom_application.street = gamescom_form.street.data
+            gamescom_application.job_title = gamescom_form.job_title.data
 
-        # body = render_template("emails/account/verification.txt", recipient = new_user, email_changed = False)
-        # mail.send_message(subject="Welcome to " + app.config["LONG_NAME"] + ", " + username, recipients=[new_user.email], body=body)
+            # yes this is hardcoded and bad, but fine for now
+            gamescom_application.year = 2016
 
-        db.session.add(new_user)
-        db.session.commit()
+            db.session.add(gamescom_application)
+            db.session.commit()
 
-        flash("Your account has been created.", "success")
-        login_user(new_user, True)
+            flash("You applied successfully to our Gamescom Game Jam 2016! You will get an email with further details soon.")
 
-        return redirect(url_for('gamescom'))
-    elif gamescom_form.validate_on_submit():
-        user.ability_programmer = gamescom_form.ability_programmer.data
-        user.ability_gamedesigner = gamescom_form.ability_gamedesigner.data
-        user.ability_2dartist = gamescom_form.ability_2dartist.data
-        user.ability_3dartist = gamescom_form.ability_3dartist.data
-        user.ability_composer = gamescom_form.ability_composer.data
-        user.ability_sounddesigner = gamescom_form.ability_sounddesigner.data
-        user.abilities_extra = gamescom_form.abilities_extra.data
-        user.real_name = gamescom_form.real_name.data
-        user.website = gamescom_form.website.data
+            return redirect(url_for('index'))
+        else:
+            register_form = UserRegistration()
+            if register_form.validate_on_submit():
+                username = register_form.username.data.strip()
+                password = register_form.password.data
+                email = register_form.email.data
 
-        gamescom_application = GamescomApplication(user)
-        gamescom_application.city = gamescom_form.city.data
-        gamescom_application.zip_code = gamescom_form.zipcode.data
-        gamescom_application.street = gamescom_form.street.data
-        gamescom_application.job_title = gamescom_form.job_title.data
+                new_user = User(username, password, email)
 
-        # yes this is hardcoded and bad, but fine for now
-        gamescom_application.year = 2016
+                # body = render_template("emails/account/verification.txt", recipient = new_user, email_changed = False)
+                # mail.send_message(subject="Welcome to " + app.config["LONG_NAME"] + ", " + username, recipients=[new_user.email], body=body)
 
-        db.session.add(gamescom_application)
-        db.session.commit()
+                db.session.add(new_user)
+                db.session.commit()
 
-        flash("You applied successfully to our Gamescom Game Jam 2016! You will get an email with further details soon.")
+                flash("Your account has been created.", "success")
+                login_user(new_user, True)
 
-        return redirect(url_for('index'))
+                return redirect(url_for('gamescom'))
 
     return render_template('account/gamescom.html', register_form=register_form, gamescom_form=gamescom_form)
 

@@ -110,6 +110,10 @@ nav {
 	background-size: cover;
 }
 
+.socialmedia li.googleplus a {
+	display: none;
+}
+
 .socialmedia li.twitter a {
 	background-image: url(../img/gamescom/twitter.png);
 	background-size: cover;
