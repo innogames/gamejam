@@ -103,10 +103,10 @@
 						<li><a href="{{ url_for('games', page=1) }}">Games</a></li>
 						{% endif %}
 
-						{% if request.endpoint == "contact" %}
-						<li class="active"><a href="{{ url_for('contact') }}">Contact</a></li>
+						{% if request.endpoint == "about" %}
+						<li class="active"><a href="{{ url_for('about') }}">About</a></li>
 						{% else %}
-						<li><a href="{{ url_for('contact') }}">Contact</a></li>
+						<li><a href="{{ url_for('about') }}">About</a></li>
 						{% endif %}
 					</ul>
 					<ul class="socialmedia">
