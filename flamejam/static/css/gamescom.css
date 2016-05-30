@@ -53,7 +53,9 @@ h1, h2, h3, h4 {
 a.button.login {
 	color: white;
 	background-image: url(../img/gamescom/login-btn.png);
-	background-color: #65e9c2;
+	background-color: transparent;
+	background-size: 100%;
+	background-repeat: no-repeat;
 	border-bottom: 0px;
 	height: 65px;
 }
@@ -241,4 +243,50 @@ a:focus.button, a.button:focus {
 
 form a, form a:hover {
 	color: rgba(24, 234, 132, 1);
+}
+
+.apply_box {
+	height: 190px;
+	background-image: url(../img/gamescom/login-btn.png);
+	background-color: rgba(24, 234, 132, 1);
+}
+
+.apply_box p {
+	padding: 10px 0;
+	text-align: center;
+	font-family: "Ruda", sans-serif;
+}
+
+.apply_box .next,
+a .top-banner .next_gamejam_box .next {
+	text-transform: uppercase;
+	font-size: 95px;
+	font-weight: bold;
+	line-height: 91px;
+	color: #fff;
+
+}
+
+.apply_box .gamejam {
+	text-transform: uppercase;
+	font-size: 48px;
+	font-weight: bold;
+	line-height: 1px;
+	color: #65e9c2;
+}
+
+.apply_box .more {
+	text-transform: uppercase;
+	font-size: 41px;
+	font-weight: bold;
+	line-height: 1px;
+	color: #fff;
+}
+
+.apply_box .here {
+	text-transform: uppercase;
+	font-size: 91px;
+	font-weight: bold;
+	line-height: 91px;
+	color: white;
 }
