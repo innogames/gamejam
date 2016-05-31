@@ -13,3 +13,7 @@ CREATE TABLE `gamescom_application` (
 )
     ENGINE = InnoDB
     DEFAULT CHARSET = utf8;
+
+ALTER TABLE gamescom_application ADD COLUMN `country` VARCHAR(128) DEFAULT NULL AFTER `city`;
+ALTER TABLE gamescom_application ADD COLUMN `experience` VARCHAR(128) DEFAULT NULL AFTER `job_title`;
+ALTER TABLE gamescom_application ADD COLUMN `title` VARCHAR(128) DEFAULT NULL AFTER `user_id`;

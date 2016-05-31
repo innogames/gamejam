@@ -80,10 +80,13 @@ def gamescom():
             user.website = gamescom_form.website.data
 
             gamescom_application = GamescomApplication(user)
+            gamescom_application.title = gamescom_form.title.data
             gamescom_application.city = gamescom_form.city.data
+            gamescom_application.country = gamescom_form.country.data
             gamescom_application.zip_code = gamescom_form.zipcode.data
             gamescom_application.street = gamescom_form.street.data
             gamescom_application.job_title = gamescom_form.job_title.data
+            gamescom_application.experience = gamescom_form.experience.data
 
             # yes this is hardcoded and bad, but fine for now
             gamescom_application.year = 2016
