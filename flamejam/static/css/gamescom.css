@@ -157,7 +157,7 @@ a .news-list-item p,
 
 .content p a,
 .content p a:hover {
-	color: #65e9c2;
+	color: rgba(24, 234, 132, 1);
 }
 
 .news p.date {
