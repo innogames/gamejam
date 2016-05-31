@@ -83,7 +83,6 @@ def gamescom():
             gamescom_application.title = gamescom_form.title.data
             gamescom_application.city = gamescom_form.city.data
             gamescom_application.country = gamescom_form.country.data
-            gamescom_application.zip_code = gamescom_form.zipcode.data
             gamescom_application.job_title = gamescom_form.job_title.data
             gamescom_application.experience = gamescom_form.experience.data
 

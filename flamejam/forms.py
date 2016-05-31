@@ -109,7 +109,6 @@ class GamescomRegistration(Form):
     title = TextField("Title", validators=[Required(message="Please enter a title, e.g. Ms, Mr, Mx, ...")])
     city = TextField("City", validators=[Required(message="You have to enter your city where you live.")])
     country = TextField("Country", validators=[Required(message="You have to enter your country where you live.")])
-    zipcode = TextField("Zip Code", validators=[Required(message="Please enter the zip code of your city where you live.")])
     job_title = TextField("Job Title", validators=[Required(message="Please enter your current job title.")])
     experience = TextField("Jam experience", validators=[Required(message="Please write something about your past Jam experience (if you have any).")])
     website = TextField("Website / Blog")
