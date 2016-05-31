@@ -112,6 +112,11 @@ def contact():
     return render_template('misc/contact.html')
 
 
+@app.route('/safespace')
+def safespace():
+    return render_template('misc/safespace.html')
+
+
 @app.route('/rules')
 @app.route('/rulez')
 def rules():
