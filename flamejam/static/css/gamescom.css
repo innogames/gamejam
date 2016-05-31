@@ -291,3 +291,19 @@ a .top-banner .next_gamejam_box .next {
 	line-height: 71px;
 	color: white;
 }
+
+a.circle {
+	background-color: rgba(24, 234, 132, 1);
+}
+
+a.circle:hover {
+	background-color: #65e9c2;
+}
+
+p.gamejam_subline {
+	color: #65e9c2;
+}
+
+.greenbox {
+	background-color: #65e9c2;
+}

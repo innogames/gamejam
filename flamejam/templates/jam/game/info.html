@@ -7,14 +7,14 @@
 {% block breadcrumb %}
 <!-- Breadcrumb Start -->
 <div class="row">
-    <div class="large-12 columns">
-        <ul class="breadcrumb_menu">
-            <li><a href="{{ url_for('index') }}">Home</a></li>
-            <li><a href="{{ url_for('jams') }}">Game Jams</a></li>
-            <li><a href="{{ url_for('jam_info', jam_slug=game.jam.slug) }}">{{ game.jam.title }}</a></li>
-            <li class="active"><a href="">{{ game.title }}</a></li>
-        </ul>
-    </div>
+	<div class="large-12 columns">
+		<ul class="breadcrumb_menu">
+			<li><a href="{{ url_for('index') }}">Home</a></li>
+			<li><a href="{{ url_for('jams') }}">Game Jams</a></li>
+			<li><a href="{{ url_for('jam_info', jam_slug=game.jam.slug) }}">{{ game.jam.title }}</a></li>
+			<li class="active"><a href="">{{ game.title }}</a></li>
+		</ul>
+	</div>
 </div>
 <!-- Breadcrumb Stop -->
 {% endblock %}
@@ -22,159 +22,158 @@
 {% block content %}
 
 <div class="row">
-    <!-- left Col -->
-    <div class="large-8 columns">
+	<!-- left Col -->
+	<div class="large-8 columns">
 
-        <h1 class="gamejam_overview">{{ game.title }}</h1>
+		<h1 class="gamejam_overview">{{ game.title }}</h1>
 
-        <p class="gamejam_subline"><a href="{{ game.team.url() }}">{{ game.team.name }}</a></p>
+		<p class="gamejam_subline"><a href="{{ game.team.url() }}">{{ game.team.name }}</a></p>
 
-        {% if not game.screenshots|count %}
-        {% else %}
-        {% set screenshot = game.screenshots|first %}
-        <img class="game_banner" src="{{ screenshot.url }}">
-        {% endif %}
-
-
-        {% if game.description %}
-        <br/><br/>
-
-        <p><strong>Description</strong><br>
-            {{ (game.description or "*This game has no description.*") | markdown }}
-        </p>
-        {% endif %}
-
-        {% if game.technology %}
-        <p><strong>Technology used</strong><br> {{game.technology | markdown}}</p>
-        {% endif %}
-
-        {% if game.help %}
-        <p><strong>Help / Controls</strong><br> {{game.help | markdown}}</p>
-        {% endif %}
-
-    </div>
-
-    <!-- right Col -->
-    <div class="large-4 columns">
-
-        {% if current_user.is_authenticated and current_user in game.team.members %}
-        <a href="{{ url_for('edit_game', jam_slug = game.jam.slug, game_id = game.id) }}" class="button">Edit game</a>
-        {% endif %}
-        <!-- Downloads -->
-        <h3>Downloads</h3>
-        {% if game.packages %}
-        {% for package in game.packages %}
-        <p class="greenbox">{{ package.getLink() }}</p>
-        {% endfor %}
-        {% else %}
-        <p class="greenbox">There are no packages available yet.</p>
-        {% endif %}
-
-        <!-- Screenshots -->
-        <h3>Screenshots</h3>
-        <ul class="block-grid large-block-grid-2">
-            {% if game.screenshots %}
-            {% for screenshot in game.screenshots %}
-            <li>
-                <a href="{{ screenshot.caption }}"><img src="{{screenshot.url}}"></a>
-            </li>
-            {% endfor %}
-            {% else %}
-            <div class="next_gamejam_box opacityfade" style="background-color: grey; background-image: none;">
-                <p>
-                    <span class="next">no</span><br>
-                    <span class="gamejam">image</span><br>
-                    <span class="more">found</span><br>
-                    <span class="here">:(</span>
-                </p>
-            </div>
-            {% endif %}
-        </ul>
+		{% if not game.screenshots|count %}
+		{% else %}
+		{% set screenshot = game.screenshots|first %}
+		<img class="game_banner" src="{{ screenshot.url }}">
+		{% endif %}
 
 
-        <p style="font-size: 16px; color:#61a400; text-align: center;">This game was created<br>at {{game.jam.title}}
-        </p>
+		{% if game.description %}
+		<br/><br/>
 
-        <!-- Big Button -->
-        <a href="{{ url_for('jam_games_lis', jam_slug=jam.slug, page=1) }}" class="button big allgames">All Games of
-            {{jam.title}}</a>
-    </div>
-    <div class="row">
-        <div class="large-8 columns">
-            <br/>
-            {% set status = game.jam.getStatus().code %}
+		<p><strong>Description</strong><br>
+			{{ (game.description or "*This game has no description.*") | markdown }}
+		</p>
+		{% endif %}
 
-            <h2>Votes</h2>
-            {% if status == 4 %}
-            <p class="alert alert-info">The voting for this jam is not over, so other people's votes are hidden.</p>
+		{% if game.technology %}
+		<p><strong>Technology used</strong><br> {{game.technology | markdown}}</p>
+		{% endif %}
 
-            {% if current_user.is_authenticated and current_user in game.team.members %}
-            You can't vote for your own game!
-            {% else %}
-            {% if current_user.is_authenticated and game.getVoteCountByUser(current_user) < 3 %}
-            <a href="{{ url_for('vote_game', jam_slug=game.jam.slug, game_id=game.id) }}" class="button big allgames">Vote
-                for this game! ({{ 3-game.getVoteCountByUser(current_user)}} votes left)</a>
-            {% endif %}
-            {% endif %}
-            {% else %}
+		{% if game.help %}
+		<p><strong>Help / Controls</strong><br> {{game.help | markdown}}</p>
+		{% endif %}
 
-            {% if status == 5 %}
-            <p class="gamejam_subline">{{game.numberVotes}} people voted for this game. Overall the game ranked
-                #{{game.rank}} at the Jam!</p>
-            {% endif %}
+	</div>
 
-            {% if status < 4 %}
-            <p>The voting has not yet started.</p>
-            {% endif %}
-            {% endif %}
+	<!-- right Col -->
+	<div class="large-4 columns">
 
-            <h2>Comments</h2>
-            {% if game.comments %}
-            {% for comment in game.comments %}
-            <p>
-                {% if not comment.user %}
-                <span class="author deleted user">[deleted]</span>
+		{% if current_user.is_authenticated and current_user in game.team.members %}
+		<a href="{{ url_for('edit_game', jam_slug = game.jam.slug, game_id = game.id) }}" class="button">Edit game</a>
+		{% endif %}
+		<!-- Downloads -->
+		<h3>Downloads</h3>
+		{% if game.packages %}
+		{% for package in game.packages %}
+		<p class="greenbox">{{ package.getLink() }}</p>
+		{% endfor %}
+		{% else %}
+		<p class="greenbox">There are no packages available yet.</p>
+		{% endif %}
 
-                {% else %}
-                <a href="{{ comment.user.url() }}">
-                    <img src="{{ comment.user.getAvatar(32) }}" width="32" height="32"/>
-                </a>
-                <a class="author" href="{{ comment.user.url() }}">{{ comment.user.username }}</a>
-                {% endif %}
+		<!-- Screenshots -->
+		<h3>Screenshots</h3>
+		<ul class="block-grid large-block-grid-2">
+			{% if game.screenshots %}
+			{% for screenshot in game.screenshots %}
+			<li>
+				<a href="{{ screenshot.caption }}"><img src="{{screenshot.url}}"></a>
+			</li>
+			{% endfor %}
+			{% else %}
+			<div class="next_gamejam_box opacityfade" style="background-color: grey; background-image: none;">
+				<p>
+					<span class="next">no</span><br>
+					<span class="gamejam">image</span><br>
+					<span class="more">found</span><br>
+					<span class="here">:(</span>
+				</p>
+			</div>
+			{% endif %}
+		</ul>
 
-                (<span class="posted" title="{{ comment.posted | formattime }}">{{ comment.posted | humantime }}</span>)
 
-            <div class="text markdown">
-                {{ (comment.text) | markdown }}
-            </div>
-            </p>
-            {% endfor %}
+		<p style="font-size: 16px; text-align: center;">This game was created<br>at {{game.jam.title}}</p>
 
-            {% else %}
-            <p>No comments yet.</p>
-            {% endif %}
-            <br/>
-            {% if current_user.is_authenticated %}
-            <form method="POST">
-                <p>
-                    {{ form_errors(form) }}
-                    {{ form.hidden_tag() }}
-                    {{ form.text(class="comment", rows = 8, style="min-width:100%") }}
+		<!-- Big Button -->
+		<a href="{{ url_for('jam_games_lis', jam_slug=jam.slug, page=1) }}" class="button big allgames">All Games of
+			{{jam.title}}</a>
+	</div>
+	<div class="row">
+		<div class="large-8 columns">
+			<br/>
+			{% set status = game.jam.getStatus().code %}
 
-                <div class="small">You can use markdown in the comments!</div>
+			<h2>Votes</h2>
+			{% if status == 4 %}
+			<p class="alert alert-info">The voting for this jam is not over, so other people's votes are hidden.</p>
 
-                <p style="text-align: right;">
-                    <input type="submit" value="Post comment" class="button">
-                </p>
-                </p>
-            </form>
-            {% else %}
-            <p>
-                <a href="{{ url_for('login', next = request.url) }}">Log in or register</a> to post a comment.
-            </p>
-            {% endif %}
-        </div>
-    </div>
+			{% if current_user.is_authenticated and current_user in game.team.members %}
+			You can't vote for your own game!
+			{% else %}
+			{% if current_user.is_authenticated and game.getVoteCountByUser(current_user) < 3 %}
+			<a href="{{ url_for('vote_game', jam_slug=game.jam.slug, game_id=game.id) }}" class="button big allgames">Vote
+				for this game! ({{ 3-game.getVoteCountByUser(current_user)}} votes left)</a>
+			{% endif %}
+			{% endif %}
+			{% else %}
+
+			{% if status == 5 %}
+			<p class="gamejam_subline">{{game.numberVotes}} people voted for this game. Overall the game ranked
+				#{{game.rank}} at the Jam!</p>
+			{% endif %}
+
+			{% if status < 4 %}
+			<p>The voting has not yet started.</p>
+			{% endif %}
+			{% endif %}
+
+			<h2>Comments</h2>
+			{% if game.comments %}
+			{% for comment in game.comments %}
+			<p>
+				{% if not comment.user %}
+				<span class="author deleted user">[deleted]</span>
+
+				{% else %}
+				<a href="{{ comment.user.url() }}">
+					<img src="{{ comment.user.getAvatar(32) }}" width="32" height="32"/>
+				</a>
+				<a class="author" href="{{ comment.user.url() }}">{{ comment.user.username }}</a>
+				{% endif %}
+
+				(<span class="posted" title="{{ comment.posted | formattime }}">{{ comment.posted | humantime }}</span>)
+
+			<div class="text markdown">
+				{{ (comment.text) | markdown }}
+			</div>
+			</p>
+			{% endfor %}
+
+			{% else %}
+			<p>No comments yet.</p>
+			{% endif %}
+			<br/>
+			{% if current_user.is_authenticated %}
+			<form method="POST">
+				<p>
+					{{ form_errors(form) }}
+					{{ form.hidden_tag() }}
+					{{ form.text(class="comment", rows = 8, style="min-width:100%") }}
+
+				<div class="small">You can use markdown in the comments!</div>
+
+				<p style="text-align: right;">
+					<input type="submit" value="Post comment" class="button">
+				</p>
+				</p>
+			</form>
+			{% else %}
+			<p>
+				<a href="{{ url_for('login', next = request.url) }}">Log in or register</a> to post a comment.
+			</p>
+			{% endif %}
+		</div>
+	</div>
 </div>
 
 {% endblock %}

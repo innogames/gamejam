@@ -15,7 +15,7 @@
 
 {% block content %}
 <div class="row">
-	<div class="large-8 columns news-list">
+	<div class="large-12 columns news-list">
 
 		{% for entry in news %}
 		<div class="related-news-list-item">
@@ -66,15 +66,6 @@
 
 	</div>
 	<!-- Left Column Stop -->
-
-	<!-- Right Column Start -->
-	<div class="large-4 columns">
-		<h3>Categories</h3>
-		{% for category in categories %}
-		<a href="{{ url_for('news_category', category = category.name) }}" class="button">{{category.name}}</a>
-		{% endfor %}
-	</div>
-	<!-- Right Column Stop -->
 
 </div>
 

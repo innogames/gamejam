@@ -31,12 +31,6 @@
 
 		<p>{{ news.content|wpContent|safe }}</p>
 
-		<p class="tags">Tags
-			{% for term in news.terms if term.taxonomy == "post_tag" %}
-			<a href="{{ url_for('news_tag', tag = term.name) }}">{{term.name}}</a>,
-			{% endfor %}
-		</p>
-
 		<!--
 			<div class="row">
 				<div class="large-6 columns">
