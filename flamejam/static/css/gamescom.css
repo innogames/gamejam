@@ -307,3 +307,7 @@ p.gamejam_subline {
 .greenbox {
 	background-color: #65e9c2;
 }
+
+.gamejam-winner .number {
+	background-color: rgba(24, 234, 132, 1);
+}
