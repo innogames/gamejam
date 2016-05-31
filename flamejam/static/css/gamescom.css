@@ -34,9 +34,10 @@ h1, h2, h3, h4 {
 
 .logo-top {
 	color: white;
-	margin-top: 50px;
+	margin-top: 10px;
 	padding-bottom: 10px;
 	width: 256px;
+	height: 142px;
 	border-style: solid;
 	border-color: #65e9c2;
 	border-top-color: rgba(0, 0, 0, 0);
