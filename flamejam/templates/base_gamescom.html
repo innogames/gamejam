@@ -38,7 +38,7 @@
 				<div class="small-6 columns right">
 					<!-- Login -->
 					{% if current_user.is_anonymous == True %}
-					<a href="{{ url_for('login') }}" class="button login">Login / Signup</a>
+					<a href="{{ url_for('login') }}" class="button login">Login</a>
 
 					<p class="logout_headline">&nbsp;</p>
 					{% else %}

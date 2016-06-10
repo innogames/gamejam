@@ -60,7 +60,10 @@ a.button.login {
 	background-repeat: no-repeat;
 	border-bottom: 0px;
 	margin-top: 5px;
-	height: auto;
+	height: 100%;
+	width: 100%;
+	max-width: 250px;
+	max-height: 150px;
 }
 
 a.button.login:hover {
