@@ -36,20 +36,20 @@ h1, h2, h3, h4 {
 	color: white;
 	margin-top: 10px;
 	padding-bottom: 10px;
-	width: 256px;
-	height: 142px;
+	max-width: 256px;
+	max-height: 142px;
 	border-style: solid;
 	border-color: #65e9c2;
 	border-top-color: rgba(0, 0, 0, 0);
 	border-right-color: rgba(0, 0, 0, 0);
 	border-left-color: rgba(0, 0, 0, 0);
-	font-size: 30px;
 }
 
 .logo-bottom {
 	color: white;
-	width: 256px;
-	font-size: 30px;
+	max-width: 256px;
+	font-size: 1.1em;
+	text-align: center;
 }
 
 a.button.login {
