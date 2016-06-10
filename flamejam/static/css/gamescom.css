@@ -59,7 +59,7 @@ a.button.login {
 	background-size: 100%;
 	background-repeat: no-repeat;
 	border-bottom: 0px;
-	margin-top: 5%;
+	margin-top: 5px;
 	height: 65px;
 }
 
@@ -129,7 +129,7 @@ nav {
 }
 
 .top-banner {
-	min-height: 100%;
+	margin-top: 5px;
 }
 
 .next_gamejam_box {
@@ -137,7 +137,7 @@ nav {
 }
 
 .socialmedia {
-	padding: 13px;
+	padding: 3px;
 }
 
 .socialmedia li.facebook a {

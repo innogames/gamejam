@@ -28,112 +28,110 @@
 </a>
 {% endfor %}
 
-<div class="content">
-	<!-- Banner -->
-	<div class="row top-banner">
+<!-- Banner -->
+<div class="row top-banner">
 
-		<!-- green Box -->
-		<div class="large-8 columns">
-			<div class="green">
-				<h1>What is a Game Jam?</h1>
+	<!-- green Box -->
+	<div class="large-8 columns">
+		<div class="green">
+			<h1>What is a Game Jam?</h1>
 
-				<p class="subline"><span style="color: #fffc00;">Innovation.</span>
-					<span style="color: #6ab300;">Collaboration.</span>
-					<span style="color: #76ce07;">Experimentation.</span></p>
+			<p class="subline"><span style="color: #fffc00;">Innovation.</span>
+				<span style="color: #6ab300;">Collaboration.</span>
+				<span style="color: #76ce07;">Experimentation.</span></p>
 
-				<p>A game jam is an event during which all participants <b>create
-					games</b> according to a provided theme <b>within a short amount of time</b>
-					(usually two days). <b>Anybody can participate</b>, experienced or newbie, flash developer or
-					C hacker.</p>
+			<p>A game jam is an event during which all participants <b>create
+				games</b> according to a provided theme <b>within a short amount of time</b>
+				(usually two days). <b>Anybody can participate</b>, experienced or newbie, flash developer or
+				C hacker.</p>
 
-				<p class="cross-links"><a href="{{ url_for('rules') }}">Our Rules</a> |
-					<a href="{{ url_for('faq') }}">Our FAQ</a></p>
+			<p class="cross-links"><a href="{{ url_for('rules') }}">Our Rules</a> |
+				<a href="{{ url_for('faq') }}">Our FAQ</a></p>
+		</div>
+	</div>
+	{% if current_jam %}
+	<div class="large-4 columns">
+		<a href="https://www.igjam.eu/">
+			<div class="next_gamejam_box opacityfade">
+				<p>
+					<span class="next">next</span><br>
+					<span class="gamejam">Game Jam</span><br>
+					<span class="more">more info</span><br>
+					<span class="here">here</span>
+				</p>
+			</div>
+		</a>
+	</div>
+	{% endif %}
+</div>
+
+<!-- 2 Cols -->
+<div class="row">
+	<!-- left Col -->
+	<div class="large-8 columns">
+		<h1 class="green-dark centered">Game Jam News</h1>
+
+		<ul class="block-grid large-block-grid-2">
+
+			{% for entry in news %}
+			<!-- News Item -->
+			<li>
+				<div class="news-list-item">
+					<a href="{{ url_for('news_show', news_id = entry.id) }}">
+						{% for term in entry.terms if term.taxonomy == "category" %}
+						<div class="news-related-rubrik">{{term.name}}</div>
+						{% break %}
+						{% endfor %}
+
+						{% if entry.thumbnail %}
+						{% for key, value in entry.thumbnail.iteritems() if key == "thumbnail" %}
+						<img class="news-related-rubrik-image opacityfade" src="{{ value }}">
+						{% endfor %}
+						{% else %}
+						<img class="news-related-rubrik-image opacityfade" src="{{ url_for('static', filename='DummyContent/dummy-news-related2.jpg') }}">
+						{% endif %}
+						<h3>{{entry.title}}</h3>
+
+						<p class="date">From {{entry.date.strftime('%d.%m.%Y')}} </p>
+
+						<p>{{entry.content[:120]|safe}}...</p>
+					</a>
+				</div>
+			</li>
+			{% endfor %}
+		</ul>
+
+		<!-- Big Button -->
+		<div class="row">
+			<div class="large-offset-3 large-6 columns">
+				<a href="{{ url_for('news') }}" class="button big">All News</a>
 			</div>
 		</div>
-		{% if current_jam %}
-		<div class="large-4 columns">
-			<a href="https://www.igjam.eu/">
-				<div class="next_gamejam_box opacityfade">
-					<p>
-						<span class="next">next</span><br>
-						<span class="gamejam">Game Jam</span><br>
-						<span class="more">more info</span><br>
-						<span class="here">here</span>
-					</p>
-				</div>
-			</a>
-		</div>
-		{% endif %}
 	</div>
 
-	<!-- 2 Cols -->
-	<div class="row">
-		<!-- left Col -->
-		<div class="large-8 columns">
-			<h1 class="green-dark centered">Game Jam News</h1>
+	<!-- right Col -->
+	<div class="large-4 columns">
+		<h3>Video</h3>
+		<iframe width="311" height="175" src="//www.youtube.com/embed/GDx6WXpvl1o" frameborder="0" allowfullscreen></iframe>
+	</div>
 
-			<ul class="block-grid large-block-grid-2">
+	<!--
+					<div class="large-4 columns">
+						<h3>Video</h3>
+						<iframe width="311" height="175" src="//www.youtube.com/embed/GDx6WXpvl1o" frameborder="0" allowfullscreen></iframe>
 
-				{% for entry in news %}
-				<!-- News Item -->
-				<li>
-					<div class="news-list-item">
-						<a href="{{ url_for('news_show', news_id = entry.id) }}">
-							{% for term in entry.terms if term.taxonomy == "category" %}
-							<div class="news-related-rubrik">{{term.name}}</div>
-							{% break %}
-							{% endfor %}
-
-							{% if entry.thumbnail %}
-							{% for key, value in entry.thumbnail.iteritems() if key == "thumbnail" %}
-							<img class="news-related-rubrik-image opacityfade" src="{{ value }}">
-							{% endfor %}
-							{% else %}
-							<img class="news-related-rubrik-image opacityfade" src="{{ url_for('static', filename='DummyContent/dummy-news-related2.jpg') }}">
-							{% endif %}
-							<h3>{{entry.title}}</h3>
-
-							<p class="date">From {{entry.date.strftime('%d.%m.%Y')}} </p>
-
-							<p>{{entry.content[:120]|safe}}...</p>
-						</a>
+							<h3>Gallery</h3>
+							<ul class="block-grid large-block-grid-3">
+								<li><img src="http://lorempixel.com/180/160/"></li>
+								<li><img src="http://lorempixel.com/180/160/"></li>
+								<li><img src="http://lorempixel.com/180/160/"></li>
+								<li><img src="http://lorempixel.com/180/160/"></li>
+								<li><img src="http://lorempixel.com/180/160/"></li>
+								<li><img src="http://lorempixel.com/180/160/"></li>
+							</ul>
 					</div>
-				</li>
-				{% endfor %}
-			</ul>
+					-->
 
-			<!-- Big Button -->
-			<div class="row">
-				<div class="large-offset-3 large-6 columns">
-					<a href="{{ url_for('news') }}" class="button big">All News</a>
-				</div>
-			</div>
-		</div>
-
-		<!-- right Col -->
-		<div class="large-4 columns">
-			<h3>Video</h3>
-			<iframe width="311" height="175" src="//www.youtube.com/embed/GDx6WXpvl1o" frameborder="0" allowfullscreen></iframe>
-		</div>
-
-		<!--
-						<div class="large-4 columns">
-							<h3>Video</h3>
-							<iframe width="311" height="175" src="//www.youtube.com/embed/GDx6WXpvl1o" frameborder="0" allowfullscreen></iframe>
-
-								<h3>Gallery</h3>
-								<ul class="block-grid large-block-grid-3">
-									<li><img src="http://lorempixel.com/180/160/"></li>
-									<li><img src="http://lorempixel.com/180/160/"></li>
-									<li><img src="http://lorempixel.com/180/160/"></li>
-									<li><img src="http://lorempixel.com/180/160/"></li>
-									<li><img src="http://lorempixel.com/180/160/"></li>
-									<li><img src="http://lorempixel.com/180/160/"></li>
-								</ul>
-						</div>
-						-->
-
-	</div>
 </div>
 
 <!-- Best of Games Start -->
