@@ -1,5 +1,5 @@
 body {
-	color: #65e9c2 !important;
+	color: #65e9c2;
 	background-color: #000000;
 	background-image: url(../img/gamescom/decorations.png);
 	background-position: top center, top center;
@@ -59,6 +59,7 @@ a.button.login {
 	background-size: 100%;
 	background-repeat: no-repeat;
 	border-bottom: 0px;
+	margin-top: 5%;
 	height: 65px;
 }
 
@@ -77,6 +78,29 @@ nav {
 	border-right-color: rgba(0, 0, 0, 0);
 	border-left-color: rgba(0, 0, 0, 0);
 	padding: 1px;
+	max-width: 1024px;
+	height: 88px;
+	margin: auto;
+}
+
+.icon-bar {
+	background: none;
+	border-style: solid;
+	border-color: #65e9c2;
+	border-right-color: rgba(0, 0, 0, 0);
+	border-left-color: rgba(0, 0, 0, 0);
+	padding: 1px;
+	max-width: 1024px;
+	height: 80px;
+	margin: auto;
+}
+
+.icon-bar a:hover {
+	background-color: rgba(24, 234, 132, 1);
+}
+
+.icon-bar a {
+	height: 100%;
 }
 
 .main_menu li.active a,
@@ -89,19 +113,26 @@ nav {
 	border-color: #65e9c2;
 	border-width: 1px;
 	padding: 0 10px 20px 30px;
+	margin-bottom: 5px;
+	margin-top: 5px;
 }
 
 .top-banner .green {
 	border-style: solid;
 	border-color: #65e9c2;
 	border-width: 1px;
-	padding: 0 10px 20px 30px;
+	padding: 0 10px 20px 20px;
 	background-image: none;
 	background: rgba(0, 0, 0, 0);
+	margin-top: 5px;
 }
 
 .next_gamejam_box {
 	visibility: hidden;
+}
+
+.socialmedia {
+	padding: 13px;
 }
 
 .socialmedia li.facebook a {
@@ -249,6 +280,7 @@ form a, form a:hover {
 
 .apply_box {
 	height: 150px;
+	max-width: 311px;
 	background-image: url(../img/gamescom/login-btn.png);
 	background-color: rgba(24, 234, 132, 1);
 }
@@ -266,7 +298,6 @@ a .top-banner .next_gamejam_box .next {
 	font-weight: bold;
 	line-height: 66px;
 	color: #fff;
-
 }
 
 .apply_box .gamejam {
@@ -311,4 +342,16 @@ p.gamejam_subline {
 
 .gamejam-winner .number {
 	background-color: rgba(24, 234, 132, 1);
+}
+
+.row {
+	width: auto;
+}
+
+label {
+	color: #FFFFFF;
+}
+
+h2 {
+	margin: 0px 0 20px 0;
 }

@@ -23,7 +23,7 @@
 		<!-- Header Start -->
 		<section id="header">
 			<div class="row">
-				<div class="large-6 columns">
+				<div class="small-6 columns">
 					<!-- Header text -->
 					<a href="{{ url_for('gamescom') }}">
 						<p class="logo-top">
@@ -35,9 +35,7 @@
 					</a>
 				</div>
 
-				<div class="large-6 columns right">
-					<!-- Lang Menu -->
-					<p class="lang_menu" style="visibility: hidden"><a href="#" class="active">en</a></p>
+				<div class="small-6 columns right">
 					<!-- Login -->
 					{% if current_user.is_anonymous == True %}
 					<a href="{{ url_for('login') }}" class="button login">Login / Signup</a>
@@ -62,8 +60,20 @@
 		</section>
 		<!-- Header Stop -->
 
+		<nav class="row hide-for-large-up">
+			<div class="icon-bar seven-up">
+				<a class="item" href="{{ url_for('index') }}"><label>Home</label></a></li>
+				<a class="item" href="{{ url_for('news') }}"><label>News</label></a>
+				<a class="item" href="{{ url_for('rules') }}"><label>Rules</label></a>
+				<a class="item" href="{{ url_for('faq') }}"><label>FAQ</label></a>
+				<a class="item" href="{{ url_for('jams') }}"><label>Game Jams</label></a>
+				<a class="item" href="{{ url_for('games', page=1) }}"><label>Games</label></a>
+				<a class="item" href="{{ url_for('about') }}"><label>About</label></a>
+			</div>
+		</nav>
+
 		<!-- Navi Start -->
-		<nav>
+		<nav class="show-for-large-up">
 			<div class="row">
 				<div class="large-12 columns nav-content">
 					<ul class="main_menu">
@@ -123,9 +133,9 @@
 
 		<!-- Content Start -->
 		<section id="content">
-
+			<span class="show-for-large-up">
 			{% block breadcrumb %}{% endblock %}
-
+			</span>
 			{% for message in get_flashed_messages() %}
 			<div class="row" style="margin-top:5px;">
 				<div class="large-12 columns">
