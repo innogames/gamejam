@@ -60,7 +60,7 @@ a.button.login {
 	background-repeat: no-repeat;
 	border-bottom: 0px;
 	margin-top: 5px;
-	height: 65px;
+	height: auto;
 }
 
 a.button.login:hover {
@@ -137,7 +137,13 @@ nav {
 }
 
 .socialmedia {
-	padding: 3px;
+	padding: 1px;
+	margin-top: 2px;
+	margin-bottom: 5px;
+}
+
+.socialmedia li {
+	margin-left: 3px;
 }
 
 .socialmedia li.facebook a {
