@@ -125,6 +125,11 @@ nav {
 	background-image: none;
 	background: rgba(0, 0, 0, 0);
 	margin-top: 5px;
+	height: auto;
+}
+
+.top-banner {
+	min-height: 100%;
 }
 
 .next_gamejam_box {
