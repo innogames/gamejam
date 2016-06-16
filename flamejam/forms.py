@@ -122,8 +122,8 @@ class GamescomRegistration(Form):
     ability_sounddesigner = BooleanField("Sound Design")
     abilities_extra = TextField("Detailed abilities")
     travel_funding = BooleanField("Do you need funding for your traveling costs?")
-    travel_funding_amount = TextField("Amount", validators=[Required(message="Please estimate roughly how much travel funding you need.")])
-    travel_funding_text = TextField("Tell us why", validators=[Required(message="Please write why you need travel funding.")])
+    travel_funding_amount = TextField("Amount")
+    travel_funding_text = TextField("Tell us why")
     captcha = RecaptchaField()
 
 
