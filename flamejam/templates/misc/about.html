@@ -41,6 +41,10 @@
 		<p>The InnoGames Jam is organized by a team of game developers, who love gamejams themselves and who are passionate about making the industry even more colourful, more open minded and more connected.</p>
 		<br>
 		Please also read our <a href="{{ url_for('rules')}}">Safe Space Policy</a>.
+		{% if gamescom %}
+		<br><br>
+		<a href="{{ url_for('static', filename='files/160615_PressKit.zip') }}">Download press kit</a>
+		{% endif %}
 	</div>
 </div>
 
