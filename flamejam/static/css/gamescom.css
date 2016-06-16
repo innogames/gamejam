@@ -137,7 +137,7 @@ nav {
 }
 
 .next_gamejam_box {
-	visibility: hidden;
+	display: none;
 }
 
 .socialmedia {
@@ -369,4 +369,8 @@ label {
 
 h2 {
 	margin: 0px 0 20px 0;
+}
+
+p {
+	margin-bottom: 1.25em;
 }
