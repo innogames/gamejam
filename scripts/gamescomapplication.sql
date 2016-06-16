@@ -17,3 +17,6 @@ CREATE TABLE `gamescom_application` (
 ALTER TABLE gamescom_application ADD COLUMN `country` VARCHAR(128) DEFAULT NULL AFTER `city`;
 ALTER TABLE gamescom_application ADD COLUMN `experience` VARCHAR(128) DEFAULT NULL AFTER `job_title`;
 ALTER TABLE gamescom_application ADD COLUMN `title` VARCHAR(128) DEFAULT NULL AFTER `user_id`;
+
+ALTER TABLE gamescom_application ADD COLUMN `travel_funding_amount` INT(11) DEFAULT NULL AFTER `year`;
+ALTER TABLE gamescom_application ADD COLUMN `travel_funding_reason` VARCHAR(255) DEFAULT NULL AFTER `travel_funding_amount`;
