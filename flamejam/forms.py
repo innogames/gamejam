@@ -111,6 +111,7 @@ class GamescomRegistration(Form):
     country = TextField("Country", validators=[Required(message="You have to enter your country where you live.")])
     job_title = TextField("Job Title", validators=[Required(message="Please enter your current job title.")])
     experience = TextField("Jam experience", validators=[Required(message="Please write something about your past Jam experience (if you have any).")])
+    reason = TextField("Reason", validators=[Required(message="Please write something about why you want to attend the Jam.")])
     website = TextField("Website / Blog")
     age = BooleanField("Are you at least 18 years old?", validators=[Required(message="Please confirm your age.")])
     tac = BooleanField("I accept the terms and conditions", validators=[Required(message="Please confirm our terms and conditions.")])

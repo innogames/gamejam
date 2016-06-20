@@ -14,6 +14,7 @@ class GamescomApplication(db.Model):
     street = db.Column(db.String(128))
     job_title = db.Column(db.String(128))
     experience = db.Column(db.String(128))
+    reason = db.Column(db.String(255))
     travel_funding_amount = db.Column(db.Integer)
     travel_funding_reason = db.Column(db.String(255))
 

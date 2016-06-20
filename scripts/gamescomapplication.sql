@@ -20,3 +20,4 @@ ALTER TABLE gamescom_application ADD COLUMN `title` VARCHAR(128) DEFAULT NULL AF
 
 ALTER TABLE gamescom_application ADD COLUMN `travel_funding_amount` INT(11) DEFAULT NULL AFTER `year`;
 ALTER TABLE gamescom_application ADD COLUMN `travel_funding_reason` VARCHAR(255) DEFAULT NULL AFTER `travel_funding_amount`;
+ALTER TABLE gamescom_application ADD COLUMN `reason` VARCHAR(255) DEFAULT NULL AFTER `experience`;

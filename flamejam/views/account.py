@@ -85,6 +85,7 @@ def gamescom():
             gamescom_application.country = gamescom_form.country.data
             gamescom_application.job_title = gamescom_form.job_title.data
             gamescom_application.experience = gamescom_form.experience.data
+            gamescom_application.reason = gamescom_form.reason.data
             if gamescom_form.travel_funding.data:
                 gamescom_application.travel_funding_amount = gamescom_form.travel_funding_amount.data
                 gamescom_application.travel_funding_reason = gamescom_form.travel_funding_text.data
