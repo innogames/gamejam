@@ -10,6 +10,7 @@ from flask.ext.login import login_required, login_user, logout_user, current_use
 from flask.ext.principal import AnonymousIdentity, Identity, UserNeed, identity_changed, identity_loaded, Permission, \
     RoleNeed, PermissionDenied
 from sqlalchemy import func
+import datetime
 
 
 @app.route('/login', methods=['GET', 'POST'])
@@ -58,6 +59,11 @@ def login():
 @app.route('/gamescom', methods=['GET', 'POST'])
 def gamescom():
     user = current_user
+
+    if (datetime.datetime.now() >= datetime.datetime(2016, 7, 8)):
+        flash("The application phase is over! Sorry but you're too late :(", "success")
+
+        return redirect(url_for('index'))
 
     if (user.is_authenticated):
         participation = GamescomApplication.query.filter_by(user_id=user.id).first()
