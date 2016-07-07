@@ -61,7 +61,9 @@ def gamescom():
     user = current_user
 
     if (datetime.datetime.now() >= datetime.datetime(2016, 7, 8)):
-        flash("The application phase is over! Sorry but you're too late :(", "success")
+        flash(
+            "Thanks for all the awesome applications! The applications are closed. We informed the lucky participants, so please check your mail for an Eventbrite ticket. You have to buy your ticket asap. After July 15th we will have to give your seat to someone else. If you have any further questions don't hesitate to write us at gamejam@innogames.com",
+            "success")
 
         return redirect(url_for('index'))
 
