@@ -16,6 +16,7 @@ class Jam(db.Model):
     slug = db.Column(db.String(128), unique=True)
     title = db.Column(db.String(128), unique=True)
     theme = db.Column(db.String(128))
+    location = db.Column(db.String(255))
     announced = db.Column(db.DateTime)  # Date on which the jam was announced
     start_time = db.Column(db.DateTime)  # The jam starts at this moment
     team_limit = db.Column(db.Integer)  # 0 = no limit
