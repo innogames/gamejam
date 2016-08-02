@@ -76,7 +76,7 @@
 			{% if game.screenshots %}
 			{% for screenshot in game.screenshots %}
 			<li>
-				<a href="{{ screenshot.caption }}"><img src="{{screenshot.url}}"></a>
+				<a href="{{ screenshot.url }}"><img src="{{screenshot.url}}"></a>
 			</li>
 			{% endfor %}
 			{% else %}
