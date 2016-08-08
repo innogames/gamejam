@@ -34,8 +34,10 @@ def games(page):
 @app.route("/games/show/<game_slug>")
 def show_games(game_slug):
     game = Game.query.filter_by(slug=game_slug).first()
-
-    return redirect(url_for('show_game', jam_slug=game.jam.slug, game_id=game.id))
+    if (game):
+        return redirect(url_for('show_game', jam_slug=game.jam.slug, game_id=game.id))
+    else:
+        abort(404)
 
 
 @app.route("/jams/<jam_slug>/create-game/", methods=("GET", "POST"))

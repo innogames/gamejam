@@ -26,11 +26,11 @@
 		{% endif %}
 
 		<h2>{{ news.title }}</h2>
-
+		{% if news %}
 		<p class="date">From {{news.date.strftime('%d.%m.%Y')}}, {{ news.user }}</p>
 
 		<p>{{ news.content|wpContent|safe }}</p>
-
+		{% endif %}
 		<!--
 			<div class="row">
 				<div class="large-6 columns">
