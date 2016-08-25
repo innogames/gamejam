@@ -8,12 +8,12 @@ import logging
 
 
 @cache_it
-def getWordpressPostsLimit(limit):
+def getWordpressPostsLimit():
     wpPost = []
 
     try:
         wpClient = Client(app.config.get('BLOG_URL'), app.config.get('BLOG_USER'), app.config.get('BLOG_PASSWORD'))
-        wpPost = wpClient.call(posts.GetPosts({'number': limit, 'post_status': 'publish'}))
+        wpPost = wpClient.call(posts.GetPosts({'number': 4, 'post_status': 'publish'}))
     except (ServerConnectionError, InvalidCredentialsError) as e:
         logging.warn(e.message)
     finally:
@@ -31,6 +31,6 @@ def getBestGames():
 def index():
     if (((request.host.find('igjam.eu') != -1) | (request.host.find('gamejam-staging.innogames.com') != -1))):
         return render_template("index_gamescom.html")
-    wpPosts = getWordpressPostsLimit(4)
+    wpPosts = getWordpressPostsLimit()
     games = getBestGames()
     return render_template("index.html", all_jams=Jam.query.all(), news=wpPosts, games=games)
