@@ -7,7 +7,6 @@ from wordpress_xmlrpc.exceptions import ServerConnectionError, InvalidCredential
 import logging
 
 
-@cache_it
 def getWordpressPostsLimit():
     wpPost = []
 
