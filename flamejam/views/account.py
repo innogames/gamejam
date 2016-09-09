@@ -2,15 +2,13 @@ import sys
 from random import randint
 
 from flamejam import app, db, mail
-from flamejam.models import User, GamescomApplication
+from flamejam.models import User
 from flamejam.utils import hash_password, verify_password
-from flamejam.forms import UserLogin, UserRegistration, GamescomRegistration, ResetPassword, NewPassword, SettingsForm, ContactUserForm
+from flamejam.forms import UserLogin, UserRegistration, ResetPassword, NewPassword, SettingsForm, ContactUserForm
 from flask import render_template, redirect, flash, url_for, current_app, session, request, abort, Markup
-from flask.ext.login import login_required, login_user, logout_user, current_user
-from flask.ext.principal import AnonymousIdentity, Identity, UserNeed, identity_changed, identity_loaded, Permission, \
-    RoleNeed, PermissionDenied
+from flask_login import login_required, login_user, logout_user, current_user
+from flask_principal import AnonymousIdentity, Identity, UserNeed, identity_changed, identity_loaded, RoleNeed
 from sqlalchemy import func
-import datetime
 
 
 @app.route('/login', methods=['GET', 'POST'])
@@ -54,89 +52,6 @@ def login():
         login_user(new_user, True)
         return redirect(url_for('verify_status', username=username))
     return render_template('account/login.html', login_form=login_form, register_form=register_form)
-
-
-@app.route('/gamescom', methods=['GET', 'POST'])
-def gamescom():
-    user = current_user
-
-    if (datetime.datetime.now() >= datetime.datetime(2016, 7, 8)):
-        flash(
-            "Thanks for all the awesome applications! The applications are closed. We informed the lucky participants, so please check your mail for an Eventbrite ticket. You have to buy your ticket asap. After July 15th we will have to give your seat to someone else. If you have any further questions don't hesitate to write us at gamejam@innogames.com",
-            "success")
-
-        return redirect(url_for('index'))
-
-    if (user.is_authenticated):
-        participation = GamescomApplication.query.filter_by(user_id=user.id).first()
-
-        if (participation):
-            flash("You've already applied. Please wait for more information coming soon!", "success")
-
-            return redirect(url_for('index'))
-
-        gamescom_form = GamescomRegistration(obj=user)
-        if gamescom_form.validate_on_submit():
-            user.ability_programmer = gamescom_form.ability_programmer.data
-            user.ability_gamedesigner = gamescom_form.ability_gamedesigner.data
-            user.ability_2dartist = gamescom_form.ability_2dartist.data
-            user.ability_3dartist = gamescom_form.ability_3dartist.data
-            user.ability_composer = gamescom_form.ability_composer.data
-            user.ability_sounddesigner = gamescom_form.ability_sounddesigner.data
-            user.abilities_extra = gamescom_form.abilities_extra.data
-            user.real_name = gamescom_form.real_name.data
-            user.website = gamescom_form.website.data
-
-            gamescom_application = GamescomApplication(user)
-            gamescom_application.title = gamescom_form.title.data
-            gamescom_application.city = gamescom_form.city.data
-            gamescom_application.country = gamescom_form.country.data
-            gamescom_application.job_title = gamescom_form.job_title.data
-            gamescom_application.experience = gamescom_form.experience.data
-            gamescom_application.reason = gamescom_form.reason.data
-            if gamescom_form.travel_funding.data:
-                gamescom_application.travel_funding_amount = gamescom_form.travel_funding_amount.data
-                gamescom_application.travel_funding_reason = gamescom_form.travel_funding_text.data
-            else:
-                gamescom_application.travel_funding_amount = 0
-                gamescom_application.travel_funding_reason = ""
-
-            # yes this is hardcoded and bad, but fine for now
-            gamescom_application.year = 2016
-
-            db.session.add(gamescom_application)
-            db.session.commit()
-
-            flash(
-                "You applied successfully to our Gamescom Game Jam 2016! Remember: This is an application to take part - you still are not registered for for the event quite yet! Those chosen based on their applications will receive an email with further details on how to register soon.")
-
-            return redirect(url_for('index'))
-
-        register_form = UserRegistration()
-        return render_template('account/gamescom.html', register_form=register_form, gamescom_form=gamescom_form)
-    else:
-        register_form = UserRegistration()
-        if register_form.validate_on_submit():
-            username = register_form.username.data.strip()
-            password = register_form.password.data
-            email = register_form.email.data
-
-            new_user = User(username, password, email)
-
-            # body = render_template("emails/account/verification.txt", recipient = new_user, email_changed = False)
-            # mail.send_message(subject="Welcome to " + app.config["LONG_NAME"] + ", " + username, recipients=[new_user.email], body=body)
-
-            db.session.add(new_user)
-            db.session.commit()
-
-            flash("Your account has been created.", "success")
-            login_user(new_user, True)
-
-            return redirect(url_for('gamescom'))
-
-        gamescom_form = GamescomRegistration()
-
-        return render_template('account/gamescom.html', register_form=register_form, gamescom_form=gamescom_form)
 
 
 @app.route('/logout')

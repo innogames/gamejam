@@ -1,12 +1,13 @@
 import os, sys
 from flask import Flask, request
 from datetime import *
-from flask.ext.mail import Mail
-from flask.ext.sqlalchemy import SQLAlchemy
-from flask.ext.markdown import Markdown
-from flask.ext.principal import Principal, Permission, RoleNeed
-from flask.ext.login import LoginManager, current_user
-from flask.ext.cache import Cache
+from flask_mail import Mail
+from flask_sqlalchemy import SQLAlchemy
+from flaskext.markdown import Markdown
+from flask_principal import Principal, Permission, RoleNeed
+from flask_login import LoginManager, current_user
+from flask_cache import Cache
+from raven.contrib.flask import Sentry
 import pyfscache
 
 cache_it = pyfscache.FSCache('/tmp/iggj', days=1)
@@ -27,6 +28,8 @@ login_manager.login_view = "login"
 
 principals = Principal(app)
 admin_permission = Permission(RoleNeed('admin'))
+
+sentry = Sentry(app, dsn=app.config.get('SENTRY_DSN'))
 
 cache = Cache(app)
 

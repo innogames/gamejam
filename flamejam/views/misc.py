@@ -1,7 +1,7 @@
 import traceback
 
-from flask.ext.mail import Message
-from flask.ext.principal import PermissionDenied
+from flask_mail import Message
+from flask_principal import PermissionDenied
 from smtplib import SMTPRecipientsRefused
 
 from flamejam import app, db, mail, cache

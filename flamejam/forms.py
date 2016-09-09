@@ -3,12 +3,11 @@
 from wtforms.fields import *
 from wtforms.validators import *
 from wtforms.validators import ValidationError
-from wtforms.ext.sqlalchemy.fields import QuerySelectField
-from flask.ext.wtf import Form, RecaptchaField
-from flask.ext.wtf.file import FileField, FileAllowed, FileRequired
-from flask.ext.wtf.html5 import IntegerField, EmailField, IntegerRangeField, IntegerField
+from flask_wtf import Form, RecaptchaField
+from flask_wtf.file import FileField
+from flask_wtf.html5 import EmailField, IntegerField
 import re
-from flamejam import app, models, utils
+from flamejam import models, utils
 from flamejam.models.rating import RATING_CATEGORIES
 from sqlalchemy import func
 
@@ -162,6 +161,10 @@ class JamDetailsForm(Form):
 
     description = TextAreaField("Description")
     restrictions = TextAreaField("Restrictions")
+
+
+class JamPhotoForm(Form):
+    photo = FileField("Photo", validators=[regexp("([^\s]+(\.(?i)(jpg))$)")])
 
 
 class GameCreateForm(Form):

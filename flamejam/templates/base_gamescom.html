@@ -117,6 +117,12 @@
 						<li><a href="{{ url_for('games', page=1) }}">Games</a></li>
 						{% endif %}
 
+						{% if request.endpoint == "gamescom" %}
+						<li class="active"><a href="{{ url_for('gamescom') }}">Gamescom</a></li>
+						{% else %}
+						<li><a href="{{ url_for('gamescom') }}">Gamescom</a></li>
+						{% endif %}
+
 						{% if request.endpoint == "about" %}
 						<li class="active"><a href="{{ url_for('about') }}">About</a></li>
 						{% else %}

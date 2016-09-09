@@ -29,7 +29,12 @@ def getBestGames():
 @app.route("/")
 def index():
     if (((request.host.find('igjam.eu') != -1) | (request.host.find('gamejam-staging.innogames.com') != -1))):
-        return render_template("index_gamescom.html")
+        return render_template("gamescom/2016.html")
     wpPosts = getWordpressPostsLimit()
     games = getBestGames()
     return render_template("index.html", all_jams=Jam.query.all(), news=wpPosts, games=games)
+
+
+@app.route("/gamescom")
+def gamescom():
+    return render_template("gamescom/2016.html")

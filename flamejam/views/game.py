@@ -1,15 +1,13 @@
 from flamejam import app, db, mail
 from flamejam.utils import get_slug
-from flamejam.models import Jam, Game, User, Comment, GamePackage, \
-    GameScreenshot, JamStatusCode, Rating, Vote
+from flamejam.models import Jam, Game, Comment, GamePackage, GameScreenshot, JamStatusCode, Rating, Vote
 from flamejam.models.rating import RATING_CATEGORIES
-from flamejam.forms import WriteComment, GameEditForm, GameAddScreenshotForm, \
-    GameAddPackageForm, GameAddTeamMemberForm, GameCreateForm, RateGameForm
+from flamejam.forms import WriteComment, GameEditForm, GameAddScreenshotForm, GameAddPackageForm, GameCreateForm, RateGameForm
 from flask import render_template, url_for, redirect, flash, request, abort, send_from_directory
-from flask.ext.login import login_required, current_user
+from flask_login import login_required, current_user
 from sqlalchemy import desc
 from werkzeug import secure_filename
-import os, string
+import os
 
 ALLOWED_EXTENSIONS = set(['tar.gz', 'tgz', 'rar', 'zip', 'tar', 'png', 'jpg', 'jpeg', 'gif'])
 

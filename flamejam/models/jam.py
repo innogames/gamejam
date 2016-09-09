@@ -6,8 +6,7 @@ from flamejam.filters import formattime, humandelta
 from flamejam.models import Game, GamePackage
 from datetime import datetime, timedelta
 from flask import url_for, Markup, render_template
-from flask.ext.mail import Message
-from random import shuffle
+from flask_mail import Message
 from smtplib import SMTPRecipientsRefused
 
 
@@ -20,9 +19,10 @@ class Jam(db.Model):
     announced = db.Column(db.DateTime)  # Date on which the jam was announced
     start_time = db.Column(db.DateTime)  # The jam starts at this moment
     team_limit = db.Column(db.Integer)  # 0 = no limit
-    games = db.relationship('Game', backref="jam", lazy="subquery")
+    games = db.relationship("Game", backref="jam", lazy="subquery")
     participations = db.relationship("Participation", backref="jam", lazy="subquery")
     teams = db.relationship("Team", backref="jam", lazy="subquery")
+    photos = db.relationship("JamPhoto", backref="jam", lazy="subquery")
 
     description = db.Column(db.Text)
     restrictions = db.Column(db.Text)

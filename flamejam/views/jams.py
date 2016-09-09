@@ -1,8 +1,8 @@
 from flamejam import app, db
 from flamejam.models import Jam, JamStatusCode, Game, GamePackage
 from flamejam.forms import ParticipateForm, CancelParticipationForm, TeamFinderFilter
-from flask import render_template, url_for, redirect, flash, request
-from flask.ext.login import login_required, current_user
+from flask import render_template, redirect, flash, request
+from flask_login import login_required, current_user
 from sqlalchemy import desc
 
 

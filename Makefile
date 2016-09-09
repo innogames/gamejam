@@ -4,10 +4,10 @@ setup:
 	virtualenv2 -p python2 env && . env/bin/activate && \
 		pip install --upgrade \
 			flask flask-mail flask-sqlalchemy flask-wtf \
-			flask-login flask-markdown python-dateutil \
+			flask-login Flask-Markdown python-dateutil \
 			scrypt requests alembic flask-principal mysql-python \
 			flask-cache python-memcached psycopg2 python-wordpress-xmlrpc \
-			BeautifulSoup tornado pyfscache gunicorn
+			BeautifulSoup tornado pyfscache gunicorn raven[flask]
 
 run-prod:
 	. env/bin/activate && gunicorn -w 20 -b 127.0.0.1:5000 flamejam:app

@@ -1,0 +1,39 @@
+{% extends "admin/base.html" %}
+{% from "_formhelpers.html" import form_errors %}
+
+{% block title %}
+{% if mode == "create" %}
+Announce a New Jam
+{% else %}
+Jam &ndash; {{ jam.title }}
+{% endif %}
+{% endblock %}
+
+{% block content %}
+
+<div class="row">
+	<div class="span8">
+		<h2>Jam photos</h2>
+	</div>
+</div>
+<div class="row">
+	<form method="POST" enctype="multipart/form-data">
+		<div class="span3">
+			{{ form.photo.label }}
+			{{ form.photo() }}
+		</div>
+		<div class="span2">
+			<label>&nbsp;</label>
+			<input type="submit" value="Upload" class="btn btn-primary">
+		</div>
+	</form>
+</div>
+<br>
+<div class="row">
+	{% for photo in photos %}
+	<div class="span2">
+		<img src="{{ url_for('jam_photo', id = photo.id) }}"/><a href="{{ url_for('admin_jam_photo_delete', id = photo.id) }}"><i class="icon-trash"></i></a>
+	</div>
+	{% endfor %}
+</div>
+{% endblock %}
