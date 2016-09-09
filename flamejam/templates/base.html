@@ -1,24 +1,20 @@
-{% if gamescom %}
-{% extends "base_gamescom.html" %}
-{% else %}
 <!doctype html>
 <html class="no-js" lang="en">
 	<head>
 		<meta charset="utf-8"/>
 		<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-		<title>{% block title %}{% endblock %} « InnoGames Game Jam</title>
+		<title>{% block title %}{% endblock %} « IGJam.eu</title>
 
 		<link rel="stylesheet" href="{{ url_for('static', filename='css/foundation.min.css') }}"/>
 		<link rel="stylesheet" href="{{ url_for('static', filename='css/layout.css') }}"/>
 		<link rel="stylesheet" href="{{ url_for('static', filename='css/navi.css') }}"/>
 		<link rel="stylesheet" href="{{ url_for('static', filename='css/texte.css') }}"/>
 		<link rel="stylesheet" href="{{ url_for('static', filename='css/contentelemente.css') }}"/>
-		{% if gamescom %}
 		<link rel="stylesheet" href="{{ url_for('static', filename='css/gamescom.css') }}"/>
-		{% endif %}
 		<script src="{{ url_for('static', filename='js/vendor/modernizr.js') }}"></script>
+		<script src="{{ url_for('static', filename='js/vendor/jquery.js') }}"></script>
 
-		<link rel="icon" href="{{ url_for('static', filename='images/favicon.ico') }}" type="image/x-icon">
+		<link rel="icon" href="{{ url_for('static', filename='img/gamescom/favicon.ico') }}" type="image/x-icon">
 
 		{% block head %}{% endblock %}
 	</head>
@@ -26,27 +22,14 @@
 		<!-- Header Start -->
 		<section id="header">
 			<div class="row">
-				<div class="large-6 columns">
-					<!-- Logo -->
-					<a href="{{ url_for('index') }}"><img src="{{ url_for('static', filename='img/logo.png') }}"
-							style="min-width: 240px; margin-top: 20px;"
-							alt="InnoGames - GAME JAM"></a><br>
-					{% if current_jam %}
-					{% if current_jam.getStatus().code <= 1 %}
-					<p><a style="font-size: 20px; color: #fff;" href="{{current_jam.url()}}">
-						{{current_jam.title}} | {{ current_jam.start_time |
-						jamhumantime }}</a>
-					</p>
-					{% endif %}
-					{% endif %}
+				<div class="small-6 columns">
+					<!-- Header text -->
 				</div>
 
-				<div class="large-6 columns right">
-					<!-- Lang Menu -->
-					<p class="lang_menu"><a href="#" class="active">en</a></p>
+				<div class="small-6 columns right">
 					<!-- Login -->
 					{% if current_user.is_anonymous == True %}
-					<a href="{{ url_for('login') }}" class="button login">Login / Signup</a>
+					<a href="{{ url_for('login') }}" class="button login">Login</a>
 
 					<p class="logout_headline">&nbsp;</p>
 					{% else %}
@@ -63,15 +46,30 @@
 					{% endif %}
 					<!-- Follow us on -->
 					<p class="socialmedia_headline">Follow us on</p>
+					<ul class="socialmedia">
+						<li class="facebook"><a href="https://www.facebook.com/igjam/" target="_blank"></a></li>
+						<li class="youtube show-for-medium-up"><a href="https://www.youtube.com/user/InnoGames" target="_blank"></a></li>
+						<li class="twitter"><a href="https://twitter.com/IGJam16" target="_blank"></a></li>
+					</ul>
 				</div>
 			</div>
 		</section>
 		<!-- Header Stop -->
 
+		<nav class="row hide-for-large-up">
+			<div class="icon-bar five-up">
+				<a class="item" href="{{ url_for('index') }}"><label>Home</label></a></li>
+				<a class="item" href="{{ url_for('news') }}"><label>News</label></a>
+				<a class="item" href="{{ url_for('rules') }}"><label>Rules</label></a>
+				<a class="item" href="{{ url_for('faq') }}"><label>FAQ</label></a>
+				<a class="item" href="{{ url_for('about') }}"><label>About</label></a>
+			</div>
+		</nav>
+
 		<!-- Navi Start -->
-		<nav>
+		<nav class="row show-for-large-up">
 			<div class="row">
-				<div class="large-12 columns">
+				<div class="large-12 columns nav-content">
 					<ul class="main_menu">
 						{% if request.endpoint == "index" %}
 						<li class="active"><a href="{{ url_for('index') }}">Home</a></li>
@@ -109,27 +107,17 @@
 						<li><a href="{{ url_for('games', page=1) }}">Games</a></li>
 						{% endif %}
 
-						{% if request.endpoint == "contact" %}
-						<li class="active"><a href="{{ url_for('contact') }}">Contact</a></li>
+						{% if request.endpoint == "gamescom" %}
+						<li class="active"><a href="{{ url_for('gamescom') }}">Gamescom</a></li>
 						{% else %}
-						<li><a href="{{ url_for('contact') }}">Contact</a></li>
+						<li><a href="{{ url_for('gamescom') }}">Gamescom</a></li>
 						{% endif %}
 
-						<!--                    <li><a href="{{ url_for('statistics') }}">Stats</a></li>-->
-						<!--                    <li><a href="{{ url_for('map') }}">Map</a></li>-->
-						<!--
-						Search Form
-													<form action="{{ url_for('search') }}">
-														<input class="text search" type="text" placeholder="Search..." name="q" />
-													</form>
-						-->
-					</ul>
-					<ul class="socialmedia">
-						<li class="facebook"><a href="https://www.facebook.com/InnoGames" target="_blank">facebook</a></li>
-						<li class="youtube"><a href="https://www.youtube.com/user/InnoGames" target="_blank">YouTube</a></li>
-						<li class="googleplus"><a href="https://plus.google.com/+innogames/posts" target="_blank">Google+</a>
-						</li>
-						<li class="twitter"><a href="https://twitter.com/innogames" target="_blank">Twitter</a></li>
+						{% if request.endpoint == "about" %}
+						<li class="active"><a href="{{ url_for('about') }}">About</a></li>
+						{% else %}
+						<li><a href="{{ url_for('about') }}">About</a></li>
+						{% endif %}
 					</ul>
 				</div>
 			</div>
@@ -138,9 +126,9 @@
 
 		<!-- Content Start -->
 		<section id="content">
-
+			<span class="show-for-large-up">
 			{% block breadcrumb %}{% endblock %}
-
+			</span>
 			{% for message in get_flashed_messages() %}
 			<div class="row" style="margin-top:5px;">
 				<div class="large-12 columns">
@@ -151,7 +139,7 @@
 			</div>
 			{% endfor %}
 
-			<div class="content">
+			<div class="content row">
 				{% block center %}
 				{% endblock %}
 
@@ -162,32 +150,11 @@
 		</section>
 		<!-- Content Stop -->
 
-		<!--
-							{% block menu %}
-								{% if current_jam %}
-									{% if current_jam.getStatus().code <= 1 %}
-										{{ current_jam.start_time | humantime }}
-										Next jam is
-										<b>{{ current_jam.getLink() }}</b>
-										{{ current_jam.start_time | humantime }}
-									{% elif current_jam.getStatus().code == 2 %}
-										Currently running jam is
-										<b>{{ current_jam.getLink() }}</b>
-										ending {{ current_jam.end_time | humantime }}
-									{% else %}
-										<b>{{ current_jam.getLink() }}</b>
-										has finished
-									{% endif %}
-								{% endif %}
-							{% endblock %}
-		-->
 		{% include "footer.html" %}
 
-		<script src="{{ url_for('static', filename='js/vendor/jquery.js') }}"></script>
 		<script src="{{ url_for('static', filename='js/foundation.min.js') }}"></script>
 		<script>
 			$(document).foundation();
 		</script>
 	</body>
 </html>
-{% endif %}

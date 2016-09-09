@@ -97,11 +97,7 @@ nav {
 
 /*****************************************************/
 #best-of-games {
-	background-color: #2f5d29;
-	background-image: url(../img/best-of-games_background.jpg);
-	background-position: top center;
-	background-repeat: no-repeat;
-	background-size: contain;
+	padding-top: 50px;
 	padding-bottom: 50px;
 }
 

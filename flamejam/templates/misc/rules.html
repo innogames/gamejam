@@ -44,29 +44,21 @@
 
 </div>
 
-{% if gamescom %}
 <div class="row rule">
 	<div class="large-9 columns">
 		<h2>Safe Space Policy</h2>
 		<p>Please read and follow <a href="{{url_for('safespace')}}">our Safe Space Policy.</a></p>
 	</div>
 </div>
-{% endif %}
 
-{% if not (gamescom) %}
 <!-- Rule Start -->
 <div class="row rule">
 	<div class="large-3 columns">
-		{% if gamescom %}
 		<img src="{{ url_for('static', filename='img/gamescom/rules/icon-procedure.png') }}" alt="Procedure">
-		{% else %}
-		<img src="{{ url_for('static', filename='img/rules/icon-procedure.png') }}" alt="Procedure">
-		{% endif %}
 	</div>
 	<div class="large-9 columns">
 
 		<h2>Procedure</h2>
-
 		<p>Every game jam can be divided into the following states:</p>
 		<ul>
 			<li>Announcement<br>The theme is announced</li>
@@ -83,35 +75,24 @@
 	</div>
 </div>
 <!-- Rule Stop-->
-{% endif %}
 
 <!-- Rule Start -->
 <div class="row rule">
 	<div class="large-3 columns">
-		{% if gamescom %}
 		<img src="{{ url_for('static', filename='img/gamescom/rules/icon-artwork.png') }}" alt="Artwork">
-		{% else %}
-		<img src="{{ url_for('static', filename='img/rules/icon-artwork.png') }}" alt="Artwork">
-		{% endif %}
 	</div>
 	<div class="large-9 columns">
 		<h2>Artwork</h2>
-
 		<p>Freely available, external artwork may be used as long as a source is provided in the posted game.<br>
 			The artwork authors should be credited. This applies to sounds and graphics likewise.</p>
 	</div>
 </div>
 <!-- Rule Stop-->
 
-{% if not (gamescom) %}
 <!-- Rule Start -->
 <div class="row rule">
 	<div class="large-3 columns">
-		{% if gamescom %}
 		<img src="{{ url_for('static', filename='img/gamescom/rules/icon-crossplatform.png') }}" alt="Crossplatform">
-		{% else %}
-		<img src="{{ url_for('static', filename='img/rules/icon-crossplatform.png') }}" alt="Crossplatform">
-		{% endif %}
 	</div>
 	<div class="large-9 columns">
 		<h2>Cross-platform</h2>
@@ -120,17 +101,11 @@
 	</div>
 </div>
 <!-- Rule Stop-->
-{% endif %}
 
-{% if not (gamescom) %}
 <!-- Rule Start -->
 <div class="row rule">
 	<div class="large-3 columns">
-		{% if gamescom %}
 		<img src="{{ url_for('static', filename='img/gamescom/rules/icon-theme.png') }}" alt="Theme">
-		{% else %}
-		<img src="{{ url_for('static', filename='img/rules/icon-theme.png') }}" alt="Theme">
-		{% endif %}
 	</div>
 	<div class="large-9 columns">
 		<h2>Theme</h2>
@@ -144,16 +119,11 @@
 	</div>
 </div>
 <!-- Rule Stop-->
-{% endif %}
 
 <!-- Rule Start -->
 <div class="row rule">
 	<div class="large-3 columns">
-		{% if gamescom %}
 		<img src="{{ url_for('static', filename='img/gamescom/rules/icon-engines.png') }}" alt="Engines">
-		{% else %}
-		<img src="{{ url_for('static', filename='img/rules/icon-engines.png') }}" alt="Engines">
-		{% endif %}
 	</div>
 	<div class="large-9 columns">
 		<h2>Libraries/Engines</h2>
@@ -166,15 +136,10 @@
 <!-- Rule Start -->
 <div class="row rule">
 	<div class="large-3 columns">
-		{% if gamescom %}
 		<img src="{{ url_for('static', filename='img/gamescom/rules/icon-procedure.png') }}" alt="Procedure">
-		{% else %}
-		<img src="{{ url_for('static', filename='img/rules/icon-procedure.png') }}" alt="Procedure">
-		{% endif %}
 	</div>
 	<div class="large-9 columns">
 		<h2>Snippets/personal Code</h2>
-
 		<p>If you want to reuse pre-existing code of yours, it must have been available in source form for the public to see a fair amount of time prior to the start of the contest. The same goes for random snippets of code.</p>
 	</div>
 </div>
@@ -183,11 +148,7 @@
 <!-- Rule Start -->
 <div class="row rule">
 	<div class="large-3 columns">
-		{% if gamescom %}
 		<img src="{{ url_for('static', filename='img/gamescom/rules/icon-sourcecontrol.png') }}" alt="Sourcecontrol">
-		{% else %}
-		<img src="{{ url_for('static', filename='img/rules/icon-sourcecontrol.png') }}" alt="Sourcecontrol">
-		{% endif %}
 	</div>
 	<div class="large-9 columns">
 		<h2>Source control</h2>
@@ -200,11 +161,7 @@
 <!-- Rule Start -->
 <div class="row rule">
 	<div class="large-3 columns">
-		{% if gamescom %}
 		<img src="{{ url_for('static', filename='img/gamescom/rules/icon-teamsize.png') }}" alt="Teamsize">
-		{% else %}
-		<img src="{{ url_for('static', filename='img/rules/icon-teamsize.png') }}" alt="Teamsize">
-		{% endif %}
 	</div>
 	<div class="large-9 columns">
 		<h2>Team size</h2>
@@ -217,11 +174,7 @@
 <!-- Rule Start -->
 <div class="row rule">
 	<div class="large-3 columns">
-		{% if gamescom %}
 		<img src="{{ url_for('static', filename='img/gamescom/rules/icon-timeline.png') }}" alt="Timeline">
-		{% else %}
-		<img src="{{ url_for('static', filename='img/rules/icon-timeline.png') }}" alt="Timeline">
-		{% endif %}
 	</div>
 	<div class="large-9 columns">
 		<h2>Time limit</h2>
