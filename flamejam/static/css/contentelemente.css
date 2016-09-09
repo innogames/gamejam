@@ -59,7 +59,9 @@
 
 .next_gamejam_box {
 	height: 298px;
-	background-image: url(../img/next_gamejam_background.jpg);
+	border-style: solid;
+	border-color: #65e9c2;
+	border-width: 1px;
 }
 
 .next_gamejam_box p {
@@ -83,7 +85,7 @@ a .top-banner .next_gamejam_box .next {
 	font-size: 48px;
 	font-weight: bold;
 	line-height: 48px;
-	color: #95fe00;
+	color: #65e9c2;
 }
 
 .next_gamejam_box .more {
@@ -99,7 +101,7 @@ a .top-banner .next_gamejam_box .next {
 	font-size: 91px;
 	font-weight: bold;
 	line-height: 91px;
-	color: #fffc00;
+	color: rgba(24, 234, 132, 1);
 }
 
 /*****************************************************/
