@@ -124,6 +124,11 @@ def rules():
 
 
 @app.route('/gamescom_terms')
+def gamescom2k16tac():
+    return render_template('gamescom/2016_tac.html')
+
+
+@app.route('/terms')
 def tac():
     return render_template('misc/tac.html')
 
