@@ -93,8 +93,7 @@
 						<h3>{{entry.title}}</h3>
 
 						<p class="date">From {{entry.date.strftime('%d.%m.%Y')}} </p>
-
-						<p>{{entry.content[:120]|safe}}...</p>
+						<p>{{entry.content|striptags|truncate(120)}}</p>
 					</a>
 				</div>
 			</li>
