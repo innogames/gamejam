@@ -120,4 +120,13 @@ def news():
     except (ServerConnectionError, InvalidCredentialsError) as e:
         logging.warn(e.message)
     finally:
+        for news in wpPost:
+            for term in news.terms:
+                if term.taxonomy == "category":
+                    news.rubrik = term.name
+            if news.thumbnail:
+                for key, value in news.thumbnail.iteritems():
+                    if key == "thumbnail":
+                        news.thumbpic = value
+
         return render_template('news/list.html', news=wpPost, categories=wpCats)
