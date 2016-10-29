@@ -49,9 +49,15 @@
     <p><i>There are no packages yet.</i></p>
     {% else %}
     {% for package in game.packages %}
-    <p>{{ package.getLink() }}
+
+    <p>
+        {% if package.url %}
+        {{ package.getLink() }}
+        {% else %}
+        <a href="{{ url_for('show_game_package', id = package.id) }}">{{ package.typeString(package.type) }}</a>
+        {% endif %}
         <a href="{{ url_for('game_package_edit', id = package.id, action = 'delete') }}"
-           class="button alert mini">&times;</a>
+                class="button alert mini">&times;</a>
     </p>
     {% endfor %}
     {% endif %}
@@ -59,7 +65,7 @@
     <h3>Add a package</h3>
 
     <form action="{{ url_for('upload_game_package', jam_slug = jam.slug, game_id = game.id) }}" method=post
-          enctype=multipart/form-data>
+            enctype=multipart/form-data>
         <p>
             {{ package_form.type(size="1", class="span5") }}
             <input type="file" name="file" id="packagefileupload" class="button">
@@ -75,14 +81,18 @@
     <table class="screenshots-mini tabular small full">
         {% for screenshot in game.screenshotsOrdered %}
         <tr>
+            {% if screenshot.url %}
             <td width="48"><img src="{{ screenshot.url }}"/></td>
+            {% else %}
+            <td width="48"><img src="{{ url_for('show_game_screenshot', id = screenshot.id) }}"/></td>
+            {% endif %}
             <td>
                 <a class="button mini"
-                   href="{{ url_for('game_screenshot_edit', id = screenshot.id, action = 'up') }}">↑</a>
+                        href="{{ url_for('game_screenshot_edit', id = screenshot.id, action = 'up') }}">↑</a>
                 <a class="button mini"
-                   href="{{ url_for('game_screenshot_edit', id = screenshot.id, action = 'down') }}">↓</a>
+                        href="{{ url_for('game_screenshot_edit', id = screenshot.id, action = 'down') }}">↓</a>
                 <a class="button mini"
-                   href="{{ url_for('game_screenshot_edit', id = screenshot.id, action = 'delete') }}">&times;</a>
+                        href="{{ url_for('game_screenshot_edit', id = screenshot.id, action = 'delete') }}">&times;</a>
                 <span style="margin-left: 5px; vertical-align: -2px;">{{ screenshot.caption }}</span>
             </td>
         </tr>
@@ -94,7 +104,7 @@
     <h3>Add a screenshot</h3>
 
     <form action="{{ url_for('upload_game_image', jam_slug = jam.slug, game_id = game.id) }}" method=post
-          enctype=multipart/form-data>
+            enctype=multipart/form-data>
         <p>
             <input type="file" name="file" id="fileupload" class="button">
             <input type="submit" value="Upload" class="button">

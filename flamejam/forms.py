@@ -201,7 +201,6 @@ from models import GamePackage
 class GameAddPackageForm(Form):
     url = TextField("URL", validators=[Required(), URL()])
     type = SelectField("Type", choices=[
-        ("web", GamePackage.typeString("web")),
         ("linux", GamePackage.typeString("linux")),
         ("linux32", GamePackage.typeString("linux32")),
         ("linux64", GamePackage.typeString("linux64")),
@@ -209,9 +208,6 @@ class GameAddPackageForm(Form):
         ("windows64", GamePackage.typeString("windows64")),
         ("mac", GamePackage.typeString("mac")),
         ("source", GamePackage.typeString("source")),
-        ("git", GamePackage.typeString("git")),
-        ("svn", GamePackage.typeString("svn")),
-        ("hg", GamePackage.typeString("hg")),
         ("combi", GamePackage.typeString("combi")),
         ("love", GamePackage.typeString("love")),
         ("blender", GamePackage.typeString("blender")),

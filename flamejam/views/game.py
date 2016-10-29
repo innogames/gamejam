@@ -38,6 +38,20 @@ def show_games(game_slug):
         abort(404)
 
 
+@app.route("/games/screenshot/<int:id>", methods=["GET"])
+def show_game_screenshot(id):
+    screenshot = GameScreenshot.query.filter_by(id=id).first_or_404()
+
+    return app.response_class(screenshot.screenshot, mimetype='image')
+
+
+@app.route("/games/package/<int:id>", methods=["GET"])
+def show_game_package(id):
+    screenshot = GamePackage.query.filter_by(id=id).first_or_404()
+
+    return app.response_class(screenshot.package, mimetype='application')
+
+
 @app.route("/jams/<jam_slug>/create-game/", methods=("GET", "POST"))
 @login_required
 def create_game(jam_slug):
@@ -102,19 +116,11 @@ def upload_game_image(jam_slug, game_id):
     if request.method == 'POST':
         file = request.files['file']
         if file and allowed_file(file.filename):
-            origFilename = secure_filename(file.filename)
-            filename = str(game.id) + '_' + origFilename
-            filepath = os.path.join(app.config.get('UPLOAD_FOLDER_IMAGES'), filename)
-            if not os.path.isfile(filepath):
-                file.save(filepath)
-                imageUrl = url_for('game_image', jam_slug=jam_slug, game_id=game_id, filename=origFilename)
-                screenshot_form = GameAddScreenshotForm()
-                s = GameScreenshot(imageUrl, imageUrl, game)
-                db.session.add(s)
-                db.session.commit()
-                flash("Your screenshot has been added.", "success")
-            else:
-                flash("Image already exist, please delete it first!", "error")
+            caption = secure_filename(file.filename)
+            s = GameScreenshot(None, caption, game, file.read())
+            db.session.add(s)
+            db.session.commit()
+            flash("Your screenshot has been added.", "success")
         else:
             flash("Your file extension is not allowed. Please only upload: 'png', 'jpg', 'jpeg', 'gif'", "error")
 
@@ -134,20 +140,10 @@ def upload_game_package(jam_slug, game_id):
     if request.method == 'POST':
         file = request.files['file']
         if file and allowed_file(file.filename):
-            origFilename = secure_filename(file.filename)
-            filename = str(game.id) + '_' + origFilename
-            filepath = os.path.join(app.config.get('UPLOAD_FOLDER_PACKAGES'), filename)
-            if not os.path.isfile(filepath):
-                file.save(filepath)
-                packageUrl = url_for('game_package', jam_slug=jam_slug, game_id=game_id,
-                                     filename=origFilename)
-
-                p = GamePackage(game, packageUrl, package_form.type.data)
-                db.session.add(p)
-                db.session.commit()
-                flash("Your package has been added.", "success")
-            else:
-                flash("Package already exist, please delete it first!", "error")
+            p = GamePackage(game, None, file.read(), package_form.type.data)
+            db.session.add(p)
+            db.session.commit()
+            flash("Your package has been added.", "success")
         else:
             flash("Your file extension is not allowed. Please only upload: 'tgz', 'rar', 'zip', 'tar'", "error")
 
@@ -156,7 +152,7 @@ def upload_game_package(jam_slug, game_id):
 
 @app.route("/jams/<jam_slug>/<game_id>/image/<filename>", methods=("GET", "POST"))
 def game_image(jam_slug, game_id, filename):
-    jam = Jam.query.filter_by(slug=jam_slug).first_or_404()
+    # jam = Jam.query.filter_by(slug=jam_slug).first_or_404()
     game = Game.query.filter_by(is_deleted=False, id=game_id).first_or_404()
     filename = str(game.id) + '_' + filename
 
@@ -165,7 +161,7 @@ def game_image(jam_slug, game_id, filename):
 
 @app.route("/jams/<jam_slug>/<game_id>/package/<filename>", methods=("GET", "POST"))
 def game_package(jam_slug, game_id, filename):
-    jam = Jam.query.filter_by(slug=jam_slug).first_or_404()
+    # jam = Jam.query.filter_by(slug=jam_slug).first_or_404()
     game = Game.query.filter_by(is_deleted=False, id=game_id).first_or_404()
     filename = str(game.id) + '_' + filename
 
@@ -235,9 +231,10 @@ def game_package_edit(id, action):
         abort(403)
 
     if action == "delete":
-        filename = str(p.game.id) + '_' + p.url.rsplit('/', 1)[-1]
-        filepath = os.path.join(app.config.get('UPLOAD_FOLDER_PACKAGES'), filename)
-        os.remove(filepath)
+        if (p.url):
+            filename = str(p.game.id) + '_' + p.url.rsplit('/', 1)[-1]
+            filepath = os.path.join(app.config.get('UPLOAD_FOLDER_PACKAGES'), filename)
+            os.remove(filepath)
         db.session.delete(p)
         flash("Your package has been deleted.", "success")
 
@@ -260,9 +257,10 @@ def game_screenshot_edit(id, action):
     elif action == "down":
         s.move(1)
     elif action == "delete":
-        filename = str(s.game.id) + '_' + s.url.rsplit('/', 1)[-1]
-        filepath = os.path.join(app.config.get('UPLOAD_FOLDER_IMAGES'), filename)
-        os.remove(filepath)
+        if (s.url):
+            filename = str(s.game.id) + '_' + s.url.rsplit('/', 1)[-1]
+            filepath = os.path.join(app.config.get('UPLOAD_FOLDER_IMAGES'), filename)
+            os.remove(filepath)
         db.session.delete(s)
         flash("Your image has been deleted.", "success")
 

@@ -1,6 +1,7 @@
 # -*- coding: utf-8 -*-
 
 from flamejam import app, db
+from sqlalchemy.dialects.mysql import LONGBLOB
 
 
 class GameScreenshot(db.Model):
@@ -9,11 +10,13 @@ class GameScreenshot(db.Model):
     caption = db.Column(db.Text)
     index = db.Column(db.Integer)  # 0..n-1
     game_id = db.Column(db.Integer, db.ForeignKey("game.id"))
+    screenshot = db.Column(LONGBLOB)
 
-    def __init__(self, url, caption, game):
+    def __init__(self, url, caption, game, screenshot):
         self.game = game
         self.url = url
         self.caption = caption
+        self.screenshot = screenshot
         self.index = len(self.game.screenshots) - 1
 
     def __repr__(self):

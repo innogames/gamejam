@@ -65,7 +65,7 @@
                         {% if not game.screenshots|count %}
                         <!-- default image for no game screenshot?! -->
                         <div class="next_gamejam_box opacityfade"
-                             style="background-color: grey; background-image: none;">
+                                style="background-color: grey; background-image: none;">
                             <p>
                                 <span class="next">no</span><br>
                                 <span class="gamejam">image</span><br>
@@ -75,11 +75,12 @@
                         </div>
                         {% else %}
                         {% set screenshot = game.screenshots|first %}
+                        {% if screenshot.url %}
                         <img class="game-list-image" src="{{screenshot.url}}" type="image/png" width="100%"
-                             onerror="document.getElementById('{{game.slug}}').style.display = 'block';this.style.display = 'none';"/>
+                                onerror="document.getElementById('{{game.slug}}').style.display = 'block';this.style.display = 'none';"/>
 
                         <div id="{{game.slug}}" class="next_gamejam_box opacityfade"
-                             style="background-color: grey; background-image: none; display: none;">
+                                style="background-color: grey; background-image: none; display: none;">
                             <p>
                                 <span class="next">no</span><br>
                                 <span class="gamejam">image</span><br>
@@ -87,6 +88,10 @@
                                 <span class="here">:(</span>
                             </p>
                         </div>
+                        {% else %}
+                        <img class="game-list-image" src="{{ url_for('show_game_screenshot', id = screenshot.id) }}" type="image" width="100%"
+                                onerror="document.getElementById('{{game.slug}}').style.display = 'block';this.style.display = 'none';"/>
+                        {% endif %}
                         {% endif %}
 
                         <h3>{{game.title}}</h3>
@@ -134,14 +139,14 @@
                 {% if not games.pages == games.page %}
                 {% if jam %}
                 <a href="{{ url_for('jam_games_lis', jam_slug=jam.slug, page=games.page+1) }}"
-                   class="button prev_next">Next ></a>
+                        class="button prev_next">Next ></a>
                 {% else %}
                 <a href="{{ url_for('games', page=games.page+1) }}" class="button prev_next">Next ></a>
                 {% endif %}
                 {% else %}
                 {% if jam %}
                 <a href="{{ url_for('jam_games_lis', jam_slug=jam.slug,page=games.page) }}"
-                   class="button prev_next">Next ></a>
+                        class="button prev_next">Next ></a>
                 {% else %}
                 <a href="{{ url_for('games', page=games.page) }}" class="button prev_next">Next ></a>
                 {% endif %}
@@ -154,7 +159,7 @@
 </div>
 <script type="text/javascript">
     var sel = document.getElementById('gameJamSelect');
-    sel.onchange = function (e) {
+    sel.onchange = function(e) {
         window.location = e.target.options[e.target.selectedIndex].value;
     }
 </script>

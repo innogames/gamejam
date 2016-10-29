@@ -1,0 +1,2 @@
+ALTER TABLE game_package
+    ADD COLUMN `package` LONGBLOB DEFAULT NULL;
