@@ -168,11 +168,11 @@ class JamPhotoForm(Form):
 
 
 class GameCreateForm(Form):
-    title = TextField("Game title", validators=[Required(), Length(max=128)])
+    title = TextField("Game title", validators=[Required(), Length(max=30)])
 
 
 class GameEditForm(Form):
-    title = TextField("Game title", validators=[Required(), Length(max=128)])
+    title = TextField("Game title", validators=[Required(), Length(max=30)])
     description = TextAreaField("Description", validators=[Required()])
     technology = TextAreaField("Technlogoy used")
     help = TextAreaField("Help / Controls")
@@ -302,7 +302,7 @@ class LeaveTeamForm(Form):
 
 
 class TeamSettingsForm(Form):
-    name = TextField("Team Name", validators=[Required()])
+    name = TextField("Team Name", validators=[Required(), Length(max=44)])
     description = TextAreaField("Description")
     livestreams = TextAreaField("Livestreams")
     irc = TextField("IRC Channel")
