@@ -1,5 +1,5 @@
 from flamejam import app, db, cache_it
-from flamejam.models import Jam, Game
+from flamejam.models import Jam
 from flask import render_template, url_for, redirect, request
 from wordpress_xmlrpc import Client
 from wordpress_xmlrpc.methods import posts
@@ -7,6 +7,7 @@ from wordpress_xmlrpc.exceptions import ServerConnectionError, InvalidCredential
 import logging
 
 
+@cache_it
 def getWordpressPostsLimit():
     wpPost = []
 
