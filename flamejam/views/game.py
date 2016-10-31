@@ -1,4 +1,4 @@
-from flamejam import app, db, mail
+from flamejam import app, db, mail, cache_it
 from flamejam.utils import get_slug
 from flamejam.models import Jam, Game, Comment, GamePackage, GameScreenshot, JamStatusCode, Rating, Vote
 from flamejam.models.rating import RATING_CATEGORIES
@@ -38,18 +38,28 @@ def show_games(game_slug):
         abort(404)
 
 
+@cache_it
+def get_game_screenshot(id):
+    return GameScreenshot.query.filter_by(id=id).first_or_404()
+
+
 @app.route("/games/screenshot/<int:id>", methods=["GET"])
 def show_game_screenshot(id):
-    screenshot = GameScreenshot.query.filter_by(id=id).first_or_404()
+    screenshot = get_game_screenshot(id)
 
     return app.response_class(screenshot.screenshot, mimetype='image')
 
 
+@cache_it
+def get_game_package(id):
+    return GamePackage.query.filter_by(id=id).first_or_404()
+
+
 @app.route("/games/package/<int:id>", methods=["GET"])
 def show_game_package(id):
-    screenshot = GamePackage.query.filter_by(id=id).first_or_404()
+    package = get_game_package(id)
 
-    return app.response_class(screenshot.package, mimetype='application')
+    return app.response_class(package.package, mimetype='application')
 
 
 @app.route("/jams/<jam_slug>/create-game/", methods=("GET", "POST"))
