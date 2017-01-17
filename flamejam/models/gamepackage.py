@@ -34,6 +34,8 @@ class GamePackage(db.Model):
         "love",  # Löve packages
         "blender",  # Blender save file (*.blend)
         "source",  # Source package (e.g. *.zip or *.tar.gz)
+        "web",  # web link
+        "git",  # git repo
         "unknown"))
     package = db.Column(LONGBLOB)
 

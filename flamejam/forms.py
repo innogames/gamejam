@@ -5,7 +5,7 @@ from wtforms.validators import *
 from wtforms.validators import ValidationError
 from flask_wtf import Form, RecaptchaField
 from flask_wtf.file import FileField
-from flask_wtf.html5 import EmailField, IntegerField
+from wtforms.fields.html5 import EmailField, IntegerField
 import re
 from flamejam import models, utils
 from flamejam.models.rating import RATING_CATEGORIES

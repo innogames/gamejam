@@ -1,4 +1,4 @@
-from flamejam import app, db, mail, cache_it
+from flamejam import app, db, mail, cache
 from flamejam.utils import get_slug
 from flamejam.models import Jam, Game, Comment, GamePackage, GameScreenshot, JamStatusCode, Rating, Vote
 from flamejam.models.rating import RATING_CATEGORIES
@@ -38,7 +38,7 @@ def show_games(game_slug):
         abort(404)
 
 
-@cache_it
+@cache.cached(timeout=50, key_prefix='game_screenshot')
 def get_game_screenshot(id):
     return GameScreenshot.query.filter_by(id=id).first_or_404()
 
@@ -50,7 +50,7 @@ def show_game_screenshot(id):
     return app.response_class(screenshot.screenshot, mimetype='image')
 
 
-@cache_it
+@cache.cached(timeout=50, key_prefix='game_package')
 def get_game_package(id):
     return GamePackage.query.filter_by(id=id).first_or_404()
 

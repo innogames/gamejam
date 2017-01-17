@@ -244,18 +244,6 @@ def current_jam_info():
                    teams_count=len(jam.teams))
 
 
-@app.route('/site_info')
-def site_info():
-    stats = {}
-    stats["total_jams"] = db.session.query(db.func.count(Jam.id)).first()[0]
-    stats["total_users"] = db.session.query(db.func.count(User.id)).first()[0]
-    stats["total_games"] = db.session.query(db.func.count(not Game.is_deleted)).first()[0]
-    return jsonify(total_jams=stats["total_jams"],
-                   total_users=stats["total_users"],
-                   total_games=stats["total_games"],
-                   rules=url_for('rules', _external=True))
-
-
 @app.route('/tick')
 def tick():
     """This function is meant to be called regularly by a cronjob.
@@ -269,10 +257,10 @@ def tick():
     msg = ""
 
     # Send Notifications
-    for jam in Jam.query.all():
-        n = jam.sendAllNotifications()
-        if n >= 0:
-            msg += "sending notification " + str(n) + " on jam " + jam.slug + "\n"
+    # for jam in Jam.query.all():
+    #    n = jam.sendAllNotifications()
+    #    if n >= 0:
+    #        msg += "sending notification " + str(n) + " on jam " + jam.slug + "\n"
 
     # Delete unverified users
     for user in User.query.filter_by(is_verified=False):

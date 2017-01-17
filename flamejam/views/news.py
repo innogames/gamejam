@@ -1,4 +1,4 @@
-from flamejam import app, cache_it
+from flamejam import app, cache
 from flask import render_template
 from wordpress_xmlrpc import Client
 from wordpress_xmlrpc.methods import posts, taxonomies
@@ -6,7 +6,6 @@ from wordpress_xmlrpc.exceptions import ServerConnectionError, InvalidCredential
 import logging
 
 
-@cache_it
 def getWordpressPostById(id):
     wpPost = []
     try:
@@ -18,7 +17,7 @@ def getWordpressPostById(id):
         return wpPost
 
 
-@cache_it
+@cache.cached(timeout=50, key_prefix='wp_posts')
 def getWordpressPosts():
     allPosts = []
     try:
@@ -30,7 +29,7 @@ def getWordpressPosts():
         return allPosts
 
 
-@cache_it
+@cache.cached(timeout=50, key_prefix='wp_categories')
 def getWordpressCategories():
     wpCats = []
     try:
@@ -110,6 +109,7 @@ def news_category(category):
 
 
 @app.route('/news/')
+@cache.cached(timeout=50)
 def news():
     wpPost = []
     wpCats = []

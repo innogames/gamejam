@@ -1,5 +1,4 @@
-from flamejam import app, db, cache_it
-from flamejam.models import Jam
+from flamejam import app, db, cache
 from flask import render_template, url_for, redirect, request
 from wordpress_xmlrpc import Client
 from wordpress_xmlrpc.methods import posts
@@ -7,7 +6,6 @@ from wordpress_xmlrpc.exceptions import ServerConnectionError, InvalidCredential
 import logging
 
 
-@cache_it
 def getWordpressPostsLimit():
     wpPost = []
 
@@ -28,12 +26,14 @@ def getBestGames():
 
 
 @app.route("/")
+@cache.cached(timeout=50)
 def index():
     wpPosts = getWordpressPostsLimit()
     games = getBestGames()
-    return render_template("index.html", all_jams=Jam.query.all(), news=wpPosts, games=games)
+    return render_template("index.html", news=wpPosts, games=games)
 
 
 @app.route("/gamescom")
+@cache.cached(timeout=50)
 def gamescom():
     return render_template("gamescom/2016.html")
