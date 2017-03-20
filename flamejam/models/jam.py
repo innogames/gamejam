@@ -19,10 +19,10 @@ class Jam(db.Model):
     announced = db.Column(db.DateTime)  # Date on which the jam was announced
     start_time = db.Column(db.DateTime)  # The jam starts at this moment
     team_limit = db.Column(db.Integer)  # 0 = no limit
-    games = db.relationship("Game", backref="jam", lazy="subquery")
-    participations = db.relationship("Participation", backref="jam", lazy="subquery")
-    teams = db.relationship("Team", backref="jam", lazy="subquery")
-    photos = db.relationship("JamPhoto", backref="jam", lazy="subquery")
+    games = db.relationship("Game", backref="jam", lazy="noload")
+    participations = db.relationship("Participation", backref="jam", lazy="noload")
+    teams = db.relationship("Team", backref="jam", lazy="noload")
+    photos = db.relationship("JamPhoto", backref="jam", lazy="noload")
 
     description = db.Column(db.Text)
     restrictions = db.Column(db.Text)
