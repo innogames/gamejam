@@ -1,13 +1,14 @@
 # -*- coding: utf-8 -*-
 
-from flamejam import app, db, mail
-from flamejam.utils import get_slug
-from flamejam.filters import formattime, humandelta
-from flamejam.models import Game, GamePackage
 from datetime import datetime, timedelta
 from flask import url_for, Markup, render_template
 from flask_mail import Message
 from smtplib import SMTPRecipientsRefused
+
+from flamejam import app, db, mail
+from flamejam.filters import formattime, humandelta
+from flamejam.models import Game, GamePackage
+from flamejam.utils import get_slug
 
 
 class Jam(db.Model):
@@ -20,7 +21,7 @@ class Jam(db.Model):
     start_time = db.Column(db.DateTime)  # The jam starts at this moment
     team_limit = db.Column(db.Integer)  # 0 = no limit
     games = db.relationship("Game", backref="jam", lazy="noload")
-    participations = db.relationship("Participation", backref="jam", lazy="noload")
+    participations = db.relationship("Participation", backref="jam", lazy="select")
     teams = db.relationship("Team", backref="jam", lazy="noload")
     photos = db.relationship("JamPhoto", backref="jam", lazy="noload")
 
