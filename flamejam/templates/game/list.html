@@ -4,12 +4,12 @@
 
 {% block breadcrumb %}
 <div class="row">
-    <div class="large-12 columns">
-        <ul class="breadcrumb_menu">
-            <li><a href="{{ url_for('index') }}">Home</a></li>
-            <li class="active">Games</li>
-        </ul>
-    </div>
+	<div class="large-12 columns">
+		<ul class="breadcrumb_menu">
+			<li><a href="{{ url_for('index') }}">Home</a></li>
+			<li class="active">Games</li>
+		</ul>
+	</div>
 </div>
 {% endblock %}
 
@@ -18,149 +18,149 @@
 <!-- Banner Start-->
 <div class="row top-banner">
 
-    <!-- green Box -->
-    <div class="large-8 columns">
-        <div class="green">
-            <h1>Games</h1>
+	<!-- green Box -->
+	<div class="large-8 columns">
+		<div class="green">
+			<h1>Games</h1>
 
-            <p>Here you can find all games which were created at the Game Jams.</p>
+			<p>Here you can find all games which were created at the Game Jams.</p>
 
-        </div>
-    </div>
+		</div>
+	</div>
 
-    <!-- Next Game Jam Banner -->
-    {% if jams %}
-    <div class="large-4 columns">
-        <h3>Select a Game Jam to see all games related to a specific event!</h3>
+	<!-- Next Game Jam Banner -->
+	{% if jams %}
+	<div class="large-4 columns">
+		<h3>Select a Game Jam to see all games related to a specific event!</h3>
 
-        <div id="gamejams_pulldown">
-            <select id="gameJamSelect">
-                {% if not jam %}
-                <option selected>Please choose a jam...</option>
-                {% endif %}
-                {% for jamEntry in jams %}
-                <option {% if jam and jam.slug==jamEntry.slug %} selected {% endif %}
-                        value="{{ url_for('jam_games_lis', jam_slug=jamEntry.slug, page=1) }}">
-                    {{jamEntry.title}}
-                </option>
-                {% endfor %}
-            </select>
-        </div>
-    </div>
-    {% endif %}
+		<div id="gamejams_pulldown">
+			<select id="gameJamSelect">
+				{% if not jam %}
+				<option selected>Please choose a jam...</option>
+				{% endif %}
+				{% for jamEntry in jams %}
+				<option {% if jam and jam.slug==jamEntry.slug %} selected {% endif %}
+						value="{{ url_for('jam_games_lis', jam_slug=jamEntry.slug, page=1) }}">
+					{{jamEntry.title}}
+				</option>
+				{% endfor %}
+			</select>
+		</div>
+	</div>
+	{% endif %}
 
 </div>
 <!-- Banner Stop -->
 
 <!-- Plain Text Start -->
 <div class="row">
-    <div class="large-12 columns game-list">
+	<div class="large-12 columns game-list">
 
-        <ul class="block-grid large-block-grid-3">
-            <!-- Game Item -->
-            {% for game in games.items %}
-            <li>
-                <div class="game-list-item">
-                    <a href="{{ url_for('show_games', game_slug = game.slug) }}">
-                        {% if not game.screenshots|count %}
-                        <!-- default image for no game screenshot?! -->
-                        <div class="next_gamejam_box opacityfade"
-                                style="background-color: grey; background-image: none;">
-                            <p>
-                                <span class="next">no</span><br>
-                                <span class="gamejam">image</span><br>
-                                <span class="more">found</span><br>
-                                <span class="here">:(</span>
-                            </p>
-                        </div>
-                        {% else %}
-                        {% set screenshot = game.screenshots|first %}
-                        {% if screenshot.url %}
-                        <img class="game-list-image" src="{{screenshot.url}}" type="image/png" width="100%"
-                                onerror="document.getElementById('{{game.slug}}').style.display = 'block';this.style.display = 'none';"/>
+		<ul class="block-grid large-block-grid-3">
+			<!-- Game Item -->
+			{% for game in games.items %}
+			<li>
+				<div class="game-list-item">
+					<a href="{{ url_for('show_games', game_slug = game.slug) }}">
+						{% if not game.screenshots|count %}
+						<!-- default image for no game screenshot?! -->
+						<div class="next_gamejam_box opacityfade"
+								style="background-color: grey; background-image: none;">
+							<p>
+								<span class="next">no</span><br>
+								<span class="gamejam">image</span><br>
+								<span class="more">found</span><br>
+								<span class="here">:(</span>
+							</p>
+						</div>
+						{% else %}
+						{% set screenshot = game.screenshots|first %}
+						{% if screenshot.url %}
+						<img class="game-list-image" src="{{screenshot.url}}" type="image/png" width="100%"
+								onerror="document.getElementById('{{game.slug}}').style.display = 'block';this.style.display = 'none';"/>
 
-                        <div id="{{game.slug}}" class="next_gamejam_box opacityfade"
-                                style="background-color: grey; background-image: none; display: none;">
-                            <p>
-                                <span class="next">no</span><br>
-                                <span class="gamejam">image</span><br>
-                                <span class="more">found</span><br>
-                                <span class="here">:(</span>
-                            </p>
-                        </div>
-                        {% else %}
-                        <img class="game-list-image" src="{{ url_for('show_game_screenshot', id = screenshot.id) }}" type="image" width="100%"
-                                onerror="document.getElementById('{{game.slug}}').style.display = 'block';this.style.display = 'none';"/>
-                        {% endif %}
-                        {% endif %}
+						<div id="{{game.slug}}" class="next_gamejam_box opacityfade"
+								style="background-color: grey; background-image: none; display: none;">
+							<p>
+								<span class="next">no</span><br>
+								<span class="gamejam">image</span><br>
+								<span class="more">found</span><br>
+								<span class="here">:(</span>
+							</p>
+						</div>
+						{% else %}
+						<img class="game-list-image" src="{{ url_for('show_game_screenshot', id = screenshot.id) }}" type="image" width="100%"
+								onerror="document.getElementById('{{game.slug}}').style.display = 'block';this.style.display = 'none';"/>
+						{% endif %}
+						{% endif %}
 
-                        <h3>{{game.title}}</h3>
+						<h3>{{game.title}}</h3>
 
-                        <p class="date">@{{game.jam.title}}</p>
+						<p class="date">@{{game.jam.title}}</p>
 
-                        <p><strong>Team</strong> {{game.team.name}}<br><strong>Rating</strong> {{game.score}}</p>
-                    </a>
-                </div>
-            </li>
-            {% endfor %}
-        </ul>
+						<p><strong>Team</strong> {{game.team.name}}</p>
+					</a>
+				</div>
+			</li>
+			{% endfor %}
+		</ul>
 
 
-        <!-- Games Pagination Start -->
-        <div class="row">
-            <div class="large-4 columns">
-                {% if jam %}
-                <a href="{{ url_for('jam_games_lis', jam_slug=jam.slug, page=games.page-1) }}" class="button prev_next">Prev</a>
-                {% else %}
-                <a href="{{ url_for('games', page=games.page-1) }}" class="button prev_next">Prev</a>
-                {% endif %}
-            </div>
+		<!-- Games Pagination Start -->
+		<div class="row">
+			<div class="large-4 columns">
+				{% if jam %}
+				<a href="{{ url_for('jam_games_lis', jam_slug=jam.slug, page=games.page-1) }}" class="button prev_next">Prev</a>
+				{% else %}
+				<a href="{{ url_for('games', page=games.page-1) }}" class="button prev_next">Prev</a>
+				{% endif %}
+			</div>
 
-            <div class="large-4 columns">
-                <p class="pagination_pagenumbers">
-                    {%- for page in games.iter_pages() %}
-                    {% if page %}
-                    {% if page != games.page %}
-                    {% if jam %}
-                    <a href="{{ url_for('jam_games_lis', jam_slug=jam.slug, page=page) }}">{{ page }}</a>
-                    {% else %}
-                    <a href="{{ url_for('games', page=page) }}">{{ page }}</a>
-                    {% endif %}
-                    {% else %}
-                    <strong>{{ page }}</strong>
-                    {% endif %}
-                    {% else %}
-                    <span class=ellipsis>…</span>
-                    {% endif %}
-                    {%- endfor %}
-                </p>
-            </div>
-            <div class="large-4 columns right">
-                {% if not games.pages == games.page %}
-                {% if jam %}
-                <a href="{{ url_for('jam_games_lis', jam_slug=jam.slug, page=games.page+1) }}"
-                        class="button prev_next">Next ></a>
-                {% else %}
-                <a href="{{ url_for('games', page=games.page+1) }}" class="button prev_next">Next ></a>
-                {% endif %}
-                {% else %}
-                {% if jam %}
-                <a href="{{ url_for('jam_games_lis', jam_slug=jam.slug,page=games.page) }}"
-                        class="button prev_next">Next ></a>
-                {% else %}
-                <a href="{{ url_for('games', page=games.page) }}" class="button prev_next">Next ></a>
-                {% endif %}
-                {% endif %}
-            </div>
-        </div>
-        <!-- Games Pagination Stop -->
+			<div class="large-4 columns">
+				<p class="pagination_pagenumbers">
+					{%- for page in games.iter_pages() %}
+					{% if page %}
+					{% if page != games.page %}
+					{% if jam %}
+					<a href="{{ url_for('jam_games_lis', jam_slug=jam.slug, page=page) }}">{{ page }}</a>
+					{% else %}
+					<a href="{{ url_for('games', page=page) }}">{{ page }}</a>
+					{% endif %}
+					{% else %}
+					<strong>{{ page }}</strong>
+					{% endif %}
+					{% else %}
+					<span class=ellipsis>…</span>
+					{% endif %}
+					{%- endfor %}
+				</p>
+			</div>
+			<div class="large-4 columns right">
+				{% if not games.pages == games.page %}
+				{% if jam %}
+				<a href="{{ url_for('jam_games_lis', jam_slug=jam.slug, page=games.page+1) }}"
+						class="button prev_next">Next ></a>
+				{% else %}
+				<a href="{{ url_for('games', page=games.page+1) }}" class="button prev_next">Next ></a>
+				{% endif %}
+				{% else %}
+				{% if jam %}
+				<a href="{{ url_for('jam_games_lis', jam_slug=jam.slug,page=games.page) }}"
+						class="button prev_next">Next ></a>
+				{% else %}
+				<a href="{{ url_for('games', page=games.page) }}" class="button prev_next">Next ></a>
+				{% endif %}
+				{% endif %}
+			</div>
+		</div>
+		<!-- Games Pagination Stop -->
 
-    </div>
+	</div>
 </div>
 <script type="text/javascript">
-    var sel = document.getElementById('gameJamSelect');
-    sel.onchange = function(e) {
-        window.location = e.target.options[e.target.selectedIndex].value;
-    }
+	var sel = document.getElementById('gameJamSelect');
+	sel.onchange = function(e) {
+		window.location = e.target.options[e.target.selectedIndex].value;
+	}
 </script>
 {% endblock %}

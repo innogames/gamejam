@@ -1,12 +1,13 @@
 # -*- coding: utf-8 -*-
 
-from flamejam import app, db
-from flamejam.utils import get_slug, average, average_non_zero
-from flamejam.models.gamescreenshot import GameScreenshot
+from datetime import datetime
+
+from flask import url_for
+
+from flamejam import db
 from flamejam.models.rating import Rating, RATING_CATEGORIES
 from flamejam.models.vote import Vote
-from flask import url_for
-from datetime import datetime
+from flamejam.utils import get_slug, average, average_non_zero
 
 
 class Game(db.Model):
@@ -79,9 +80,11 @@ class Game(db.Model):
 
     @property
     def rank(self):
-        jam_games = list(self.jam.games.all())
-        jam_games.sort(key="numberVotes", reverse=True)
-        return jam_games.index(self) + 1
+        db.engine.execute("SET @rank=0;")
+        rank = db.engine.execute(
+            "SELECT @rank:=@rank+1 AS rank FROM (SELECT v.game_id as gameId, g.title as title, count(*) as points FROM vote v LEFT JOIN game g ON g.id = v.game_id where v.jam_id = " + str(
+                self.jam_id) + " GROUP BY v.game_id ORDER BY points DESC) t1 WHERE gameId = " + str(self.id)).first()
+        return rank.rank
 
     @property
     def numberRatings(self):
