@@ -82,8 +82,8 @@ class Game(db.Model):
     def rank(self):
         db.engine.execute("SET @rank=0;")
         rank = db.engine.execute(
-            "SELECT rank FROM (SELECT @rank:=@rank+1 AS rank, v.game_id as gameId, g.title as title, count(*) as points FROM vote v LEFT JOIN game g ON g.id = v.game_id where v.jam_id = " + str(
-                self.jam_id) + " GROUP BY v.game_id ORDER BY points DESC) t1 WHERE gameId = " + str(self.id)).first()
+            "SELECT rank FROM (SELECT @rank:=@rank+1 AS rank, title, gameId, points FROM (SELECT v.game_id as gameId, g.title as title, count(*) as points FROM vote v LEFT JOIN game g ON g.id = v.game_id where v.jam_id = " + str(
+                self.jam_id) + " GROUP BY v.game_id ORDER BY points DESC) t1) t2 WHERE gameId = " + str(self.id)).first()
         return rank.rank
 
     @property
