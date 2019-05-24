@@ -1,0 +1,49 @@
+# General app settings
+ADMINS = ["marco.behnke@innogames.com"] # Errors will be sent here
+LONG_NAME = "InnoGames Game Jam"
+SHORT_NAME = "IGGJ"
+DEBUG = True
+TESTING = True
+SECRET_KEY = "!nn0G4m3s1337"
+UPLOAD_FOLDER_IMAGES = "/opt/iggj-eventpage/flamejam/static/uploads/images"
+UPLOAD_FOLDER_PACKAGES = "/opt/iggj-eventpage/flamejam/static/uploads/packages"
+
+# SQLAlchemy settings
+# See http://pythonhosted.org/Flask-SQLAlchemy/
+SQLALCHEMY_DATABASE_URI = 'mysql://flamejam:flamejam@db/flamejam'
+SQLALCHEMY_ECHO = False
+#SQLALCHEMY_POOL_SIZE = 25
+
+# Blog settings
+BLOG_URL = "https://dev.gamejam.innogames.de/xmlrpc.php"
+BLOG_USER = "gamejamRPC"
+BLOG_PASSWORD = "password"
+
+# Caching settings
+#CACHE_TYPE = "memcached"
+CACHE_TYPE = "simple"
+CACHE_NO_NULL_WARNING = True
+CACHE_DEFAULT_TIMEOUT = 60
+#CACHE_KEY_PREFIX =
+#CACHE_MEMCACHED_SERVERS
+#CACHE_ARGS
+#CACHE_OPTIONS
+
+# Flask-Mail settings
+# See http://packages.python.org/Flask-Mail/
+MAIL_SERVER = "localhost"
+MAIL_PORT = 25
+MAIL_USE_TLS = False
+MAIL_USE_SSL = False
+#MAIL_DEBUG = app.debug
+MAIL_USERNAME = None
+MAIL_PASSWORD = None
+MAIL_DEFAULT_SENDER = "InnoGames Game Jam <gamejam@innogames.de>"
+MAIL_MAX_EMAILS = None
+#MAIL_SUPPRESS_SEND = app.testing
+
+# reCAPTCHA API keys
+# Signup here: https://www.google.com/recaptcha/admin/create
+RECAPTCHA_PUBLIC_KEY = "public"
+RECAPTCHA_PRIVATE_KEY = "private"
+
