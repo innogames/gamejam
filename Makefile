@@ -19,7 +19,7 @@ run-dev:
 	. env/bin/activate && python2 runserver-dev.py
 
 init-db:
-	. env/bin/activate && python2 scripts/init-db.py
+	. env/bin/activate && python2 scripts/init-db.py $(user) $(pass) $(email)
 
 seed-db:
 	. env/bin/activate && python2 scripts/seed-db.py
