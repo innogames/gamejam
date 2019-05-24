@@ -6,7 +6,7 @@ setup:
 			flask flask-mail flask-sqlalchemy flask-wtf \
 			flask-login Flask-Markdown python-dateutil \
 			scrypt requests alembic flask-principal mysql-python \
-			flask-cache python-memcached psycopg2 python-wordpress-xmlrpc \
+			flask-cache flask-caching python-memcached psycopg2 python-wordpress-xmlrpc \
 			BeautifulSoup tornado gunicorn raven[flask]
 
 run-prod:
