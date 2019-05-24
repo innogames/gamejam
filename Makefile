@@ -7,7 +7,7 @@ setup:
 			flask-login Flask-Markdown python-dateutil \
 			scrypt requests alembic flask-principal mysql-python \
 			flask-cache flask-caching python-memcached psycopg2 python-wordpress-xmlrpc \
-			BeautifulSoup tornado gunicorn raven[flask]
+			beautifulsoup4 tornado gunicorn raven[flask]
 
 run-prod:
 	. env/bin/activate && gunicorn -w 10 -b 127.0.0.1:5000 flamejam:app
