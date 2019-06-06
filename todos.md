@@ -1,7 +1,11 @@
 ToDos:
     Backend:
+    * Change DB to percona 5.7
+    * file uploads not to DB
+    * Python 3.5.3
     * Add Translation mechanism
     * Add remove team member
+    * extend build job with another branch for python3 test env
 
     Frontend:
     * Pagination
