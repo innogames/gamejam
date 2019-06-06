@@ -4,7 +4,7 @@ FROM python:2
 RUN apt-get update && \
     apt-get install --no-install-recommends -yq \
     build-essential \
-    virtualenv git
+    virtualenv git netcat
 
 WORKDIR /usr/src/myapp
 
