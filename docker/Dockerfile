@@ -8,9 +8,11 @@ RUN apt-get update && \
 
 WORKDIR /usr/src/myapp
 
+RUN sed '/st_mysql_options options;/a unsigned int reconnect;' /usr/include/mysql/mysql.h -i.bkp
+
 RUN rm -rf env
 RUN pip install --no-cache-dir virtualenv2
-#RUN virtualenv env
+RUN virtualenv env
 
 #RUN pip install --no-cache-dir tornado
 #RUN pip install --no-cache-dir flask
