@@ -1,15 +1,24 @@
+# build related
+/env/
+/build/
+/dist/
+
+# tmp stuff
+*.swp
+
 *.pyc
-env/
 flamejam.db
 *.psd
-*.swp
-flamejam.cfg
-recaptcha.cfg
-.DS_Store
-/build/
-dist/
 *.egg-info/
+
 srv
 usr
 venv
+
+# secrets or generated
+flamejam.cfg
+recaptcha.cfg
+
+# IDE/OS folder
 .idea
+.DS_Store
