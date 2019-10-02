@@ -1,25 +1,80 @@
 <!DOCTYPE html>
 <html lang="en-us">
-  <head>
+<head>
     <meta charset="utf-8">
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
     <title>Unity WebGL Player | igjam</title>
     <link rel="shortcut icon" href="TemplateData/favicon.ico">
     <link rel="stylesheet" href="TemplateData/style.css">
+    <!-- Latest compiled and minified CSS -->
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css"
+          integrity="sha384-HSMxcRTRxnN+Bdg0JdbxYKrThecOKuH5zCYotlSAcp1+c8xmyTe9GYg1l9a69psu" crossorigin="anonymous">
+    <!-- Optional theme -->
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap-theme.min.css"
+          integrity="sha384-6pzBo3FDv/PJ8r2KRkGHifhEocL+1X2rVCTTkUfGk7/0pbek5mMa1upzvWbrUbOZ" crossorigin="anonymous">
+
+    <!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
+    <script src="https://code.jquery.com/jquery-1.12.4.min.js"
+            integrity="sha384-nvAa0+6Qg9clwYCGGPpDQLVpLNn0fRaROjHqs13t4Ggj3Ez50XnGQqc/r8MhnRDZ"
+            crossorigin="anonymous"></script>
+
+    <!-- Latest compiled and minified JavaScript -->
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"
+            integrity="sha384-aJ21OjlMXNL5UyIl/XNwTMqvzeRMZH2w8c5cRVpzpU8Y5bApTppSuUkhZXN0VxHd"
+            crossorigin="anonymous"></script>
+
     <script src="TemplateData/UnityProgress.js"></script>
     <script src="Build/UnityLoader.js"></script>
     <script>
-      var unityInstance = UnityLoader.instantiate("unityContainer", "Build/galax_html5_v1.json", {onProgress: UnityProgress});
+        var unityInstance = UnityLoader.instantiate("unityContainer", "Build/galax_html5_v1.json", {onProgress: UnityProgress});
     </script>
-  </head>
-  <body>
-    <div class="webgl-content">
-      <div id="unityContainer" style="width: 960px; height: 600px"></div>
-      <div class="footer">
+
+</head>
+<body>
+<div class="webgl-content">
+    <button type="button" class="btn btn-info" data-toggle="modal" data-target="#myModal">How to play</button>
+    <div id="unityContainer" style="width: 960px; height: 600px"></div>
+    <div class="footer">
         <div class="webgl-logo"></div>
         <div class="fullscreen" onclick="unityInstance.SetFullscreen(1)"></div>
         <div class="title">igjam</div>
-      </div>
     </div>
-  </body>
+</div>
+
+<!-- Modal -->
+<div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+    <div class="modal-dialog modal-lg" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span>
+                </button>
+                <h4 class="modal-title" id="myModalLabel">Galax - IG Jam Gmescom 2019</h4>
+            </div>
+            <div class="modal-body">
+                <h1>Info</h1>
+                <p>In this game your bound to operate an alien ship. All alien operators are scattered in space after an
+                    accident. Your the human that needs to save them. Usually alien operators have 8 arms. So it might
+                    be hard to operate the ship. But we are sure you will do your best. At least the aliens left you
+                    human friendly controls.</p>
+                <p>Unfortunatly they think we have only two arms - so we can only control the two buttons at the same
+                    time.</p>
+                <h1>How to play the game</h1>
+                <p>The Blue button switches between flight mode and ship mode ( you see the current state at the
+                    top)</p>
+                <h1>Ship mode</h1>
+                <p>In the windows you see the aliens you have on the ship. The outer doors will open for a short time.
+                    Press any button ( left or right ) to keep an door open. When a door is open - the aliens will be
+                    selected automaticly.</p>
+                <p>Press left or right to send an alien to the open door. The button you use matters, since this button
+                    controls your alien afterwards.</p>
+                <h1>Flight Mode</h1>
+                <p>In flight mode you can operate the aliens with the left and right button. Now have a safe flight.</p>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-success" data-dismiss="modal">Close</button>
+            </div>
+        </div>
+    </div>
+</div>
+</body>
 </html>
