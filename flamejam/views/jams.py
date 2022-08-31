@@ -1,4 +1,4 @@
-from flamejam import app, db, cache
+from flamejam import app, db #, cache
 from flamejam.models import Jam, JamStatusCode, Game, GamePackage
 from flamejam.forms import ParticipateForm, CancelParticipationForm, TeamFinderFilter
 from flask import render_template, redirect, flash, request
@@ -7,13 +7,13 @@ from sqlalchemy import desc
 
 
 @app.route('/jams/')
-@cache.cached(timeout=50)
+# @cache.cached(timeout=50)
 def jams():
     return render_template("jams.html", jams=Jam.query.order_by(desc(Jam.start_time)).all())
 
 
 @app.route('/jams/<jam_slug>/', methods=("GET", "POST"))
-@cache.cached(timeout=50)
+# @cache.cached(timeout=50)
 def jam_info(jam_slug):
     jam = Jam.query.filter_by(slug=jam_slug).first_or_404()
     return render_template('jam/info.html', jam=jam)

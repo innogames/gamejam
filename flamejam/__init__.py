@@ -5,13 +5,12 @@ from flask_sqlalchemy import SQLAlchemy
 from flaskext.markdown import Markdown
 from flask_principal import Principal, Permission, RoleNeed
 from flask_login import LoginManager, current_user
-from flask_cache import Cache
 from raven.contrib.flask import Sentry
+from os import getenv
 
 app = Flask(__name__)
-app.config.from_pyfile('/etc/flamejam/flamejam.cfg')
+app.config.from_pyfile(getenv('FLAMEJAM_CONFIG', '/etc/flamejam/flamejam.cfg'))
 app.config["CACHE_TYPE"] = 'memcached'
-cache = Cache(app)
 
 app.jinja_env.add_extension('jinja2.ext.loopcontrols')
 

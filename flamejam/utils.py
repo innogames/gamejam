@@ -61,7 +61,9 @@ def verify_password(hashed_password, guessed_password, maxtime=300):
         scrypt.decrypt(hashed_password, guessed_password.encode('utf-8'), maxtime)
         return True
     except scrypt.error as e:
-        print "scrypt error: %s" % e    # Not fatal but a necessary measure if server is under heavy load
+        print(
+            "scrypt error: %s" % e
+            )  # Not fatal but a necessary measure if server is under heavy load
         return False
 
 def get_current_jam():

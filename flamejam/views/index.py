@@ -1,4 +1,4 @@
-from flamejam import app, db, cache
+from flamejam import app, db #, cache
 from flask import render_template, url_for, redirect, request
 from wordpress_xmlrpc import Client
 from wordpress_xmlrpc.methods import posts
@@ -26,7 +26,7 @@ def getBestGames():
 
 
 @app.route("/")
-@cache.cached(timeout=50)
+# @cache.cached(timeout=50)
 def index():
     wpPosts = getWordpressPostsLimit()
     games = getBestGames()
@@ -34,6 +34,6 @@ def index():
 
 
 @app.route("/gamescom")
-@cache.cached(timeout=50)
+# @cache.cached(timeout=50)
 def gamescom():
     return render_template("gamescom/2016.html")

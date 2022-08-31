@@ -1,4 +1,4 @@
-from flamejam import app, cache
+from flamejam import app # , cache
 from flask import render_template
 from wordpress_xmlrpc import Client
 from wordpress_xmlrpc.methods import posts, taxonomies
@@ -17,7 +17,7 @@ def getWordpressPostById(id):
         return wpPost
 
 
-@cache.cached(timeout=50, key_prefix='wp_posts')
+# @cache.cached(timeout=50, key_prefix='wp_posts')
 def getWordpressPosts():
     allPosts = []
     try:
@@ -29,7 +29,7 @@ def getWordpressPosts():
         return allPosts
 
 
-@cache.cached(timeout=50, key_prefix='wp_categories')
+# @cache.cached(timeout=50, key_prefix='wp_categories')
 def getWordpressCategories():
     wpCats = []
     try:
@@ -109,7 +109,7 @@ def news_category(category):
 
 
 @app.route('/news/')
-@cache.cached(timeout=50)
+# @cache.cached(timeout=50)
 def news():
     wpPost = []
     wpCats = []

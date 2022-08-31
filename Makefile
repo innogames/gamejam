@@ -1,28 +1,28 @@
 default: run
 
 setup:
-	virtualenv2 -p python2 env && . env/bin/activate && \
+	virtualenv3 -p python3 env && . env/bin/activate && \
 		pip install --upgrade \
 			flask flask-mail flask-sqlalchemy flask-wtf \
-			flask-login Flask-Markdown python-dateutil \
-			scrypt requests alembic flask-principal mysql-python \
+			flask-login flask-uploads Flask-Markdown python-dateutil \
+			scrypt requests alembic flask-principal \
 			flask-cache python-memcached psycopg2 python-wordpress-xmlrpc \
-			BeautifulSoup tornado gunicorn raven[flask]
+			BeautifulSoup4 tornado pymysql email_validator gunicorn raven[flask]
 
 run-prod:
 	. env/bin/activate && gunicorn -w 10 -b 127.0.0.1:5000 flamejam:app
 
 run:
-	. env/bin/activate && python2 runserver.py
+	. env/bin/activate && python3 runserver.py
 
 run-dev:
-	. env/bin/activate && python2 runserver-dev.py
+	. env/bin/activate && python3 runserver-dev.py
 
 init-db:
-	. env/bin/activate && python2 scripts/init-db.py
+	. env/bin/activate && python3 scripts/init-db.py
 
 seed-db:
-	. env/bin/activate && python2 scripts/seed-db.py
+	. env/bin/activate && python3 scripts/seed-db.py
 
 install:
 	mkdir -p $(DESTDIR)/srv/flamejam
