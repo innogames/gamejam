@@ -1,15 +1,20 @@
-from flamejam import app # , cache
+from flamejam import app, cache
 from flask import render_template
 from wordpress_xmlrpc import Client
 from wordpress_xmlrpc.methods import posts, taxonomies
-from wordpress_xmlrpc.exceptions import ServerConnectionError, InvalidCredentialsError
+from wordpress_xmlrpc.exceptions import ServerConnectionError, \
+    InvalidCredentialsError
 import logging
 
 
 def getWordpressPostById(id):
     wpPost = []
     try:
-        wpClient = Client(app.config.get('BLOG_URL'), app.config.get('BLOG_USER'), app.config.get('BLOG_PASSWORD'))
+        wpClient = Client(
+            app.config.get('BLOG_URL'),
+            app.config.get('BLOG_USER'),
+            app.config.get('BLOG_PASSWORD')
+            )
         wpPost = wpClient.call(posts.GetPost(id))
     except (ServerConnectionError, InvalidCredentialsError) as e:
         logging.warn(e.message)
@@ -17,11 +22,15 @@ def getWordpressPostById(id):
         return wpPost
 
 
-# @cache.cached(timeout=50, key_prefix='wp_posts')
+@cache.cached(timeout=50, key_prefix='wp_posts')
 def getWordpressPosts():
     allPosts = []
     try:
-        wpClient = Client(app.config.get('BLOG_URL'), app.config.get('BLOG_USER'), app.config.get('BLOG_PASSWORD'))
+        wpClient = Client(
+            app.config.get('BLOG_URL'),
+            app.config.get('BLOG_USER'),
+            app.config.get('BLOG_PASSWORD')
+            )
         allPosts = wpClient.call(posts.GetPosts({'post_status': 'publish'}))
     except (ServerConnectionError, InvalidCredentialsError) as e:
         logging.warn(e.message)
@@ -29,11 +38,15 @@ def getWordpressPosts():
         return allPosts
 
 
-# @cache.cached(timeout=50, key_prefix='wp_categories')
+@cache.cached(timeout=50, key_prefix='wp_categories')
 def getWordpressCategories():
     wpCats = []
     try:
-        wpClient = Client(app.config.get('BLOG_URL'), app.config.get('BLOG_USER'), app.config.get('BLOG_PASSWORD'))
+        wpClient = Client(
+            app.config.get('BLOG_URL'),
+            app.config.get('BLOG_USER'),
+            app.config.get('BLOG_PASSWORD')
+            )
         wpCats = wpClient.call(taxonomies.GetTerms('category'))
     except (ServerConnectionError, InvalidCredentialsError) as e:
         logging.warn(e.message)
@@ -64,7 +77,12 @@ def news_show(news_id):
     except (ServerConnectionError, InvalidCredentialsError) as e:
         logging.warn(e.message)
     finally:
-        return render_template('news/show.html', news=wpPost, categories=wpCats, related=wpRelatedPosts)
+        return render_template(
+            'news/show.html',
+            news=wpPost,
+            categories=wpCats,
+            related=wpRelatedPosts
+            )
 
 
 @app.route('/news/tags/<tag>/')
@@ -85,7 +103,11 @@ def news_tag(tag):
     except (ServerConnectionError, InvalidCredentialsError) as e:
         logging.warn(e.message)
     finally:
-        return render_template('news/list.html', news=wpRelatedPosts, categories=wpCats)
+        return render_template(
+            'news/list.html',
+            news=wpRelatedPosts,
+            categories=wpCats
+            )
 
 
 @app.route('/news/category/<category>/')
@@ -105,7 +127,11 @@ def news_category(category):
     except (ServerConnectionError, InvalidCredentialsError) as e:
         logging.warn(e.message)
     finally:
-        return render_template('news/list.html', news=wpRelatedPosts, categories=wpCats)
+        return render_template(
+            'news/list.html',
+            news=wpRelatedPosts,
+            categories=wpCats
+            )
 
 
 @app.route('/news/')

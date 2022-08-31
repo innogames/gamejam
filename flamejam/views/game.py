@@ -1,15 +1,20 @@
-from flamejam import app, db, mail #, cache
+from flamejam import app, db, mail, cache
 from flamejam.utils import get_slug
-from flamejam.models import Jam, Game, Comment, GamePackage, GameScreenshot, JamStatusCode, Rating, Vote
+from flamejam.models import Jam, Game, Comment, GamePackage, GameScreenshot, \
+    JamStatusCode, Rating, Vote
 from flamejam.models.rating import RATING_CATEGORIES
-from flamejam.forms import WriteComment, GameEditForm, GameAddScreenshotForm, GameAddPackageForm, GameCreateForm, RateGameForm
-from flask import render_template, url_for, redirect, flash, request, abort, send_from_directory
+from flamejam.forms import WriteComment, GameEditForm, GameAddScreenshotForm, \
+    GameAddPackageForm, GameCreateForm, RateGameForm
+from flask import render_template, url_for, redirect, flash, request, abort, \
+    send_from_directory
 from flask_login import login_required, current_user
 from sqlalchemy import desc
 from werkzeug.utils import secure_filename
 import os
 
-ALLOWED_EXTENSIONS = set(['tar.gz', 'tgz', 'rar', 'zip', 'tar', 'png', 'jpg', 'jpeg', 'gif'])
+ALLOWED_EXTENSIONS = set(
+    ['tar.gz', 'tgz', 'rar', 'zip', 'tar', 'png', 'jpg', 'jpeg', 'gif']
+    )
 
 
 @app.route("/games/<page>")
@@ -23,7 +28,9 @@ def games(page):
         page = 1
 
     # is_deleted=False for enabling games again
-    games = Game.query.filter_by(is_deleted=False).order_by(desc(Game.id)).paginate(page, 6, False)
+    games = Game.query.filter_by(is_deleted=False).order_by(
+        desc(Game.id)
+        ).paginate(page, 6, False)
     jams = Jam.query.all()
 
     return render_template("game/list.html", games=games, jams=jams)
@@ -33,12 +40,14 @@ def games(page):
 def show_games(game_slug):
     game = Game.query.filter_by(slug=game_slug).first()
     if (game):
-        return redirect(url_for('show_game', jam_slug=game.jam.slug, game_id=game.id))
+        return redirect(
+            url_for('show_game', jam_slug=game.jam.slug, game_id=game.id)
+            )
     else:
         abort(404)
 
 
-# @cache.cached(timeout=50, key_prefix='game_screenshot')
+@cache.cached(timeout=50, key_prefix='game_screenshot')
 def get_game_screenshot(id):
     return GameScreenshot.query.filter_by(id=id).first_or_404()
 
@@ -50,7 +59,7 @@ def show_game_screenshot(id):
     return app.response_class(screenshot.screenshot, mimetype='image')
 
 
-# @cache.cached(timeout=50, key_prefix='game_package')
+@cache.cached(timeout=50, key_prefix='game_package')
 def get_game_package(id):
     return GamePackage.query.filter_by(id=id).first_or_404()
 
@@ -69,22 +78,34 @@ def create_game(jam_slug):
 
     r = current_user.getParticipation(jam)
     if not r or not r.team:
-        flash("You cannot create a game without participating in the jam.", category="error")
+        flash(
+            "You cannot create a game without participating in the jam.",
+            category="error"
+            )
         return redirect(jam.url())
     if r.team.game:
         flash("You already have a game.")
         return redirect(r.team.game.url())
 
-    enabled = (JamStatusCode.RUNNING <= jam.getStatus().code <= JamStatusCode.PACKAGING)
+    enabled = (
+            JamStatusCode.RUNNING <= jam.getStatus().code <=
+            JamStatusCode.PACKAGING)
 
     form = GameCreateForm(request.form, obj=None)
     if enabled and form.validate_on_submit():
         game = Game(r.team, form.title.data)
         db.session.add(game)
         db.session.commit()
-        return redirect(url_for("edit_game", jam_slug=jam_slug, game_id=game.id))
+        return redirect(
+            url_for("edit_game", jam_slug=jam_slug, game_id=game.id)
+            )
 
-    return render_template("jam/game/create.html", jam=jam, enabled=enabled, form=form)
+    return render_template(
+        "jam/game/create.html",
+        jam=jam,
+        enabled=enabled,
+        form=form
+        )
 
 
 @app.route("/jams/<jam_slug>/<game_id>/vote")
@@ -132,7 +153,11 @@ def upload_game_image(jam_slug, game_id):
             db.session.commit()
             flash("Your screenshot has been added.", "success")
         else:
-            flash("Your file extension is not allowed. Please only upload: 'png', 'jpg', 'jpeg', 'gif'", "error")
+            flash(
+                "Your file extension is not allowed. Please only upload: "
+                "'png', 'jpg', 'jpeg', 'gif'",
+                "error"
+                )
 
     return redirect(url_for('edit_game', jam_slug=jam_slug, game_id=game_id))
 
@@ -155,12 +180,19 @@ def upload_game_package(jam_slug, game_id):
             db.session.commit()
             flash("Your package has been added.", "success")
         else:
-            flash("Your file extension is not allowed. Please only upload: 'tgz', 'rar', 'zip', 'tar'", "error")
+            flash(
+                "Your file extension is not allowed. Please only upload: "
+                "'tgz', 'rar', 'zip', 'tar'",
+                "error"
+                )
 
     return redirect(url_for('edit_game', jam_slug=jam_slug, game_id=game_id))
 
 
-@app.route("/jams/<jam_slug>/<game_id>/image/<filename>", methods=("GET", "POST"))
+@app.route(
+    "/jams/<jam_slug>/<game_id>/image/<filename>",
+    methods=("GET", "POST")
+    )
 def game_image(jam_slug, game_id, filename):
     # jam = Jam.query.filter_by(slug=jam_slug).first_or_404()
     game = Game.query.filter_by(is_deleted=False, id=game_id).first_or_404()
@@ -169,13 +201,19 @@ def game_image(jam_slug, game_id, filename):
     return send_from_directory(app.config.get('UPLOAD_FOLDER_IMAGES'), filename)
 
 
-@app.route("/jams/<jam_slug>/<game_id>/package/<filename>", methods=("GET", "POST"))
+@app.route(
+    "/jams/<jam_slug>/<game_id>/package/<filename>",
+    methods=("GET", "POST")
+    )
 def game_package(jam_slug, game_id, filename):
     # jam = Jam.query.filter_by(slug=jam_slug).first_or_404()
     game = Game.query.filter_by(is_deleted=False, id=game_id).first_or_404()
     filename = str(game.id) + '_' + filename
 
-    return send_from_directory(app.config.get('UPLOAD_FOLDER_PACKAGES'), filename)
+    return send_from_directory(
+        app.config.get('UPLOAD_FOLDER_PACKAGES'),
+        filename
+        )
 
 
 @app.route("/jams/<jam_slug>/<game_id>/edit/", methods=("GET", "POST"))
@@ -194,7 +232,8 @@ def edit_game(jam_slug, game_id):
     if form.validate_on_submit():
         slug = get_slug(form.title.data)
         # if not jam.games.filter_by(slug = slug).first() in (game, None):
-        # flash("A game with a similar title already exists. Please choose another title.", category = "error")
+        # flash("A game with a similar title already exists. Please choose
+        # another title.", category = "error")
         # else:
         # form.populate_obj(game) this breaks dynamic stuff below
 
@@ -220,14 +259,17 @@ def edit_game(jam_slug, game_id):
     #    return redirect(request.url)
 
     # if screenshot_form.validate_on_submit():
-    #    s = GameScreenshot(screenshot_form.url.data, screenshot_form.caption.data, game)
+    #    s = GameScreenshot(screenshot_form.url.data,
+    #    screenshot_form.caption.data, game)
     #    db.session.add(s)
     #    db.session.commit()
     #    flash("Your screenshot has been added.", "success")
     #    return redirect(request.url)
 
-    return render_template("jam/game/edit.html", jam=jam, game=game,
-                           form=form, package_form=package_form, screenshot_form=screenshot_form)
+    return render_template(
+        "jam/game/edit.html", jam=jam, game=game,
+        form=form, package_form=package_form, screenshot_form=screenshot_form
+        )
 
 
 @app.route('/edit/package/<id>/<action>/')
@@ -243,13 +285,18 @@ def game_package_edit(id, action):
     if action == "delete":
         if (p.url):
             filename = str(p.game.id) + '_' + p.url.rsplit('/', 1)[-1]
-            filepath = os.path.join(app.config.get('UPLOAD_FOLDER_PACKAGES'), filename)
+            filepath = os.path.join(
+                app.config.get('UPLOAD_FOLDER_PACKAGES'),
+                filename
+                )
             os.remove(filepath)
         db.session.delete(p)
         flash("Your package has been deleted.", "success")
 
     db.session.commit()
-    return redirect(url_for("edit_game", jam_slug=p.game.jam.slug, game_id=p.game.id))
+    return redirect(
+        url_for("edit_game", jam_slug=p.game.jam.slug, game_id=p.game.id)
+        )
 
 
 @app.route('/edit/screenshot/<id>/<action>/')
@@ -269,7 +316,10 @@ def game_screenshot_edit(id, action):
     elif action == "delete":
         if (s.url):
             filename = str(s.game.id) + '_' + s.url.rsplit('/', 1)[-1]
-            filepath = os.path.join(app.config.get('UPLOAD_FOLDER_IMAGES'), filename)
+            filepath = os.path.join(
+                app.config.get('UPLOAD_FOLDER_IMAGES'),
+                filename
+                )
             os.remove(filepath)
         db.session.delete(s)
         flash("Your image has been deleted.", "success")
@@ -279,14 +329,18 @@ def game_screenshot_edit(id, action):
             x.index = i
             i += 1
     db.session.commit()
-    return redirect(url_for("edit_game", jam_slug=s.game.jam.slug, game_id=s.game.id))
+    return redirect(
+        url_for("edit_game", jam_slug=s.game.jam.slug, game_id=s.game.id)
+        )
 
 
 @app.route('/jams/<jam_slug>/<game_id>/', methods=("POST", "GET"))
 def show_game(jam_slug, game_id):
     comment_form = WriteComment()
     jam = Jam.query.filter_by(slug=jam_slug).first_or_404()
-    game = Game.query.filter_by(is_deleted=False, id=game_id).filter_by(jam=jam).first_or_404()
+    game = Game.query.filter_by(is_deleted=False, id=game_id).filter_by(
+        jam=jam
+        ).first_or_404()
 
     if current_user.is_authenticated and comment_form.validate_on_submit():
         comment = Comment(comment_form.text.data, game, current_user)
@@ -296,38 +350,71 @@ def show_game(jam_slug, game_id):
         # notify the team
         for user in game.team.members:
             if user.notify_game_comment:
-                body = render_template("emails/comment.txt", recipient=user, comment=comment)
-                mail.send_message(subject=current_user.username + " commented on " + game.title,
-                                  recipients=[user.email], body=body)
+                body = render_template(
+                    "emails/comment.txt",
+                    recipient=user,
+                    comment=comment
+                    )
+                mail.send_message(
+                    subject=current_user.username + " commented on " +
+                            game.title,
+                    recipients=[user.email], body=body
+                    )
 
         flash("Your comment has been posted.", "success")
         return redirect(game.url())
 
-    rating = Rating.query.filter_by(game_id=game.id, user_id=current_user.get_id()).first()
-    return render_template('jam/game/info.html', game=game, form=comment_form, rating=rating)
+    rating = Rating.query.filter_by(
+        game_id=game.id,
+        user_id=current_user.get_id()
+        ).first()
+    return render_template(
+        'jam/game/info.html',
+        game=game,
+        form=comment_form,
+        rating=rating
+        )
 
 
 @app.route("/jams/<jam_slug>/<game_id>/rate/", methods=("GET", "POST"))
 @login_required
 def rate_game(jam_slug, game_id):
     jam = Jam.query.filter_by(slug=jam_slug).first_or_404()
-    game = Game.query.filter_by(jam_id=jam.id, is_deleted=False, id=game_id).first_or_404()
+    game = Game.query.filter_by(
+        jam_id=jam.id,
+        is_deleted=False,
+        id=game_id
+        ).first_or_404()
 
     form = RateGameForm()
     if jam.getStatus().code != JamStatusCode.RATING:
-        flash("This jam is not in the rating phase. Sorry, but you cannot rate right now.", "error")
+        flash(
+            "This jam is not in the rating phase. Sorry, but you cannot rate "
+            "right now.",
+            "error"
+            )
         return redirect(game.url())
 
     if current_user in game.team.members:
-        flash("You cannot rate on your own game. Go rate on one of these!", "warning")
+        flash(
+            "You cannot rate on your own game. Go rate on one of these!",
+            "warning"
+            )
         return redirect(url_for("jam_games", jam_slug=jam.slug))
 
     # Allow only users who participate in this jam to vote.
     if not current_user in jam.participants:
-        flash("You cannot rate on this game. Only participants are eligible for vote.", "error")
+        flash(
+            "You cannot rate on this game. Only participants are eligible for "
+            "vote.",
+            "error"
+            )
         return redirect(url_for("jam_games", jam_slug=jam.slug))
 
-    rating = Rating.query.filter_by(game_id=game.id, user_id=current_user.id).first()
+    rating = Rating.query.filter_by(
+        game_id=game.id,
+        user_id=current_user.id
+        ).first()
     if rating:
         flash("You are editing your previous rating of this game.", "info")
 
@@ -343,7 +430,10 @@ def rate_game(jam_slug, game_id):
             rating.set(c, form.get(c).data)
 
         db.session.commit()
-        flash("Your rating has been " + ("submitted" if new else "updated") + ".", "success")
+        flash(
+            "Your rating has been " + ("submitted" if new else "updated") + ".",
+            "success"
+            )
         return redirect(url_for("jam_games", jam_slug=jam.slug))
 
     elif rating:

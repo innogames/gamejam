@@ -116,7 +116,11 @@ class User(db.Model):
     def getAvatar(self, size = 32):
         if self.avatar:
             return self.avatar.replace("%s", str(size))
-        return "//gravatar.com/avatar/{0}?s={1}&d=identicon".format(md5(self.email.lower()).hexdigest(), size)
+
+        mail_hash = md5(self.email.lower().encode()).hexdigest()
+        gravatar = "//gravatar.com/avatar/{0}?s={1}&d=identicon".format(mail_hash, size)
+
+        return gravatar
 
     def setLocation(self, location):
         if not location:

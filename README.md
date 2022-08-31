@@ -14,22 +14,10 @@ Dependencies
 ------------
 You will need
 
- - Python 2.7
+ - Python 3.7
  - virtualenv
  - pip
- - flask
- - flask-mail
- - flask-sqlalchemy
- - flask-wtf
- - flask-login
- - flask-markdown
- - python-dateutil
- - scrypt
- - requests
- - alembic
- - flask-principal
- - mysql/mysql\_config
- - mysql-python
+ - make
 
 as well as their respective dependencies. All of these except mysql/mysql\_config are available
 on PyPI and as such I recommend using a virtualenv and pip to install all of those. Always get
@@ -44,12 +32,12 @@ not been tested on Windows and it would be quite a wonder indeed if it worked th
 1.  The installation should generally be rather simple provided you have virtualenv and pip in
     your PATH. Should that be the case, it would be as simple as running
 
-        # make install
+        $ make install
 
     True enough, this will install the software directly to your system and set up all the dependencies
     for you in a virtualenv. Should you want to install to a different root, use something like
 
-        # make DESTDIR=/some/else install
+        $ make DESTDIR=/some/else install
 
 2.  Copy the default config from `/usr/share/doc/flamejam/flamejam.cfg.default` to
     `/etc/flamejam/flamejam.cfg` and configure it to your needs. Do not forget to set permissions

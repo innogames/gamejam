@@ -32,26 +32,14 @@
 
 						<p class="date">From {{ jam.start_time }}</p>
 
-						<p>{{ jam.description | markdown }}</p>
+                        {% if jam.description %}
+						    <p>{{ jam.description | markdown }}</p>
+                        {% endif %}
 					</div>
 				</div>
 			</a>
 		</div>
 		{% endfor %}
-
-		<!--
-		<div class="row">
-			<div class="large-4 columns">
-				<a href="#" class="button prev_next">< Prev</a>
-			</div>
-			<div class="large-4 columns">
-				<p class="pagination_pagenumbers"><a href="#">1</a> <a href="#"><strong>2</strong></a> <a href="#">3</a></p>
-			</div>
-			<div class="large-4 columns right">
-				<a href="#" class="button prev_next">Next ></a>
-			</div>
-		</div>
-		-->
 	</div>
 </div>
 

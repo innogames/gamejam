@@ -4,7 +4,7 @@ setup:
 	virtualenv3 -p python3 env && . env/bin/activate && \
 		pip install --upgrade \
 			flask flask-mail flask-sqlalchemy flask-wtf \
-			flask-login flask-uploads Flask-Markdown python-dateutil \
+			flask-login flask-uploads Flask-Caching Flask-Markdown python-dateutil \
 			scrypt requests alembic flask-principal \
 			flask-cache python-memcached psycopg2 python-wordpress-xmlrpc \
 			BeautifulSoup4 tornado pymysql email_validator gunicorn raven[flask]
