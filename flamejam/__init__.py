@@ -1,6 +1,7 @@
 from flask import Flask, request
 from datetime import *
 from flask_mail import Mail
+from flask_migrate import Migrate
 from flask_sqlalchemy import SQLAlchemy
 from flaskext.markdown import Markdown
 from flask_principal import Principal, Permission, RoleNeed
@@ -19,6 +20,7 @@ app.jinja_env.add_extension('jinja2.ext.loopcontrols')
 mail = Mail(app)
 db = SQLAlchemy(app)
 markdown_object = Markdown(app, safe_mode="escape")
+migrate = Migrate(app, db)
 
 login_manager = LoginManager()
 login_manager.init_app(app)

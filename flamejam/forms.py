@@ -8,14 +8,15 @@ from wtforms.validators import ValidationError
 from flask_wtf import FlaskForm as Form, RecaptchaField
 from flask_wtf.file import FileField
 import re
-from flamejam import models, utils
+from flamejam import models, utils, db
 from flamejam.models.rating import RATING_CATEGORIES
 from sqlalchemy import func
+from .models import GamePackage, Jam
 
 
 ############## VALIDATORS ####################
 
-class Not(object):
+class Not:
     def __init__(self, call, message=None):
         self.call = call
         self.message = message
@@ -31,10 +32,10 @@ class Not(object):
         if not errored:
             raise ValidationError(
                 self.call.message if self.message == None else self.message
-                )
+            )
 
 
-class MatchesRegex(object):
+class MatchesRegex:
     def __init__(self, regex, message="This field matches the regex {0}"):
         self.regex = regex
         self.message = message
@@ -44,25 +45,25 @@ class MatchesRegex(object):
             raise ValidationError(self.message.format(self.regex))
 
 
-class UsernameExists(object):
+class UsernameExists:
     def __call__(self, form, field):
         u = models.User.query.filter(
             func.lower(models.User.username) == func.lower(field.data)
-            ).first()
+        ).first()
         if not u:
             raise ValidationError("The username does not exist.")
 
 
-class EmailExists(object):
+class EmailExists:
     def __call__(self, form, field):
         e = models.User.query.filter(
             func.lower(models.User.email) == func.lower(field.data)
-            ).first()
+        ).first()
         if not e:
             raise ValidationError("That email does not exist")
 
 
-class LoginValidator(object):
+class LoginValidator:
     def __init__(self,
                  pw_field,
                  message_username="The username or password is incorrect.",
@@ -74,23 +75,45 @@ class LoginValidator(object):
     def __call__(self, form, field):
         u = models.User.query.filter(
             func.lower(models.User.username) == func.lower(field.data)
-            ).first()
+        ).first()
         if not u:
             raise ValidationError(self.message_username)
         elif not utils.verify_password(u.password, form[self.pw_field].data):
             raise ValidationError(self.message_password)
 
 
-class UsernameValidator(object):
+class UsernameValidator:
     def __init__(self, message_username="The username is incorrect."):
         self.message_username = message_username
 
     def __call__(self, form, field):
         u = models.User.query.filter(
             func.lower(models.User.username) == func.lower(field.data)
-            ).first()
+        ).first()
         if not u:
             raise ValidationError(self.message_username)
+
+
+class OnSiteParticipantLimit:
+    jam: Jam
+    message: str
+
+    def __init__(self,
+                 jam: Jam,
+                 message: str = "Too many users already registered for "
+                                "on-site participation"):
+        self.jam = jam
+        self.message = message
+
+    def __call__(self, form, field):
+        on_site_participant_count = db.engine.execute(
+            "SELECT COUNT(id) FROM participation WHERE jam_id = {} AND on_site = 1".format(
+                int(self.jam.id)
+            )
+        ).scalar()
+
+        if field.data and on_site_participant_count >= self.jam.on_site_limit:
+            raise ValidationError(self.message)
 
 
 ############## FORMS ####################
@@ -108,31 +131,31 @@ class UserRegistration(Form):
                 MatchesRegex("[^0-9a-zA-Z\-_]"),
                 message="Your username contains invalid characters. Only use "
                         "alphanumeric characters, dashes and underscores."
-                ),
+            ),
             Not(UsernameExists(), message="That username already exists."),
             Length(
                 min=3,
                 max=80,
                 message="You have to enter a username of 3 to 80 characters "
                         "length."
-                )]
-        )
+            )]
+    )
     password = PasswordField(
         "Password",
         validators=[Length(
             min=8,
             message="Please enter a password of at least 8 characters."
-            )]
-        )
+        )]
+    )
     password2 = PasswordField(
         "Password, again",
         validators=[EqualTo("password", "Passwords do not match.")]
-        )
+    )
     email = EmailField(
         "Email", validators=[
             Not(EmailExists(), message="That email address is already in use."),
             Email(message="The email address you entered is invalid.")]
-        )
+    )
     captcha = RecaptchaField()
 
 
@@ -140,50 +163,50 @@ class GamescomRegistration(Form):
     real_name = TextField(
         "Real Name",
         validators=[Required(message="Please enter your real name.")]
-        )
+    )
     title = TextField(
         "Title",
         validators=[
             Required(message="Please enter a title, e.g. Ms, Mr, Mx, ...")]
-        )
+    )
     city = TextField(
         "City",
         validators=[
             Required(message="You have to enter your city where you live.")]
-        )
+    )
     country = TextField(
         "Country",
         validators=[
             Required(message="You have to enter your country where you live.")]
-        )
+    )
     job_title = TextField(
         "Job Title",
         validators=[Required(message="Please enter your current job title.")]
-        )
+    )
     experience = TextField(
         "Jam experience",
         validators=[Required(
             message="Please write something about your past Jam experience ("
                     "if you have any)."
-            )]
-        )
+        )]
+    )
     reason = TextField(
         "Reason",
         validators=[Required(
             message="Please write something about why you want to attend the "
                     "Jam."
-            )]
-        )
+        )]
+    )
     website = TextField("Website / Blog")
     age = BooleanField(
         "Are you at least 18 years old?",
         validators=[Required(message="Please confirm your age.")]
-        )
+    )
     tac = BooleanField(
         "I accept the terms and conditions",
         validators=[
             Required(message="Please confirm our terms and conditions.")]
-        )
+    )
     ability_programmer = BooleanField("Programming")
     ability_gamedesigner = BooleanField("Game Design")
     ability_2dartist = BooleanField("Graphics / 2D Art")
@@ -193,7 +216,7 @@ class GamescomRegistration(Form):
     abilities_extra = TextField("Detailed abilities")
     travel_funding = BooleanField(
         "Do you need funding for your traveling costs?"
-        )
+    )
     travel_funding_amount = TextField("Amount")
     travel_funding_text = TextField("Tell us why")
     captcha = RecaptchaField()
@@ -210,12 +233,12 @@ class NewPassword(Form):
         validators=[Length(
             min=8,
             message="Please enter a password of at least 8 characters."
-            )]
-        )
+        )]
+    )
     password2 = PasswordField(
         "Password, again",
         validators=[EqualTo("password", "Passwords do not match.")]
-        )
+    )
 
 
 class VerifyForm(Form):
@@ -233,32 +256,32 @@ class JamDetailsForm(Form):
     team_limit = IntegerField(
         "Team size limit",
         validators=[NumberRange(min=0)]
-        )
+    )
     start_time = DateTimeField(
         "Start time",
         format="%Y-%m-%d %H:%M",
         validators=[Required()]
-        )
+    )
 
     registration_duration = IntegerField(
         "Registration duration", validators=[Required(), NumberRange(min=0)],
         default=14 * 24
-        )
+    )
     packaging_duration = IntegerField(
         "Packaging duration",
         validators=[Required(), NumberRange(min=0)],
         default=24
-        )
+    )
     rating_duration = IntegerField(
         "Rating duration",
         validators=[Required(), NumberRange(min=0)],
         default=24 * 5
-        )
+    )
     duration = IntegerField(
         "Duration",
         validators=[Required(), NumberRange(min=0)],
         default=24 * 2
-        )
+    )
 
     description = TextAreaField("Description")
     restrictions = TextAreaField("Restrictions")
@@ -296,9 +319,6 @@ class GameAddTeamMemberForm(Form):
     username = TextField("Username:", validators=[Required(), UsernameExists()])
 
 
-from .models import GamePackage
-
-
 class GameAddPackageForm(Form):
     url = TextField("URL", validators=[Required(), URL()])
     type = SelectField(
@@ -314,7 +334,7 @@ class GameAddPackageForm(Form):
             ("love", GamePackage.typeString("love")),
             ("blender", GamePackage.typeString("blender")),
             ("unknown", GamePackage.typeString("unknown"))]
-        )
+    )
 
 
 class RateGameForm(Form):
@@ -322,7 +342,7 @@ class RateGameForm(Form):
         "Overall rating",
         validators=[Required(), NumberRange(min=0, max=10)],
         default=5
-        )
+    )
     # score_CATEGORY = IntegerField("Category rating", validators=[Required(
     # ), NumberRange(min=0, max=10)], default = 5)
     note = TextAreaField("Additional notes", validators=[Optional()])
@@ -331,7 +351,7 @@ class RateGameForm(Form):
         return getattr(
             self,
             "score" if name in (None, "overall") else ("score_" + name)
-            )
+        )
 
 
 for x in models.rating.RATING_CATEGORIES:
@@ -339,8 +359,8 @@ for x in models.rating.RATING_CATEGORIES:
         RateGameForm, "score_" + x, IntegerField(
             x.capitalize() + " rating",
             validators=[Required(), NumberRange(min=0, max=10)], default=5
-            )
         )
+    )
 
 
 class WriteComment(Form):
@@ -364,7 +384,7 @@ class TeamFinderFilter(Form):
             ("username", "Username"),
             ("location", "Location")
         ], default="abilities"
-        )
+    )
 
 
 class SettingsForm(Form):
@@ -386,18 +406,18 @@ class SettingsForm(Form):
         "New Password", validators=[Optional(), Length(
             min=8,
             message="Please enter a password of at least 8 characters."
-            )]
-        )
+        )]
+    )
     new_password2 = PasswordField(
         "New Password, again",
         validators=[EqualTo("new_password", "Passwords do not match.")]
-        )
+    )
 
     email = EmailField(
         "Email", validators=[
             Optional(),
             Email(message="The email address you entered is invalid.")]
-        )
+    )
 
     pm_mode = SelectField(
         "Allow PM", choices=[
@@ -405,14 +425,14 @@ class SettingsForm(Form):
             ("form", "use email form"),
             ("disabled", "disable email")
         ], default="form"
-        )
+    )
 
     notify_new_jam = BooleanField("when a jam is announced")
     notify_jam_start = BooleanField("when a jam I participate in starts")
     notify_jam_finish = BooleanField("when a jam I participate in finishes")
     notify_game_comment = BooleanField(
         "when someone comments on a game of mine"
-        )
+    )
     notify_team_invitation = BooleanField("when someone invites me to a team")
 
     notify_newsletter = BooleanField("send me newsletters")
@@ -420,20 +440,29 @@ class SettingsForm(Form):
 
 class ParticipateForm(Form):
     show_in_finder = BooleanField("Show me in the team finder")
+    on_site = BooleanField(
+        "On-Site",
+        default=False,
+        validators=[]
+    )
+
+    def __init__(self, jam: Jam, **kwargs):
+        super().__init__(**kwargs)
+        self.on_site.validators += tuple([OnSiteParticipantLimit(jam)])
 
 
 class CancelParticipationForm(Form):
     confirm = BooleanField(
         "I understand that, please cancel my participation",
         validators=[Required()]
-        )
+    )
 
 
 class LeaveTeamForm(Form):
     confirm = BooleanField(
         "I understand that, and want to leave the team",
         validators=[Required()]
-        )
+    )
 
 
 class TeamSettingsForm(Form):
@@ -457,17 +486,19 @@ class AdminUserForm(Form):
         "Username", validators=[
             Not(
                 MatchesRegex("[^0-9a-zA-Z\-_]"),
-                message="Your username contains invalid characters. Only use alphanumeric characters, dashes and underscores."
-                ),
+                message="Your username contains invalid characters. Only use "
+                        "alphanumeric characters, dashes and underscores."
+            ),
             Length(
                 min=3,
                 max=80,
-                message="You have to enter a username of 3 to 80 characters length."
-                )]
-        )
+                message="You have to enter a username of 3 to 80 characters "
+                        "length."
+            )]
+    )
     avatar = TextField("Avatar URL", validators=[Optional(), URL()])
     email = EmailField(
         "Email", validators=[
             Optional(),
             Email(message="The email address you entered is invalid.")]
-        )
+    )

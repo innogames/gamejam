@@ -13,7 +13,7 @@ def jams():
     return render_template(
         "jams.html",
         jams=Jam.query.order_by(desc(Jam.start_time)).all()
-        )
+    )
 
 
 @app.route('/jams/<jam_slug>/', methods=("GET", "POST"))
@@ -37,7 +37,7 @@ def jam_games_lis(jam_slug, page):
         page,
         6,
         False
-        )
+    )
     jams = Jam.query.all()
 
     return render_template("game/list.html", games=games, jams=jams, jam=jam)
@@ -60,7 +60,7 @@ def jam_participate(jam_slug):
             "You cannot register for participation in a jam after it has "
             "finished or is in rating phase.",
             "error"
-            )
+        )
         return redirect(jam.url())
 
     if jam.getStatus().code < JamStatusCode.REGISTRATION:
@@ -68,23 +68,35 @@ def jam_participate(jam_slug):
             "You cannot register for participation before the registration "
             "started.",
             "error"
-            )
+        )
         return redirect(jam.url())
 
     if user.getParticipation(jam):
         flash("You already participate in this jam.", "warning")
         return redirect(jam.url())
 
-    form = ParticipateForm()
+    form = ParticipateForm(jam)
+    on_site_participant_count = db.engine.execute(
+        "SELECT COUNT(id) FROM participation WHERE jam_id = {} AND on_site = 1".format(
+            int(jam.id)
+        )
+    ).scalar()
 
     if form.validate_on_submit():
         user.joinJam(jam)
-        user.getParticipation(jam).show_in_finder = form.show_in_finder.data
+        participation = user.getParticipation(jam)
+        participation.show_in_finder = form.show_in_finder.data
+        participation.on_site = form.on_site.data
         db.session.commit()
         flash("You are now registered for this jam.", "success")
         return redirect(jam.url())
 
-    return render_template('jam/participate.html', jam=jam, form=form)
+    return render_template(
+        'jam/participate.html',
+        jam=jam,
+        form=form,
+        on_site_participant_count=on_site_participant_count
+    )
 
 
 @app.route('/jams/<jam_slug>/cancel-participation/', methods=["POST", "GET"])
@@ -97,7 +109,7 @@ def jam_cancel_participation(jam_slug):
             "You cannot unregister from a jam after it has finished or is in "
             "rating phase.",
             "error"
-            )
+        )
         return redirect(jam.url())
 
     form = CancelParticipationForm()
@@ -116,10 +128,10 @@ def jam_games(jam_slug):
     jam = Jam.query.filter_by(slug=jam_slug).first_or_404()
     filters = set(
         request.args['filter'].split(' ')
-        ) if 'filter' in request.args else set()
+    ) if 'filter' in request.args else set()
     games = jam.gamesByScore(
         filters
-        ) if jam.showRatings else jam.gamesByTotalRatings(filters)
+    ) if jam.showRatings else jam.gamesByTotalRatings(filters)
     return render_template(
         'jam/games.html',
         jam=jam,
@@ -127,7 +139,7 @@ def jam_games(jam_slug):
         filters=filters,
         package_types=GamePackage.packageTypes(),
         typeStringShort=GamePackage.typeStringShort
-        )
+    )
 
 
 @app.route('/jams/<jam_slug>/participants/')
@@ -146,7 +158,7 @@ def jam_toggle_show_in_finder(jam_slug):
     flash(
         "You are now %s in the team finder for the jam \"%s\"." % (
             "shown" if r.show_in_finder else "hidden", jam.title), "success"
-        )
+    )
     return redirect(jam.url())
 
 
@@ -189,4 +201,4 @@ def jam_team_finder(jam_slug):
         jam=jam,
         form=form,
         results=l
-        )
+    )

@@ -4,10 +4,13 @@ from random import randint
 from flamejam import app, db, mail
 from flamejam.models import User
 from flamejam.utils import hash_password, verify_password
-from flamejam.forms import UserLogin, UserRegistration, ResetPassword, NewPassword, SettingsForm, ContactUserForm
-from flask import render_template, redirect, flash, url_for, current_app, session, request, abort, Markup
+from flamejam.forms import UserLogin, UserRegistration, ResetPassword, \
+    NewPassword, SettingsForm, ContactUserForm
+from flask import render_template, redirect, flash, url_for, current_app, \
+    session, request, abort, Markup
 from flask_login import login_required, login_user, logout_user, current_user
-from flask_principal import AnonymousIdentity, Identity, UserNeed, identity_changed, identity_loaded, RoleNeed
+from flask_principal import AnonymousIdentity, Identity, UserNeed, \
+    identity_changed, identity_loaded, RoleNeed
 from sqlalchemy import func
 
 
@@ -20,17 +23,27 @@ def login():
         username = login_form.username.data
         password = login_form.password.data
         remember_me = login_form.remember_me.data
-        user = User.query.filter(func.lower(User.username) == func.lower(username)).first()
+        user = User.query.filter(
+            func.lower(User.username) == func.lower(username)
+            ).first()
         if login_user(user, remember_me):
             flash("You were logged in.", "success")
             if user.invitations.count():
-                flash(Markup('You have %s team invitations - click <a href="%s">here</a> to view them.' % (
-                    user.invitations.count(), url_for("invitations"))), "info")
-            return redirect(request.args.get("next") or url_for('index'))
+                flash(
+                    Markup(
+                        'You have %s team invitations - click <a '
+                        'href="%s">here</a> to view them.' % (
+                            user.invitations.count(), url_for("invitations"))
+                        ), "info"
+                    )
 
             # Tell Flask-Principal the identity changed
-            identity_changed.send(current_app._get_current_object(),
-                                  identity=Identity(user.id))
+            identity_changed.send(
+                current_app._get_current_object(),
+                identity=Identity(user.id)
+                )
+
+            return redirect(request.args.get("next") or url_for('index'))
         else:
             flash("Login failed, user not validated", "error")
             return redirect(url_for("verify_status", username=username))
@@ -42,8 +55,18 @@ def login():
 
         new_user = User(username, password, email)
 
-        # body = render_template("emails/account/verification.txt", recipient = new_user, email_changed = False)
-        # mail.send_message(subject="Welcome to " + app.config["LONG_NAME"] + ", " + username, recipients=[new_user.email], body=body)
+        if app.config.get("ENABLE_VERIFICATION") == "true":
+            body = render_template(
+                "emails/account/verification.txt",
+                recipient=new_user,
+                email_changed=False
+                )
+            mail.send_message(
+                subject="Welcome to " + app.config[
+                    "LONG_NAME"] + ", " + username,
+                recipients=[new_user.email],
+                body=body
+                )
 
         db.session.add(new_user)
         db.session.commit()
@@ -51,7 +74,11 @@ def login():
         flash("Your account has been created.", "success")
         login_user(new_user, True)
         return redirect(url_for('verify_status', username=username))
-    return render_template('account/login.html', login_form=login_form, register_form=register_form)
+    return render_template(
+        'account/login.html',
+        login_form=login_form,
+        register_form=register_form
+        )
 
 
 @app.route('/logout')
@@ -65,8 +92,10 @@ def logout():
         session.pop(key, None)
 
     # Tell Flask-Principal the user is anonymous
-    identity_changed.send(current_app._get_current_object(),
-                          identity=AnonymousIdentity())
+    identity_changed.send(
+        current_app._get_current_object(),
+        identity=AnonymousIdentity()
+        )
 
     return redirect(url_for('index'))
 
@@ -99,8 +128,15 @@ def reset_request():
         user.token = randint(0, sys.maxint)
         db.session.commit()
 
-        body = render_template("emails/account/reset_password.txt", recipient=user)
-        mail.send_message(subject=app.config["LONG_NAME"] + ": Reset your password", recipients=[user.email], body=body)
+        body = render_template(
+            "emails/account/reset_password.txt",
+            recipient=user
+            )
+        mail.send_message(
+            subject=app.config["LONG_NAME"] + ": Reset your password",
+            recipients=[user.email],
+            body=body
+            )
 
         flash("Your password has been reset, check your email.", "success")
     return render_template('account/reset_request.html', form=form, error=error)
@@ -110,12 +146,19 @@ def reset_request():
 def reset_verify(username, token):
     user = User.query.filter_by(username=username).first_or_404()
     if user.token == None:
-        flash("%s's account has not requested a password reset." % user.username.capitalize(), "error")
+        flash(
+            "%s's account has not requested a password reset." %
+            user.username.capitalize(),
+            "error"
+            )
         return redirect(url_for('index'))
     if user.getResetToken() != token:
         flash(
-            "This does not seem to be a valid reset link, if you reset your account multiple times make sure you are using the link in the last email you received!",
-            "error")
+            "This does not seem to be a valid reset link, if you reset your "
+            "account multiple times make sure you are using the link in the "
+            "last email you received!",
+            "error"
+        )
         return redirect(url_for('index'))
     form = NewPassword()
     error = None
@@ -125,9 +168,17 @@ def reset_verify(username, token):
         # set the new password
         user.password = hash_password(form.password.data)
         db.session.commit()
-        flash("Your password was updated and you can login with it now.", "success")
+        flash(
+            "Your password was updated and you can login with it now.",
+            "success"
+            )
         return redirect(url_for('login'))
-    return render_template('account/reset_newpassword.html', user=user, form=form, error=error)
+    return render_template(
+        'account/reset_newpassword.html',
+        user=user,
+        form=form,
+        error=error
+        )
 
 
 @app.route('/verify/', methods=["POST", "GET"])
@@ -139,12 +190,18 @@ def verify_send():
     user = User.query.filter_by(username=username).first_or_404()
 
     if user.is_verified:
-        flash("%s's account is already validated." % user.username.capitalize(), "info")
+        flash(
+            "%s's account is already validated." % user.username.capitalize(),
+            "info"
+            )
         return redirect(url_for('index'))
 
     body = render_template("emails/account/verification.txt", recipient=user)
-    mail.send_message(subject="Welcome to " + app.config["LONG_NAME"] + ", " + username, recipients=[user.new_email],
-                      body=body)
+    mail.send_message(
+        subject="Welcome to " + app.config["LONG_NAME"] + ", " + username,
+        recipients=[user.new_email],
+        body=body
+        )
 
     flash("Verification has been resent, check your email", "success")
     return redirect(url_for('verify_status', username=username))
@@ -156,10 +213,17 @@ def verify_status(username):
     user = User.query.filter_by(username=username).first_or_404()
 
     if user.is_verified:
-        flash("%s's account is already validated." % user.username.capitalize(), "info")
+        flash(
+            "%s's account is already validated." % user.username.capitalize(),
+            "info"
+            )
         return redirect(url_for('index'))
 
-    return render_template('misc/verify_status.html', submitted=submitted, username=username)
+    return render_template(
+        'misc/verify_status.html',
+        submitted=submitted,
+        username=username
+        )
 
 
 @app.route('/verify/<username>/<verification>', methods=["GET"])
@@ -167,7 +231,10 @@ def verify(username, verification):
     user = User.query.filter_by(username=username).first_or_404()
 
     if user.is_verified:
-        flash("%s's account is already validated." % user.username.capitalize(), "success")
+        flash(
+            "%s's account is already validated." % user.username.capitalize(),
+            "success"
+            )
         return redirect(url_for('index'))
 
     # verification success
@@ -181,7 +248,9 @@ def verify(username, verification):
 
     # verification failure
     else:
-        return redirect(url_for('verify_status', username=username, submitted=True))
+        return redirect(
+            url_for('verify_status', username=username, submitted=True)
+            )
 
 
 @app.route('/profile')
@@ -192,14 +261,20 @@ def profile():
 
 @app.route('/users/<username>/')
 def show_user(username):
-    user = User.query.filter_by(is_deleted=False, username=username).first_or_404()
+    user = User.query.filter_by(
+        is_deleted=False,
+        username=username
+        ).first_or_404()
     return render_template("account/profile.html", user=user)
 
 
 @app.route('/users/<username>/contact/', methods=("POST", "GET"))
 @login_required
 def contact_user(username):
-    user = User.query.filter_by(is_deleted=False, username=username).first_or_404()
+    user = User.query.filter_by(
+        is_deleted=False,
+        username=username
+        ).first_or_404()
     if user == current_user or user.pm_mode == "disabled":
         abort(403)
 
@@ -207,9 +282,18 @@ def contact_user(username):
 
     if form.validate_on_submit():
         message = form.message.data
-        body = render_template("emails/account/message.txt", recipient=user, sender=current_user, message=message)
-        mail.send_message(subject=app.config["LONG_NAME"] + ": New message from " + current_user.username,
-                          recipients=[user.email], reply_to=current_user.email, body=body)
+        body = render_template(
+            "emails/account/message.txt",
+            recipient=user,
+            sender=current_user,
+            message=message
+            )
+        mail.send_message(
+            subject=app.config[
+                        "LONG_NAME"] + ": New message from " +
+                    current_user.username,
+            recipients=[user.email], reply_to=current_user.email, body=body
+            )
         flash("Message successfully sent", "success")
 
     return render_template("account/contact.html", user=user, form=form)
@@ -244,15 +328,22 @@ def settings():
 
         if user.location != form.location.data and form.location.data:
             if user.setLocation(form.location.data):
-                flash("Location was set to: " + user.location_display, "success")
+                flash(
+                    "Location was set to: " + user.location_display,
+                    "success"
+                    )
             else:
                 flash("Could not find the location you entered.", "error")
         if not form.location.data:
             user.setLocation("")
 
-        if form.old_password.data and form.new_password.data and form.new_password2.data:
+        if form.old_password.data and form.new_password.data and \
+            form.new_password2.data:
             if not verify_password(user.password, form.old_password.data):
-                flash("Your password is incorrect. The password was not changed.", "error")
+                flash(
+                    "Your password is incorrect. The password was not changed.",
+                    "error"
+                    )
             else:
                 user.password = hash_password(form.new_password.data)
                 flash("Your password was changed", "success")
@@ -262,16 +353,30 @@ def settings():
             user.is_verified = False
 
             same_email = User.query.filter_by(email=user.new_email).all()
-            if not (len(same_email) == 0 or (len(same_email) == 1 and same_email[0] == user)):
-                flash("This email address is already in use by another account.", "error")
+            if not (len(same_email) == 0 or (
+                len(same_email) == 1 and same_email[0] == user)):
+                flash(
+                    "This email address is already in use by another account.",
+                    "error"
+                    )
                 return redirect(url_for("settings"))
 
-            body = render_template("emails/account/verification.txt", recipient=user, email_changed=True)
-            mail.send_message(subject=app.config["LONG_NAME"] + ": eMail verification", recipients=[user.new_email],
-                              body=body)
+            body = render_template(
+                "emails/account/verification.txt",
+                recipient=user,
+                email_changed=True
+                )
+            mail.send_message(
+                subject=app.config["LONG_NAME"] + ": eMail verification",
+                recipients=[user.new_email],
+                body=body
+                )
 
             logout = True
-            flash("Your email address has changed. Please check your inbox for the verification.", "info")
+            flash(
+                "Your email address has changed. Please check your inbox for the verification.",
+                "info"
+                )
 
         db.session.commit()
         flash("Your settings were saved.", "success")

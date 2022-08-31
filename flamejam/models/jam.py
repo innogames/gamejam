@@ -20,8 +20,13 @@ class Jam(db.Model):
     announced = db.Column(db.DateTime)  # Date on which the jam was announced
     start_time = db.Column(db.DateTime)  # The jam starts at this moment
     team_limit = db.Column(db.Integer)  # 0 = no limit
+    on_site_limit = db.Column(db.Integer, nullable=False, default=0)  # 0 = no on-site participants
     games = db.relationship("Game", backref="jam", lazy="noload")
-    participations = db.relationship("Participation", backref="jam", lazy="select")
+    participations = db.relationship(
+        "Participation",
+        backref="jam",
+        lazy="select"
+    )
     teams = db.relationship("Team", backref="jam", lazy="noload")
     photos = db.relationship("JamPhoto", backref="jam", lazy="noload")
 
@@ -33,10 +38,17 @@ class Jam(db.Model):
     rating_duration = db.Column(db.Integer)  # hours
     duration = db.Column(db.Integer)  # hours
 
-    # last notification that was sent, e.g. 0 = announcement, 1 = registration, (see status codes)
+    # last notification that was sent, e.g. 0 = announcement,
+    # 1 = registration, (see status codes)
     last_notification_sent = db.Column(db.Integer, default=-1)
 
-    def __init__(self, title, start_time, duration=48, team_limit=0, theme=''):
+    def __init__(self,
+                 title,
+                 start_time,
+                 duration=48,
+                 team_limit=0,
+                 on_site_limit=0,
+                 theme=''):
         self.title = title
         self.slug = get_slug(title)
         self.start_time = start_time
@@ -47,6 +59,7 @@ class Jam(db.Model):
         self.announced = datetime.utcnow()
         self.theme = theme
         self.team_limit = team_limit
+        self.on_site_limit = on_site_limit
 
     @property
     def participants(self):
@@ -96,7 +109,9 @@ class Jam(db.Model):
         elif 'packaged' in filters:
             games = games.join(GamePackage)
         else:
-            games = games.filter(GamePackage.type.in_(filters)).join(GamePackage)
+            games = games.filter(GamePackage.type.in_(filters)).join(
+                GamePackage
+            )
         return games.all()
 
     def gamesByScore(self, filters=set()):
@@ -125,12 +140,16 @@ class Jam(db.Model):
 
     def sendAllNotifications(self):
         last = -1
-        for n in range(self.last_notification_sent + 1, self.getStatus().code + 1):
+        for n in range(
+            self.last_notification_sent + 1,
+            self.getStatus().code + 1
+        ):
             if self.sendNotification(n): last = n
         return last
 
     def sendNotification(self, n):
-        if not JamStatusCode.ANNOUNCED <= n <= JamStatusCode.FINISHED: return False
+        if not JamStatusCode.ANNOUNCED <= n <= JamStatusCode.FINISHED: return \
+            False
 
         kwargs = {}
 
@@ -166,7 +185,8 @@ class Jam(db.Model):
             from flamejam.models import User
             users = User.query.all()
 
-        # Set this first because we might send for longer than a minute at which point the
+        # Set this first because we might send for longer than a minute at
+        # which point the
         # next tick will come around.
         self.last_notification_sent = n
         db.session.commit()
@@ -176,10 +196,20 @@ class Jam(db.Model):
         with mail.connect() as conn:
             for user in users:
                 if getattr(user, "notify_" + notify):
-                    body = render_template("emails/jam/" + template + ".txt", recipient=user, jam=self, **kwargs)
+                    body = render_template(
+                        "emails/jam/" + template + ".txt",
+                        recipient=user,
+                        jam=self,
+                        **kwargs
+                    )
                     sender = app.config['MAIL_DEFAULT_SENDER']
                     recipients = [user.email]
-                    message = Message(subject=subject, sender=sender, body=body, recipients=recipients)
+                    message = Message(
+                        subject=subject,
+                        sender=sender,
+                        body=body,
+                        recipients=recipients
+                    )
                     try:
                         conn.send(message)
                     except SMTPRecipientsRefused:
