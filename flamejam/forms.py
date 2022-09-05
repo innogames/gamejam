@@ -107,7 +107,8 @@ class OnSiteParticipantLimit:
 
     def __call__(self, form, field):
         on_site_participant_count = db.engine.execute(
-            "SELECT COUNT(id) FROM participation WHERE jam_id = {} AND on_site = 1".format(
+            "SELECT COUNT(id) FROM participation WHERE jam_id = {} AND "
+            "on_site = 1".format(
                 int(self.jam.id)
             )
         ).scalar()
@@ -257,6 +258,13 @@ class JamDetailsForm(Form):
         "Team size limit",
         validators=[NumberRange(min=0)]
     )
+
+    on_site_limit = IntegerField(
+        "On-Site Limit",
+        validators=[Required(), NumberRange(min=0)],
+        default=0
+    )
+
     start_time = DateTimeField(
         "Start time",
         format="%Y-%m-%d %H:%M",
@@ -267,16 +275,19 @@ class JamDetailsForm(Form):
         "Registration duration", validators=[Required(), NumberRange(min=0)],
         default=14 * 24
     )
+
     packaging_duration = IntegerField(
         "Packaging duration",
         validators=[Required(), NumberRange(min=0)],
         default=24
     )
+
     rating_duration = IntegerField(
         "Rating duration",
         validators=[Required(), NumberRange(min=0)],
         default=24 * 5
     )
+
     duration = IntegerField(
         "Duration",
         validators=[Required(), NumberRange(min=0)],

@@ -50,6 +50,12 @@
             </div>
 
             <div class="field">
+                {{ form.on_site_limit.label }}
+                {{ form.on_site_limit(class="span1") }}
+                <span class="form-info">0 = no on-site participants</span>
+            </div>
+
+            <div class="field">
                 {{ form.registration_duration.label }}
                 {{ form.registration_duration(class="span1") }}
                 <span class="form-info">hours</span>
